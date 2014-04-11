@@ -6,6 +6,8 @@
 #include <QtWebKitWidgets/QWebFrame>
 #include <QFile>
 
+#include "yacas/yacas.h"
+
 #ifdef __APPLE__
 #include <CoreFoundation/CoreFoundation.h>
 #endif
@@ -15,9 +17,23 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     yacas(new CYacas)
 {
-    yacas->Evaluate((std::string("DefaultDirectory(\"") + std::string(YACAS_PREFIX) + std::string("/share/yacas/scripts/\");")).c_str());
-    yacas->Evaluate("Load(\"yacasinit.ys\");");
+#ifdef __APPLE__
+    CFBundleRef mainBundle = CFBundleGetMainBundle();
+    CFURLRef frameworkURL = CFBundleCopySharedFrameworksURL (mainBundle);
+    char path[PATH_MAX];
+    if (!CFURLGetFileSystemRepresentation(frameworkURL, TRUE, (UInt8 *)path, PATH_MAX))
+    {
+        qDebug() << "Error finding Resources URL";
+    }
 
+    yacas->Evaluate((std::string("DefaultDirectory(\"") + std::string(path) + std::string("/yacas.framework/Versions/Current/Resources/scripts/\");")).c_str());
+    
+#else
+    yacas->Evaluate((std::string("DefaultDirectory(\"") + std::string(YACAS_PREFIX) + std::string("/share/yacas/scripts/\");")).c_str());
+#endif
+    
+    yacas->Evaluate("Load(\"yacasinit.ys\");");
+    
     ui->setupUi(this);
     loadYacasPage();
     setUnifiedTitleAndToolBarOnMac(true);
