@@ -21,15 +21,18 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::loadYacasPage()
 {
-
+#ifdef __APPLE__
     CFBundleRef mainBundle = CFBundleGetMainBundle();
     CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
-    
+
     char path[PATH_MAX];
     if (!CFURLGetFileSystemRepresentation(resourcesURL, TRUE, (UInt8 *)path, PATH_MAX))
     {
         qDebug() << "Error finding Resources URL";
     }
+#else
+    char path[] = "/usr/local/share/yagy";
+#endif
     
     QString resourcesPath( path );
     
@@ -64,4 +67,3 @@ MainWindow::changeEvent(QEvent *e)
             break;
     }
 }
-
