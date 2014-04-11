@@ -1,0 +1,45 @@
+#introduction{
+    padding: 5px;
+    margin: 5px;
+    font-size: big;
+}
+
+table tr td:first-child {
+    background-color: LightGray;
+    width:40px;
+    font-size: x-small;
+    font-color: LightGray;
+
+}
+
+td{
+    font-family: courier;
+    font-size: small;
+    padding: 5px;
+
+}
+
+body{
+    margin: 0px;
+}
+
+table{
+    border-collapse:collapse;
+    width:100%;
+
+}
+
+textarea{
+    width:100%;
+    font-family: courier;
+    font-size: small;
+    resize: none;
+    padding: 4px;
+
+}
+
+.editable{
+color: SlateGray;
+}
+
+
