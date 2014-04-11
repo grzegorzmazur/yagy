@@ -32,13 +32,13 @@ function editableSubmitted( value, settings, object ){
     
     var outputID = "output_" + number;
     var math = MathJax.Hub.getAllJax(outputID)[0];
-    MathJax.Hub.Queue(["Text",math,value]);
+    result = yacas.eval( value );
+    MathJax.Hub.Queue(["Text",math,result]);
     return value;
 };
 
 
 function submitenter( input ,event){
-    
     if (event.which == 13 && event.shiftKey){
         calculate( input );
         return false;
@@ -91,11 +91,10 @@ function clearInput(){
 }
 
 function calculate(object){
-    
+    result = yacas.eval(object.value);    
     addEditable( CurrentExpression, object.value );
-    addOutput( CurrentExpression , object.value);
+    addOutput( CurrentExpression, result);
     CurrentExpression++;
     clearInput();
     updateInputNumber( CurrentExpression );
-
 };

@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "yacas/yacas.h"
+
 namespace Ui {
     class MainWindow;
 }
@@ -13,14 +15,19 @@ public:
     MainWindow(QWidget* parent = 0);
     ~MainWindow();
 
-    
+    // meant to be private
+    Q_INVOKABLE QString eval(QString expr);
+
 protected:
-    void changeEvent(QEvent *e);
     void loadYacasPage();
     
+private slots:
+    void initObjectMapping();
+
 private:
     Ui::MainWindow* ui;
 
+    CYacas* yacas;
 };
 
 #endif // MAINWINDOW_H
