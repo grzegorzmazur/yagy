@@ -1,3 +1,4 @@
+#include "config.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -11,8 +12,11 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    yacas(new CYacas)
 {
+    yacas->Evaluate((std::string("DefaultDirectory(\"") + std::string(YACAS_PREFIX) + std::string("/share/yacas/scripts/\");")).c_str());
+    yacas->Evaluate("Load(\"yacasinit.ys\");");
 
     ui->setupUi(this);
     loadYacasPage();
@@ -31,7 +35,7 @@ void MainWindow::loadYacasPage()
         qDebug() << "Error finding Resources URL";
     }
 #else
-    char path[] = "/usr/local/share/yagy";
+    char path[] = YAGY_RESOURCES_PATH;
 #endif
     
     QString resourcesPath( path );
@@ -47,7 +51,13 @@ void MainWindow::loadYacasPage()
     QString mText = in.readAll();
     mFile.close();
 
+    connect(ui->webView->page()->currentFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(initObjectMapping()));
     ui->webView->setHtml( mText, QUrl("file://"+ resourcesPath + "/")) ;
+}
+
+void MainWindow::initObjectMapping()
+{
+    ui->webView->page()->currentFrame()->addToJavaScriptWindowObject("yacas", this);
 }
 
 MainWindow::~MainWindow()
@@ -55,15 +65,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void
-MainWindow::changeEvent(QEvent *e)
+QString MainWindow::eval(QString expr)
 {
-    QMainWindow::changeEvent(e);
-    switch (e->type()) {
-        case QEvent::LanguageChange:
-            ui->retranslateUi(this);
-            break;
-        default:
-            break;
-    }
+    yacas->Evaluate((QString("TeXForm(") + expr + QString(")")).toStdString().c_str());
+    const QString result = yacas->Result();
+    const QString tex_code =
+            result.trimmed().mid(2, result.length() - 5).replace( "'", "\\'" ).replace( "\n", "\\\n" );
+    return tex_code;
 }
