@@ -1,10 +1,10 @@
 #include "mainwindow.h"
 
-#include <QApplication>
-#include <QBitmap>
-#include <QPixmap>
-#include <QSplashScreen>
-#include <QTimer>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QSplashScreen>
+#include <QtGui/QBitmap>
+#include <QtGui/QPixmap>
+#include <QtCore/QTimer>
 
 void addSplashScreen( MainWindow* widget );
 
