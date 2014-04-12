@@ -1,9 +1,11 @@
-
 <!DOCTYPE html >
-<html >
 
+<html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" href="css/view.css" />
+
+        <title>Yagy</title>
         
         <script type="text/x-mathjax-config">
             MathJax.Hub.Config({
@@ -11,40 +13,30 @@
                        });
         </script>
 
-        <script language="javascript" type="text/javascript" src="javascript/slot.js" ></script>
-        <script language="javascript" type="text/javascript" src="javascript/surfaceplot/SurfacePlot.js" ></script>
-        <script language="javascript" type="text/javascript" src="javascript/surfaceplot/ColourGradient.js" ></script>
+        <script type="text/javascript" src="javascript/slot.js"></script>
+        <script type="text/javascript" src="javascript/surfaceplot/SurfacePlot.js"></script>
+        <script type="text/javascript" src="javascript/surfaceplot/ColourGradient.js"></script>
         <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
-
-        <script language="javascript" type="text/javascript" src="javascript/jquery-1.11.0.min.js" ></script>
-        <script language="javascript" type="text/javascript" src="javascript/jquery.jeditable.js" ></script>
-        <script language="javascript" type="text/javascript" src="javascript/jquery.jeditable.autogrow.js" ></script>
-        <script language="javascript" type="text/javascript" src="javascript/jquery.autogrow.js"></script>
-        <script language="javascript" type="text/javascript" src="javascript/jquery.autosize.min.js" type="text/javascript" ></script>
+        <script type="text/javascript" src="javascript/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="javascript/jquery.jeditable.js"></script>
+        <script type="text/javascript" src="javascript/jquery.jeditable.autogrow.js"></script>
+        <script type="text/javascript" src="javascript/jquery.autogrow.js"></script>
+        <script type="text/javascript" src="javascript/jquery.autosize.min.js"></script>
         <script type="text/javascript" src="javascript/mathjax/MathJax.js?config=TeX-AMS-MML_SVG"></script>
-        <link rel="stylesheet" href="css/view.css" />
 
-    <script>$( document ).ready( load )</script>
-
+        <script>$( document ).ready( load )</script>
     </head>
-    <body>
-        
 
-        
+    <body>
         <div id="YacasAREA">
 
             <table id="Elements">
                 <tr id='tr_input'>
                     <td id='inputCounter'>in 1:</td>
-                    <td><textarea rows="1" id='inputExpression' onKeyPress='return submitenter(this,event)' autofocus></textarea></td
+                    <td><textarea rows="1" id='inputExpression' onKeyPress='return submitenter(this,event)' autofocus></textarea></td>
                 </tr>
-                <tr><td></td>
-                    <td><div id='surfacePlotDiv'></td>
-                </tr>
-            </table>
+             </table>
         </div>
-        
-        
     </body>
 </html>
