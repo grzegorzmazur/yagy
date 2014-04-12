@@ -2,9 +2,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QtCore/QFile>
 #include <QtWebKitWidgets/QWebPage>
 #include <QtWebKitWidgets/QWebFrame>
-#include <QFile>
 
 #include "yacas/yacas.h"
 
