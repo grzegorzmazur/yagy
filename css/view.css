@@ -1,15 +1,14 @@
 #introduction{
     padding: 5px;
     margin: 5px;
-    font-size: big;
+    font-size: large;
 }
 
-table tr td:first-child {
+table tr td:first-child{
     background-color: LightGray;
-    width:40px;
+    width: 40px;
     font-size: x-small;
-    font-color: LightGray;
-
+    color: black;
 }
 
 td{
@@ -39,7 +38,5 @@ textarea{
 }
 
 .editable{
-color: SlateGray;
+    color: SlateGray;
 }
-
-
