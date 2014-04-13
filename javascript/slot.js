@@ -27,17 +27,36 @@ function updateInputNumber( updatedNumber) {
 
 function editableSubmitted( value, settings, object ){
     var number = object.id.split("_")[1];
-    
-
+    var outputID = "output_" + number;
 
     updateLineNumber( number, CurrentExpression);
     CurrentExpression++;
     updateInputNumber( CurrentExpression );
     
-    var outputID = "output_" + number;
-    var math = MathJax.Hub.getAllJax(outputID)[0];
     result = yacas.eval( value );
-    MathJax.Hub.Queue(["Text",math,result["tex_code"]]);
+    
+    if ( result["type"] == "Expression" ){
+        if ($( "#"+ outputID ).hasClass( "Expression" )){
+            var math = MathJax.Hub.getAllJax(outputID)[0];
+            MathJax.Hub.Queue(["Text",math,result["tex_code"]]);
+        
+        }else{
+            $( "#" + outputID ).html( "$" + result["tex_code"] + "$" );
+            $( "#" + outputID ).removeClass( "Error" );
+            $( "#" + outputID ).addClass( "Expression" );
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub, outputID]);
+        }
+    }else{
+        if ($( "#"+ outputID ).hasClass( "Expression" )){
+            $( "#" + outputID ).text( result["error_message"]  );
+            $( "#" + outputID ).addClass( "Error" );
+            $( "#" + outputID ).removeClass( "Expression" );
+
+        }else{
+            $( "#" + outputID ).text( result["error_message"]);
+        }
+    }
+    
     return value;
 };
 
@@ -79,16 +98,19 @@ function addErrorMessage( number, error_msg ){
 }
 
 function addSideEffects( number, side_effects ){
-    $( "<tr><td id='td_side_" + number + "'>side "+ number + ":</td><td><span id='side_effects_" + number + "'>" + side_effects + "</span></td></tr>").insertBefore( "#tr_input");
+    $( "<tr><td id='td_side_" + number + "'></td><td><span id='side_effects_" + number + "'>" + side_effects + "</span></td></tr>").insertBefore( "#tr_input");
 }
 
-function addOutput( number, value ){
+function addOutput( number, value, type ){
     outputID = "output_" + number;
-
-    $( "<tr><td id='td_out_" + number + "'>out "+ number + ":</td><td><span id='" + outputID+ "' >$$" + value + "$$</span></td></tr>").insertBefore( "#tr_input");
-    MathJax.Hub.Queue(["Typeset",MathJax.Hub, outputID]);
     
+    $( "<tr><td id='td_out_" + number + "'>out "+ number + ":</td><td><span class=" + type + " id='" + outputID+ "' >" + value + "</span></td></tr>").insertBefore( "#tr_input");
+
+    if( type == "Expression"){
+         MathJax.Hub.Queue(["Typeset",MathJax.Hub, outputID]);
+    }
 }
+
 
 function addEditable( number, value ){
     newElementID = "editable_" + number;
@@ -104,12 +126,18 @@ function clearInput(){
 function calculate(object){
     result = yacas.eval(object.value);
     addEditable( CurrentExpression, object.value );
+    
     if( result.hasOwnProperty( "side_effects" ) )
         addSideEffects(CurrentExpression, result["side_effects"].replace(/\n/g, '<br />'));
-    if( result.hasOwnProperty( "error_message" ) )
-        addErrorMessage( CurrentExpression, result["error_message"]);
-    if( result.hasOwnProperty( "tex_code" ) )
-        addOutput( CurrentExpression, result["tex_code"]);
+    
+    if( result["type"] == "Expression" ){
+        value = "$" + result["tex_code"] + "$";
+    }else if ( result["type"] == "Error" ){
+        value = result["error_message"];
+    }
+    
+    addOutput( CurrentExpression, value, result["type"]);
+
     CurrentExpression++;
     clearInput();
     updateInputNumber( CurrentExpression );
