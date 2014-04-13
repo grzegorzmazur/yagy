@@ -1,6 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QtCore/QMap>
+#include <QtCore/QVariant>
+
 #include <QtWidgets/QMainWindow>
 
 #include "yacas/yacas.h"
@@ -16,7 +19,7 @@ public:
     ~MainWindow();
 
     // meant to be private
-    Q_INVOKABLE QString eval(QString expr);
+    Q_INVOKABLE QVariantMap eval(QString expr);
 
 protected:
     void loadYacasPage();

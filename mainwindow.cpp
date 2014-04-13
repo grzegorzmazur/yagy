@@ -84,11 +84,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-QString MainWindow::eval(QString expr)
+QVariantMap MainWindow::eval(QString expr)
 {
+    QVariantMap evaluation_result;
+    
+    evaluation_result["input"] = expr;
+    
     side_effects = "";
     
     yacas->Evaluate(QString(expr + ";").toStdString().c_str());
+    
+    evaluation_result["side_effects"] = side_effects.c_str();
     
     if (!yacas->IsError()) {
         QString result = yacas->Result();
@@ -98,9 +104,13 @@ QString MainWindow::eval(QString expr)
         const QString texform_result = yacas2tex->Result();
         const QString tex_code =
             texform_result.trimmed().mid(2, texform_result.length() - 5);
-        return tex_code;
+        evaluation_result["type"] = "Expression";
+        evaluation_result["expression"] = result;
+        evaluation_result["tex_code"] = tex_code;
     } else {
-        const QString msg = yacas->Error();
-        return msg;
+        evaluation_result["type"] = "Error";
+        evaluation_result["error_message"] = yacas->Error();
     }
+    
+    return evaluation_result;
 }
