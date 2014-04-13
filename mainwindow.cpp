@@ -94,7 +94,8 @@ QVariantMap MainWindow::eval(QString expr)
     
     yacas->Evaluate(QString(expr + ";").toStdString().c_str());
     
-    evaluation_result["side_effects"] = side_effects.c_str();
+    if (!QString(side_effects.c_str()).trimmed().isEmpty())
+        evaluation_result["side_effects"] = side_effects.c_str();
     
     if (!yacas->IsError()) {
         QString result = yacas->Result();

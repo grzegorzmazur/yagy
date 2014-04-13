@@ -37,7 +37,7 @@ function editableSubmitted( value, settings, object ){
     var outputID = "output_" + number;
     var math = MathJax.Hub.getAllJax(outputID)[0];
     result = yacas.eval( value );
-    MathJax.Hub.Queue(["Text",math,result]);
+    MathJax.Hub.Queue(["Text",math,result["tex_code"]]);
     return value;
 };
 
@@ -74,6 +74,9 @@ function ChangeToEditable( elementID ){
                                      });
 };
 
+function addSideEffects( number, side_effects ){
+    $( "<tr><td id='td_side_" + number + "'>side "+ number + ":</td><td><span id='side_effects_" + number + "'>" + side_effects + "</span></td></tr>").insertBefore( "#tr_input");
+}
 
 function addOutput( number, value ){
     outputID = "output_" + number;
@@ -97,6 +100,8 @@ function clearInput(){
 function calculate(object){
     result = yacas.eval(object.value);
     addEditable( CurrentExpression, object.value );
+    if( result.hasOwnProperty( "side_effects" ) )
+        addSideEffects(CurrentExpression, result["side_effects"]);
     addOutput( CurrentExpression, result["tex_code"]);
     CurrentExpression++;
     clearInput();
