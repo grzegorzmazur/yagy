@@ -73,6 +73,7 @@ void MainWindow::loadYacasPage()
 
     connect(ui->webView->page()->currentFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(initObjectMapping()));
     ui->webView->setHtml( mText, QUrl("file://"+ resourcesPath + "/")) ;
+    ui->webView->page()->currentFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOn);
 }
 
 void MainWindow::initObjectMapping()
