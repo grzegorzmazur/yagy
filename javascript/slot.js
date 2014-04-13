@@ -74,6 +74,10 @@ function ChangeToEditable( elementID ){
                                      });
 };
 
+function addErrorMessage( number, error_msg ){
+    $( "<tr><td id='td_error_" + number + "'>error "+ number + ":</td><td><span id='error_" + number + "'>" + error_msg + "</span></td></tr>").insertBefore( "#tr_input");
+}
+
 function addSideEffects( number, side_effects ){
     $( "<tr><td id='td_side_" + number + "'>side "+ number + ":</td><td><span id='side_effects_" + number + "'>" + side_effects + "</span></td></tr>").insertBefore( "#tr_input");
 }
@@ -102,7 +106,10 @@ function calculate(object){
     addEditable( CurrentExpression, object.value );
     if( result.hasOwnProperty( "side_effects" ) )
         addSideEffects(CurrentExpression, result["side_effects"]);
-    addOutput( CurrentExpression, result["tex_code"]);
+    if( result.hasOwnProperty( "error_message" ) )
+        addErrorMessage( CurrentExpression, result["error_message"]);
+    if( result.hasOwnProperty( "tex_code" ) )
+        addOutput( CurrentExpression, result["tex_code"]);
     CurrentExpression++;
     clearInput();
     updateInputNumber( CurrentExpression );
