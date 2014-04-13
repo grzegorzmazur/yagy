@@ -15,7 +15,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    yacas(new CYacas)
+    yacas(new CYacas),
+    yacas2tex(new CYacas)
 {
 #ifdef __APPLE__
     CFBundleRef mainBundle = CFBundleGetMainBundle();
@@ -27,12 +28,15 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     yacas->Evaluate((std::string("DefaultDirectory(\"") + std::string(path) + std::string("/yacas.framework/Versions/Current/Resources/scripts/\");")).c_str());
+    yacas2tex->Evaluate((std::string("DefaultDirectory(\"") + std::string(path) + std::string("/yacas.framework/Versions/Current/Resources/scripts/\");")).c_str());
     
 #else
     yacas->Evaluate((std::string("DefaultDirectory(\"") + std::string(YACAS_PREFIX) + std::string("/share/yacas/scripts/\");")).c_str());
+    yacas2tex->Evaluate((std::string("DefaultDirectory(\"") + std::string(YACAS_PREFIX) + std::string("/share/yacas/scripts/\");")).c_str());
 #endif
     
     yacas->Evaluate("Load(\"yacasinit.ys\");");
+    yacas2tex->Evaluate("Load(\"yacasinit.ys\");");
     
     ui->setupUi(this);
     loadYacasPage();
@@ -83,9 +87,18 @@ MainWindow::~MainWindow()
 
 QString MainWindow::eval(QString expr)
 {
-    yacas->Evaluate((QString("TeXForm(") + expr + QString(")")).toStdString().c_str());
-    const QString result = yacas->Result();
-    const QString tex_code =
-            result.trimmed().mid(2, result.length() - 5).replace( "'", "\\'" ).replace( "\n", "\\\n" );
-    return tex_code;
+    yacas->Evaluate(QString(expr + ";").toStdString().c_str());
+    
+    if (!yacas->IsError()) {
+        QString result = yacas->Result();
+        result = result.left(result.length() - 1);
+        const QString texform_expr = QString("TeXForm(Hold(") + result.trimmed() + "));";
+        yacas2tex->Evaluate(texform_expr.toStdString().c_str());
+        const QString texform_result = yacas2tex->Result();
+        const QString tex_code =
+            texform_result.trimmed().mid(2, texform_result.length() - 5);
+        return tex_code;
+    } else {
+        return "error";
+    }
 }
