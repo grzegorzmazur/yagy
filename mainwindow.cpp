@@ -35,7 +35,11 @@ MainWindow::MainWindow(QWidget *parent) :
     
     yacas->Evaluate("Load(\"yacasinit.ys\");");
     yacas2tex->Evaluate("Load(\"yacasinit.ys\");");
+
+    yacas->Evaluate("Plot2D'outputs();");
     
+    yacas->Evaluate("Plot2D'yagy(values_IsList, _options'hash) <-- Yagy'Plot2D'Data(values);");
+    yacas->Evaluate("Plot2D'outputs() := { {\"default\", \"yagy\"}, {\"data\", \"Plot2D'data\"}, {\"gnuplot\", \"Plot2D'gnuplot\"}, {\"java\", \"Plot2D'java\"}, {\"yagy\", \"Plot2D'yagy\"}, };");
     ui->setupUi(this);
     loadYacasPage();
     setUnifiedTitleAndToolBarOnMac(true);
@@ -99,15 +103,41 @@ QVariantMap MainWindow::eval(QString expr)
     
     if (!yacas->IsError()) {
         QString result = yacas->Result();
+        result = result.trimmed();
         result = result.left(result.length() - 1);
-        const QString texform_expr = QString("TeXForm(Hold(") + result.trimmed() + "));";
-        yacas2tex->Evaluate(texform_expr.toStdString().c_str());
-        const QString texform_result = yacas2tex->Result();
-        const QString tex_code =
-            texform_result.trimmed().mid(2, texform_result.length() - 5);
-        evaluation_result["type"] = "Expression";
-        evaluation_result["expression"] = result;
-        evaluation_result["tex_code"] = tex_code;
+
+        if (result.startsWith("Yagy'Plot2D'Data")) {
+            result = result.remove("Yagy'Plot2D'Data(");
+            result = result.remove(")");
+            result = result.remove("{{{");
+            result = result.remove("}}}");
+            
+            QList<QVariant> partial_data;
+            
+            foreach (const QString& ss, result.split("},{")) {
+                QList<QVariant> p;
+                foreach (const QString& s, ss.split(",")) {
+                    p.append(s.toDouble());
+                }
+                partial_data.append(p);
+            }
+            
+            QList<QVariant> data;
+            
+            data.append(partial_data);
+            
+            evaluation_result["type"] = "Plot2D";
+            evaluation_result["plot2d_data"] = data;
+        } else {
+            const QString texform_expr = QString("TeXForm(Hold(") + result.trimmed() + "));";
+            yacas2tex->Evaluate(texform_expr.toStdString().c_str());
+            const QString texform_result = yacas2tex->Result();
+            const QString tex_code =
+                texform_result.trimmed().mid(2, texform_result.length() - 5);
+            evaluation_result["type"] = "Expression";
+            evaluation_result["expression"] = result;
+            evaluation_result["tex_code"] = tex_code;
+        }
     } else {
         evaluation_result["type"] = "Error";
         evaluation_result["error_message"] = yacas->Error();
