@@ -28,6 +28,8 @@ private:
     Ui::MainWindow* ui;
 
     CYacas* yacas;
+    LispString side_effects;
+    
     CYacas* yacas2tex;
 };
 
