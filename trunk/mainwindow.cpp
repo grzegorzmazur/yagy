@@ -6,8 +6,6 @@
 #include <QtWebKitWidgets/QWebPage>
 #include <QtWebKitWidgets/QWebFrame>
 
-#include "yacas/yacas.h"
-
 #ifdef __APPLE__
 #include <CoreFoundation/CoreFoundation.h>
 #endif
