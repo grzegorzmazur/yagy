@@ -95,9 +95,9 @@ function clearInput(){
 }
 
 function calculate(object){
-    result = yacas.eval(object.value);    
+    result = yacas.eval(object.value);
     addEditable( CurrentExpression, object.value );
-    addOutput( CurrentExpression, result);
+    addOutput( CurrentExpression, result["tex_code"]);
     CurrentExpression++;
     clearInput();
     updateInputNumber( CurrentExpression );
