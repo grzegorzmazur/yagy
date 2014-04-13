@@ -5,6 +5,7 @@
 #include <QtCore/QFile>
 #include <QtWebKitWidgets/QWebPage>
 #include <QtWebKitWidgets/QWebFrame>
+#include <QtWidgets/QFileDialog>
 
 #ifdef __APPLE__
 #include <CoreFoundation/CoreFoundation.h>
@@ -45,6 +46,11 @@ MainWindow::MainWindow(QWidget *parent) :
     setUnifiedTitleAndToolBarOnMac(true);
 }
 
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
 void MainWindow::loadYacasPage()
 {
 #ifdef __APPLE__
@@ -83,9 +89,29 @@ void MainWindow::initObjectMapping()
     ui->webView->page()->currentFrame()->addToJavaScriptWindowObject("yacas", this);
 }
 
-MainWindow::~MainWindow()
+
+void MainWindow::on_actionNew_triggered()
 {
-    delete ui;
+}
+
+void MainWindow::on_actionOpen_triggered()
+{
+    QString fname =
+            QFileDialog::getOpenFileName(this, "Open", "", "Yacas files (*.ys);;All files (*)");
+
+    if (fname.length() != 0) {
+        setWindowTitle(QFileInfo(fname).baseName() + " - Yagy");
+    }
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+    QString fname =
+            QFileDialog::getSaveFileName(this, "Save", "", "Yacas files (*.ys);;All files (*)");
+
+    if (fname.length() != 0) {
+        setWindowTitle(QFileInfo(fname).baseName() + " - Yagy");
+    }
 }
 
 QVariantMap MainWindow::eval(QString expr)
