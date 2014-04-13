@@ -15,7 +15,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    yacas(new CYacas),
+    yacas(new CYacas(new StringOutput(side_effects))),
     yacas2tex(new CYacas)
 {
 #ifdef __APPLE__
@@ -88,6 +88,8 @@ MainWindow::~MainWindow()
 
 QString MainWindow::eval(QString expr)
 {
+    side_effects = "";
+    
     yacas->Evaluate(QString(expr + ";").toStdString().c_str());
     
     if (!yacas->IsError()) {
@@ -100,6 +102,7 @@ QString MainWindow::eval(QString expr)
             texform_result.trimmed().mid(2, texform_result.length() - 5);
         return tex_code;
     } else {
-        return "error";
+        const QString msg = yacas->Error();
+        return msg;
     }
 }
