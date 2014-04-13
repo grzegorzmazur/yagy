@@ -8,6 +8,10 @@
 function load() {
     //$("#inputExpression").focus();
     $("#inputExpression").autosize();
+    
+    $( window ).on( 'resize', function(){
+        MathJax.Hub.Queue(["Rerender", MathJax.Hub]);
+    });
 };
 
 var CurrentExpression = 1;
