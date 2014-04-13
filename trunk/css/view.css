@@ -1,8 +1,4 @@
-#introduction{
-    padding: 5px;
-    margin: 5px;
-    font-size: large;
-}
+
 
 table tr td:first-child{
     background-color: LightGray;
@@ -39,4 +35,8 @@ textarea{
 
 .editable{
     color: SlateGray;
+}
+
+.Error{
+    color: red;
 }
