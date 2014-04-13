@@ -28,6 +28,7 @@ private:
     Ui::MainWindow* ui;
 
     CYacas* yacas;
+    CYacas* yacas2tex;
 };
 
 #endif // MAINWINDOW_H
