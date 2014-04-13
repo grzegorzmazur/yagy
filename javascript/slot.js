@@ -105,7 +105,7 @@ function calculate(object){
     result = yacas.eval(object.value);
     addEditable( CurrentExpression, object.value );
     if( result.hasOwnProperty( "side_effects" ) )
-        addSideEffects(CurrentExpression, result["side_effects"]);
+        addSideEffects(CurrentExpression, result["side_effects"].replace(/\n/g, '<br />'));
     if( result.hasOwnProperty( "error_message" ) )
         addErrorMessage( CurrentExpression, result["error_message"]);
     if( result.hasOwnProperty( "tex_code" ) )
