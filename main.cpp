@@ -6,6 +6,8 @@
 #include <QtGui/QPixmap>
 #include <QtCore/QTimer>
 
+#include "yacasrequest.h"
+
 void addSplashScreen( MainWindow* widget );
 
 int main(int argc, char *argv[]){
@@ -14,6 +16,8 @@ int main(int argc, char *argv[]){
         PlatObSetThreadSafe(true);
     
 	QApplication app(argc, argv);
+        
+        qRegisterMetaType<YacasRequest::State>("YacasRequest::State");
     
 	MainWindow  *widget = new MainWindow ();
     
