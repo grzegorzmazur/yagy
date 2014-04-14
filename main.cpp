@@ -9,6 +9,10 @@
 void addSplashScreen( MainWindow* widget );
 
 int main(int argc, char *argv[]){
+    
+        // switch yacas memory manager to thread-safe mode
+        PlatObSetThreadSafe(true);
+    
 	QApplication app(argc, argv);
     
 	MainWindow  *widget = new MainWindow ();
