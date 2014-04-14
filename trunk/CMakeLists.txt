@@ -22,7 +22,7 @@ include_directories (
 
 qt5_add_resources (qrc_resources.cpp resources.qrc)
 
-add_executable (yagy main.cpp mainwindow.cpp qrc_resources.cpp)
+add_executable (yagy main.cpp mainwindow.cpp yacasrequest.cpp qrc_resources.cpp)
 
 add_library (libyacas SHARED IMPORTED)
 set_target_properties (libyacas PROPERTIES IMPORTED_LOCATION "${YACAS_PREFIX}/lib/libyacas.so")
