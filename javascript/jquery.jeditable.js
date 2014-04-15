@@ -265,7 +265,18 @@
                         //self.reset();
                         reset.apply(form, [settings, self]);
                     }
+                    if( e.which == 13 && e.shiftKey ){
+                        form.submit();
+                    }
+                    if( event.which == 13 ){
+                        e.preventDefault();
+                        //self.reset();
+                        reset.apply(form, [settings, self]);
+                    }
+
                 });
+                                                                 
+
 
                 /* discard, submit or nothing with changes when clicking outside */
                 /* do nothing is usable when navigating with tab */
