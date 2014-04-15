@@ -12,53 +12,18 @@ function load() {
     $( window ).on( 'resize', function(){
         MathJax.Hub.Queue(["Rerender", MathJax.Hub]);
     });
-};
+}
 
 var CurrentExpression = 1;
 
-function updateLineNumber( currentNumber, updatedNumber ){    
-    $( "#td_out_" + currentNumber).html( "out " + updatedNumber + ":");
-    $( "#td_in_" + currentNumber).html( "in " + updatedNumber + ":");
-};
 
 function updateInputNumber( updatedNumber) {
     $( "#inputCounter" ).html( "in " + updatedNumber + ":");
-};
+}
 
-function editableSubmitted( value, settings, object ){
-    var number = object.id.split("_")[1];
-    var outputID = "output_" + number;
-
-    updateLineNumber( number, CurrentExpression);
-    CurrentExpression++;
-    updateInputNumber( CurrentExpression );
-    
-    result = yacas.eval( value );
-    
-    if ( result["type"] == "Expression" ){
-        if ($( "#"+ outputID ).hasClass( "Expression" )){
-            var math = MathJax.Hub.getAllJax(outputID)[0];
-            MathJax.Hub.Queue(["Text",math,result["tex_code"]]);
-        
-        }else{
-            $( "#" + outputID ).html( "$" + result["tex_code"] + "$" );
-            $( "#" + outputID ).removeClass( "Error" );
-            $( "#" + outputID ).addClass( "Expression" );
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub, outputID]);
-        }
-    }else{
-        if ($( "#"+ outputID ).hasClass( "Expression" )){
-            $( "#" + outputID ).text( result["error_message"]  );
-            $( "#" + outputID ).addClass( "Error" );
-            $( "#" + outputID ).removeClass( "Expression" );
-
-        }else{
-            $( "#" + outputID ).text( result["error_message"]);
-        }
-    }
-    
-    return value;
-};
+function clearInput(){
+    $( "#inputExpression").val("");
+}
 
 
 function submitenter( input ,event){
@@ -68,77 +33,100 @@ function submitenter( input ,event){
     }
     if (event.which == 13 ) return false;
     return true;
-};
+}
 
 function ChangeToEditable( elementID ){
     elementID = "#" + elementID;
     $( elementID ).editable(
-                            function(value, settings) {
-                            
-                            return(editableSubmitted(value, settings, this));
-                            }, {
-                            width: '100%',
-                            type      : "autogrow",
-                            tooltip   : "Click to edit...",
-                            style: "width:100%"
+                            function(value, settings) { return value; },
+                            {
+                                width: '100%',
+                                type      : "autogrow",
+                                tooltip   : "Click to edit...",
+                                style: "width:100%",
+                                callback: function( value, settings ){
+                                    processChange( value, settings, this  );
+                                },
                             });
-    $( elementID ).click(function(evt) {
-                                     $(this).find('textarea').keydown(function(event) {
-                                                                      
+    $( elementID ).click(function(evt) { $(this).find('textarea').keydown(function(event) {
                                                                    if (event.which == 13 && event.shiftKey)
                                                                       $(this).closest('form').submit();
                                                                     if (event.which == 13 )
                                                                       return false;
                                                                    });
                                      });
-};
-
-function addErrorMessage( number, error_msg ){
-    $( "<tr><td id='td_error_" + number + "'>error "+ number + ":</td><td><span id='error_" + number + "'>" + error_msg + "</span></td></tr>").insertBefore( "#tr_input");
 }
 
-function addSideEffects( number, side_effects ){
-    $( "<tr><td id='td_side_" + number + "'></td><td><span id='side_effects_" + number + "'>" + side_effects + "</span></td></tr>").insertBefore( "#tr_input");
+
+function addSideEffects( number, side_effects, beforeElement ){
+    $( "<tr id='tr_side_" + number + "'><td id='td_side_" + number + "'></td><td><span id='side_effects_" + number + "'>" + side_effects + "</span></td></tr>").insertBefore( beforeElement );
 }
 
-function addOutput( number, value, type ){
+function addOutput( number, value, type, beforeElement ){
     outputID = "output_" + number;
     
-    $( "<tr><td id='td_out_" + number + "'>out "+ number + ":</td><td><span class=" + type + " id='" + outputID+ "' >" + value + "</span></td></tr>").insertBefore( "#tr_input");
+    $( "<tr id='tr_out_" + number + "'><td id='td_out_" + number + "'>out "+ number + ":</td><td><span class=" + type + " id='" + outputID+ "' >" + value + "</span></td></tr>").insertBefore( beforeElement );
 
     if( type == "Expression"){
-         MathJax.Hub.Queue(["Typeset",MathJax.Hub, outputID]);
+        renderOutput( outputID );
     }
 }
 
+function renderOutput( outputID ){
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub, outputID]);
+}
 
-function addEditable( number, value ){
+
+
+function addEditable( number, value, beforeElement ){
     newElementID = "editable_" + number;
-    $( "<tr><td id='td_in_" + number + "'>in "+ number + ":</td><td><span id='" + newElementID+ "' class='editable'>"+ value +"</span></td></tr>").insertBefore( "#tr_input" );
-    ChangeToEditable( newElementID);
+    $( "<tr id='tr_in_"+number+"'><td id='td_in_" + number + "'>in "+ number + ":</td><td><span id='" + newElementID+ "' class='editable'>"+ value +"</span></td></tr>").insertBefore( beforeElement );
+    ChangeToEditable( newElementID );
 }
 
-function clearInput(){
-    $( "#inputExpression").val("");
-    
-}
+function printResults( result, idRootElement ){
 
-function calculate(object){
-    result = yacas.eval(object.value);
-    addEditable( CurrentExpression, object.value );
-    
     if( result.hasOwnProperty( "side_effects" ) )
-        addSideEffects(CurrentExpression, result["side_effects"].replace(/\n/g, '<br />'));
-    
+        addSideEffects(CurrentExpression, result["side_effects"].replace(/\n/g, '<br />'), idRootElement);
+
     if( result["type"] == "Expression" ){
         value = "$" + result["tex_code"] + "$";
     }else if ( result["type"] == "Error" ){
         value = result["error_message"];
     }
+
+    addOutput( CurrentExpression, value, result["type"], idRootElement );
+}
+
+
+function removeOldResults( number ){
+    $("#tr_side_" + number).remove();
+    $("#tr_out_" + number).remove();
+    $("#tr_in_" + number).remove();
+}
+
+function calculate(object){
+    result = yacas.eval(object.value);
     
-    addOutput( CurrentExpression, value, result["type"]);
+    addEditable( CurrentExpression, object.value, "#tr_input" );
+    printResults( result, "#tr_input" )
 
     CurrentExpression++;
-    clearInput();
     updateInputNumber( CurrentExpression );
-};
+    clearInput();
+}
+
+function processChange( value, settings, object ){
+    
+    var number = object.id.split("_")[1];
+    result = yacas.eval( value );
+    
+    var outputID = "output_" + number;
+    addEditable( CurrentExpression, value, "#tr_in_"+number );
+    printResults( result, "#tr_out_"+number);
+    removeOldResults( number );
+    
+    CurrentExpression++;
+    updateInputNumber( CurrentExpression );
+    
+}
