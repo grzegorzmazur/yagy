@@ -7,7 +7,7 @@
 
 function load() {
     //$("#inputExpression").focus();
-    $("#inputExpression").autosize();
+    $( "#inputExpression" ).autosize();
     
     $( window ).on( 'resize', function(){
         MathJax.Hub.Queue(["Rerender", MathJax.Hub]);
@@ -18,20 +18,20 @@ var CurrentExpression = 1;
 
 
 function updateInputNumber( updatedNumber) {
-    $( "#inputCounter" ).html( "in " + updatedNumber + ":");
+    $( "#inputCounter" ).html( "in " + updatedNumber + ":" );
 }
 
 function clearInput(){
-    $( "#inputExpression").val("");
+    $( "#inputExpression" ).val("");
 }
 
 
 function submitenter( input ,event){
-    if (event.which == 13 && event.shiftKey){
+    if( event.which == 13 && event.shiftKey ){
         calculate( input );
         return false;
     }
-    if (event.which == 13 ) return false;
+    if( event.which == 13 ) return false;
     return true;
 }
 
@@ -40,28 +40,31 @@ function ChangeToEditable( elementID ){
     $( elementID ).editable(
                             function(value, settings) { return value; },
                             {
-                                width: '100%',
-                                type      : "autogrow",
-                                tooltip   : "Click to edit...",
-                                style: "width:100%",
+                                width   : '100%',
+                                type    : "autogrow",
+                                tooltip : "Click to edit...",
+                                style   : "width:100%",
                                 callback: function( value, settings ){
                                     processChange( value, settings, this  );
                                 },
                             });
-    $( elementID ).click(function(evt) { $(this).find('textarea').keydown(function(event) {
-                                                                   if (event.which == 13 && event.shiftKey)
-                                                                      $(this).closest('form').submit();
-                                                                    if (event.which == 13 )
-                                                                      return false;
-                                                                   });
+    $( elementID ).click(function(evt) { $(this).find('textarea').keydown(
+                                                                        function(event) {
+                                                                          if( event.which == 13 && event.shiftKey ){
+                                                                            $(this).closest('form').submit();
+                                                                            return false;
+                                                                          }
+                                                                          if( event.which == 13 ) return false;
+                                                                          return true;
+                                                                        });
                                      });
 }
 
 
 function addSideEffects( number, side_effects, rootElementID ){
     rowID = "tr_side_" + number;
-    $( "<tr id='" + rowID + "'></tr>").insertBefore( rootElementID );
-    $( "#" + rowID ).append("<td id='td_side_" + number + "'></td>");
+    $( "<tr id='" + rowID + "'></tr>" ).insertBefore( rootElementID );
+    $( "#" + rowID ).append("<td id='td_side_" + number + "'></td>" );
     $( "#" + rowID ).append("<td><span id='side_effects_" + number + "'>" + side_effects + "</span></td>");
 }
 
@@ -69,35 +72,33 @@ function addOutput( number, value, type, rootElementID ){
     outputID = "output_" + number;
     
     rowID = "tr_out_" + number;
-    $( "<tr id='" + rowID + "'></tr>").insertBefore( rootElementID );
-    $( "#" + rowID ).append( "<td id='td_out_" + number + "'>out "+ number + ":</td>");
-    $( "#" + rowID ).append( "<td><span class=" + type + " id='" + outputID+ "' >" + value + "</span></td>");
+    $( "<tr id='" + rowID + "'></tr>" ).insertBefore( rootElementID );
+    $( "#" + rowID ).append( "<td id='td_out_" + number + "'>out "+ number + ":</td>"  );
+    $( "#" + rowID ).append( "<td><span class=" + type + " id='" + outputID+ "' >" + value + "</span></td>" );
 
-    if( type == "Expression"){
+    if( type == "Expression" ){
         renderOutput( outputID );
     }
 }
 
 function renderOutput( outputID ){
-    MathJax.Hub.Queue(["Typeset", MathJax.Hub, outputID]);
+    MathJax.Hub.Queue( ["Typeset", MathJax.Hub, outputID] );
 }
-
-
 
 function addEditable( number, value, rootElementID ){
     newElementID = "editable_" + number;
     rowID = "tr_in_" + number;
     
-    $( "<tr id='" + rowID + "'></tr>").insertBefore( rootElementID );
-    $( "#" + rowID ).append( "<td id='td_in_" + number + "'>in "+ number + ":</td>");
-    $( "#" + rowID ).append( "<td><span id='" + newElementID+ "' class='editable'>"+ value +"</span></td>");
+    $( "<tr id='" + rowID + "'></tr>" ).insertBefore( rootElementID );
+    $( "#" + rowID ).append( "<td id='td_in_" + number + "'>in "+ number + ":</td>" );
+    $( "#" + rowID ).append( "<td><span id='" + newElementID+ "' class='editable'>"+ value +"</span></td>" );
     
     ChangeToEditable( newElementID );
 }
 
 function printResults( result, rootElementID ){
 
-    if( result.hasOwnProperty( "side_effects" ) )
+    if( result.hasOwnProperty( "side_effects" ))
         addSideEffects(CurrentExpression, result["side_effects"].replace(/\n/g, '<br />'), rootElementID);
 
     if( result["type"] == "Expression" ){
@@ -111,13 +112,13 @@ function printResults( result, rootElementID ){
 
 
 function removeOldResults( number ){
-    $("#tr_side_" + number).remove();
-    $("#tr_out_" + number).remove();
-    $("#tr_in_" + number).remove();
+    $( "#tr_side_" + number ).remove();
+    $( "#tr_out_" + number ).remove();
+    $( "#tr_in_" + number ).remove();
 }
 
-function calculate(object){
-    result = yacas.eval(object.value);
+function calculate( object ){
+    result = yacas.eval( object.value );
     
     addEditable( CurrentExpression, object.value, "#tr_input" );
     printResults( result, "#tr_input" )
@@ -133,7 +134,7 @@ function processChange( value, settings, object ){
     result = yacas.eval( value );
     
     addEditable( CurrentExpression, value, "#tr_in_"+number );
-    printResults( result, "#tr_out_"+number);
+    printResults( result, "#tr_out_"+number );
     removeOldResults( number );
     
     CurrentExpression++;
