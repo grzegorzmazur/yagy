@@ -48,16 +48,6 @@ function ChangeToEditable( elementID ){
                                     processChange( value, settings, this  );
                                 },
                             });
-    $( elementID ).click(function(evt) { $(this).find('textarea').keydown(
-                                                                        function(event) {
-                                                                          if( event.which == 13 && event.shiftKey ){
-                                                                            $(this).closest('form').submit();
-                                                                            return false;
-                                                                          }
-                                                                          if( event.which == 13 ) return false;
-                                                                          return true;
-                                                                        });
-                                     });
 }
 
 
