@@ -111,7 +111,7 @@ function calculate( object ){
     result = yacas.eval( object.value );
     
     addEditable( CurrentExpression, object.value, "#tr_input" );
-    printResults( result, "#tr_input" )
+    printResults( result, "#tr_input" );
 
     CurrentExpression++;
     updateInputNumber( CurrentExpression );
