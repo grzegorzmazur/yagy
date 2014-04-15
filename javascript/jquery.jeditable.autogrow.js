@@ -1,18 +1,6 @@
 /*
- * Autogrow textarea for Jeditable
+ * Autosize textarea for Jeditable dedicated for YAGY
  *
- * Copyright (c) 2008 Mika Tuupola
- *
- * Licensed under the MIT license:
- *   http://www.opensource.org/licenses/mit-license.php
- * 
- * Depends on Autogrow jQuery plugin by Chrys Bader:
- *   http://www.aclevercookie.com/facebook-like-auto-growing-textarea/
- *
- * Project home:
- *   http://www.appelsiini.net/projects/jeditable
- *
- * Revision: $Id$
  *
  */
  
@@ -33,6 +21,15 @@ $.editable.addInputType('autogrow', {
         return(textarea);
     },
     plugin : function(settings, original) {
+        form = this;
         $('textarea', this).autosize();
+        $('textarea', this).bind('keypress', function (e) {
+                                 if( e.which == 13 && e.shiftKey ){
+                                    form.submit();
+                                 }
+                                 if( e.which == 13 ){
+                                    e.preventDefault();
+                                 }
+                                 });
     }
 });

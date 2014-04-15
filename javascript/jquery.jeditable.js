@@ -265,13 +265,13 @@
                         //self.reset();
                         reset.apply(form, [settings, self]);
                     }
-                    if( e.which == 13 && e.shiftKey ){
+ /*                   if( e.which == 13 && e.shiftKey ){
                         form.submit();
                     }
                     if( e.which == 13 ){
                         e.preventDefault();
                     }
-
+*/
                 });
                                                                  
 
