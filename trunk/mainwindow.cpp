@@ -139,19 +139,20 @@ QVariantMap MainWindow::eval(QString expr)
             result = result.remove("{{{");
             result = result.remove("}}}");
             
-            QList<QVariant> partial_data;
-            
-            foreach (const QString& ss, result.split("},{")) {
-                QList<QVariant> p;
-                foreach (const QString& s, ss.split(",")) {
-                    p.append(s.toDouble());
-                }
-                partial_data.append(QVariant(p));
-            }
-            
             QList<QVariant> data;
             
-            data.append(QVariant(partial_data));
+            foreach (const QString& ps, result.split("}},{{")) {
+                QList<QVariant> partial_data;
+
+                foreach (const QString& ss, ps.split("},{")) {
+                    QList<QVariant> p;
+                    foreach (const QString& s, ss.split(",")) {
+                        p.append(s.toDouble());
+                    }
+                    partial_data.append(QVariant(p));
+                }
+                data.append(QVariant(partial_data));
+            }
             
             evaluation_result["type"] = "Plot2D";
             evaluation_result["plot2d_data"] = data;
