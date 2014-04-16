@@ -35,21 +35,23 @@ public:
     QStatusBar *statusBar;
     QToolBar *toolBar;
 
-    void setupUi(QMainWindow *MainWindow)
+    void setupUi(QMainWindow *Yagy)
     {
-        if (MainWindow->objectName().isEmpty())
-            MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(600, 800);
-        MainWindow->setToolButtonStyle(Qt::ToolButtonFollowStyle);
-        MainWindow->setDocumentMode(false);
-        MainWindow->setDockNestingEnabled(false);
-        actionNew = new QAction(MainWindow);
+        if (Yagy->objectName().isEmpty())
+            Yagy->setObjectName(QStringLiteral("Yagy"));
+        Yagy->resize(600, 800);
+        const QIcon icon = QIcon(QString::fromUtf8(":/img/icon.png"));
+        Yagy->setWindowIcon(icon);
+        Yagy->setToolButtonStyle(Qt::ToolButtonFollowStyle);
+        Yagy->setDocumentMode(false);
+        Yagy->setDockNestingEnabled(false);
+        actionNew = new QAction(Yagy);
         actionNew->setObjectName(QStringLiteral("actionNew"));
-        actionOpen = new QAction(MainWindow);
+        actionOpen = new QAction(Yagy);
         actionOpen->setObjectName(QStringLiteral("actionOpen"));
-        actionSave = new QAction(MainWindow);
+        actionSave = new QAction(Yagy);
         actionSave->setObjectName(QStringLiteral("actionSave"));
-        centralWidget = new QWidget(MainWindow);
+        centralWidget = new QWidget(Yagy);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         verticalLayout = new QVBoxLayout(centralWidget);
         verticalLayout->setSpacing(0);
@@ -62,28 +64,28 @@ public:
 
         verticalLayout->addWidget(webView);
 
-        MainWindow->setCentralWidget(centralWidget);
-        statusBar = new QStatusBar(MainWindow);
+        Yagy->setCentralWidget(centralWidget);
+        statusBar = new QStatusBar(Yagy);
         statusBar->setObjectName(QStringLiteral("statusBar"));
-        MainWindow->setStatusBar(statusBar);
-        toolBar = new QToolBar(MainWindow);
+        Yagy->setStatusBar(statusBar);
+        toolBar = new QToolBar(Yagy);
         toolBar->setObjectName(QStringLiteral("toolBar"));
         toolBar->setMovable(false);
         toolBar->setFloatable(false);
-        MainWindow->addToolBar(Qt::TopToolBarArea, toolBar);
+        Yagy->addToolBar(Qt::TopToolBarArea, toolBar);
 
         toolBar->addAction(actionNew);
         toolBar->addAction(actionOpen);
         toolBar->addAction(actionSave);
 
-        retranslateUi(MainWindow);
+        retranslateUi(Yagy);
 
-        QMetaObject::connectSlotsByName(MainWindow);
+        QMetaObject::connectSlotsByName(Yagy);
     } // setupUi
 
-    void retranslateUi(QMainWindow *MainWindow)
+    void retranslateUi(QMainWindow *Yagy)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
+        Yagy->setWindowTitle(QApplication::translate("MainWindow", "Yagy", 0));
         actionNew->setText(QApplication::translate("MainWindow", "New", 0));
         actionNew->setShortcut(QApplication::translate("MainWindow", "Ctrl+N", 0));
         actionOpen->setText(QApplication::translate("MainWindow", "Open", 0));
