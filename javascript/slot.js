@@ -12,6 +12,7 @@ function load() {
     $( window ).on( 'resize', function(){
         MathJax.Hub.Queue(["Rerender", MathJax.Hub]);
     });
+    
 }
 
 var CurrentExpression = 1;
@@ -58,16 +59,24 @@ function addSideEffects( number, side_effects, rootElementID ){
     $( "#" + rowID ).append("<td><span id='side_effects_" + number + "'>" + side_effects + "</span></td>");
 }
 
-function addOutput( number, value, type, rootElementID ){
+function addOutput( number, value, type, rootElementID, data ){
     outputID = "output_" + number;
-    
     rowID = "tr_out_" + number;
+    
+    
+    
     $( "<tr id='" + rowID + "'></tr>" ).insertBefore( rootElementID );
     $( "#" + rowID ).append( "<td id='td_out_" + number + "'>out "+ number + ":</td>"  );
-    $( "#" + rowID ).append( "<td><span class=" + type + " id='" + outputID+ "' >" + value + "</span></td>" );
+    $( "#" + rowID ).append( "<td><div class=" + type + " id='" + outputID+ "' ></div></td>" );
 
+    
     if( type == "Expression" ){
+        $("#" + outputID).append( value );
         renderOutput( outputID );
+    }else if( type == "Error" ){
+        $("#" + outputID).append( value );
+    }else if( type == "Plot2D" ){
+        $.plot("#" + outputID, value );
     }
 }
 
@@ -95,11 +104,17 @@ function printResults( result, rootElementID ){
         value = "$" + result["tex_code"] + "$";
     }else if ( result["type"] == "Error" ){
         value = result["error_message"];
+    }else if ( result["type"] == "Plot2D"){
+        value = result["plot2d_data"];
     }
-
+    
     addOutput( CurrentExpression, value, result["type"], rootElementID );
+    
 }
 
+/*
+Plot2D(Sin(x))
+*/
 
 function removeOldResults( number ){
     $( "#tr_side_" + number ).remove();
@@ -131,3 +146,5 @@ function processChange( value, settings, object ){
     updateInputNumber( CurrentExpression );
     
 }
+
+
