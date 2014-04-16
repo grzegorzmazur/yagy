@@ -146,12 +146,12 @@ QVariantMap MainWindow::eval(QString expr)
                 foreach (const QString& s, ss.split(",")) {
                     p.append(s.toDouble());
                 }
-                partial_data.append(p);
+                partial_data.append(QVariant(p));
             }
             
             QList<QVariant> data;
             
-            data.append(partial_data);
+            data.append(QVariant(partial_data));
             
             evaluation_result["type"] = "Plot2D";
             evaluation_result["plot2d_data"] = data;
