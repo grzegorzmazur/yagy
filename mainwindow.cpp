@@ -92,6 +92,7 @@ void MainWindow::initObjectMapping()
 
 void MainWindow::on_actionNew_triggered()
 {
+    loadYacasPage();
 }
 
 void MainWindow::on_actionOpen_triggered()
