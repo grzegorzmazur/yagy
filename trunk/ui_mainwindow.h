@@ -39,7 +39,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(600, 400);
+        MainWindow->resize(600, 800);
         MainWindow->setToolButtonStyle(Qt::ToolButtonFollowStyle);
         MainWindow->setDocumentMode(false);
         MainWindow->setDockNestingEnabled(false);
