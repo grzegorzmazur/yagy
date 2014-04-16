@@ -4,32 +4,28 @@
  *
  */
  
-$.editable.addInputType('autogrow', {
-    element : function(settings, original) {
+$.editable.addInputType( 'autogrow', {
+    element : function( settings, original ) {
         var textarea = $('<textarea />');
-        if (settings.rows) {
+        if ( settings.rows ) {
             textarea.attr('rows', settings.rows);
         } else {
             textarea.height(settings.height);
         }
-        if (settings.cols) {
+        if ( settings.cols ) {
             textarea.attr('cols', settings.cols);
         } else {
             textarea.width(settings.width);
         }
-        $(this).append(textarea);
-        return(textarea);
+        $( this ).append( textarea );
+        return( textarea );
     },
-    plugin : function(settings, original) {
+    plugin : function( settings, original ) {
         form = this;
-        $('textarea', this).autosize();
-        $('textarea', this).bind('keypress', function (e) {
-                                 if( e.which == 13 && e.shiftKey ){
-                                    form.submit();
-                                 }
-                                 if( e.which == 13 ){
-                                    e.preventDefault();
-                                 }
-                                 });
+        $( 'textarea', this ).autosize();
+        $( 'textarea', this ).keydown( function (e) {
+                                 if( e.which == 13 && e.shiftKey ) form.submit();
+                                 if( e.which == 13 ) e.preventDefault();
+                            });
     }
 });
