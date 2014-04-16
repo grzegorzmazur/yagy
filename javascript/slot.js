@@ -51,39 +51,6 @@ function ChangeToEditable( elementID ){
                             });
 }
 
-
-function addSideEffects( number, side_effects, rootElementID ){
-    rowID = "tr_side_" + number;
-    $( "<tr id='" + rowID + "'></tr>" ).insertBefore( rootElementID );
-    $( "#" + rowID ).append("<td id='td_side_" + number + "'></td>" );
-    $( "#" + rowID ).append("<td><span id='side_effects_" + number + "'>" + side_effects + "</span></td>");
-}
-
-function addOutput( number, value, type, rootElementID, data ){
-    outputID = "output_" + number;
-    rowID = "tr_out_" + number;
-    
-    
-    
-    $( "<tr id='" + rowID + "'></tr>" ).insertBefore( rootElementID );
-    $( "#" + rowID ).append( "<td id='td_out_" + number + "'>out "+ number + ":</td>"  );
-    $( "#" + rowID ).append( "<td><div class=" + type + " id='" + outputID+ "' ></div></td>" );
-
-    
-    if( type == "Expression" ){
-        $("#" + outputID).append( value );
-        renderOutput( outputID );
-    }else if( type == "Error" ){
-        $("#" + outputID).append( value );
-    }else if( type == "Plot2D" ){
-        $.plot("#" + outputID, value );
-    }
-}
-
-function renderOutput( outputID ){
-    MathJax.Hub.Queue( ["Typeset", MathJax.Hub, outputID] );
-}
-
 function addEditable( number, value, rootElementID ){
     newElementID = "editable_" + number;
     rowID = "tr_in_" + number;
@@ -95,26 +62,53 @@ function addEditable( number, value, rootElementID ){
     ChangeToEditable( newElementID );
 }
 
-function printResults( result, rootElementID ){
 
-    if( result.hasOwnProperty( "side_effects" ))
-        addSideEffects(CurrentExpression, result["side_effects"].replace(/\n/g, '<br />'), rootElementID);
+function addOutput( number, rootElementID ){
+    outputID = "output_" + number;
+    rowID = "tr_out_" + number;
 
-    if( result["type"] == "Expression" ){
-        value = "$" + result["tex_code"] + "$";
-    }else if ( result["type"] == "Error" ){
-        value = result["error_message"];
-    }else if ( result["type"] == "Plot2D"){
-        value = result["plot2d_data"];
-    }
-    
-    addOutput( CurrentExpression, value, result["type"], rootElementID );
+    $( "<tr id='" + rowID + "'></tr>" ).insertBefore( rootElementID );
+    $( "#" + rowID ).append( "<td>out "+ number + ":</td>"  );
+    $( "#" + rowID ).append( "<td><div id='" + outputID+ "' ></div></td>" );
+    $( "#" + outputID).append( "<img src='javascript/progressbar.indicator.gif' width='20' ></img>");
     
 }
 
-/*
-Plot2D(Sin(x))
-*/
+function addSideEffects( number, side_effects, rootElementID ){
+    rowID = "tr_side_" + number;
+    $( "<tr id='" + rowID + "'></tr>" ).insertBefore( rootElementID );
+    $( "#" + rowID ).append("<td id='td_side_" + number + "'></td>" );
+    $( "#" + rowID ).append("<td><span id='side_effects_" + number + "'>" + side_effects + "</span></td>");
+}
+
+function printResults( number, result){
+    outputID = "output_" + number;
+    rowID = "#tr_out_" + number;
+    
+    
+    
+    if( result.hasOwnProperty( "side_effects" ))
+        addSideEffects(CurrentExpression, result["side_effects"].replace(/\n/g, '<br />'), rowID);
+    
+    
+    $("#" + outputID).addClass( result["type"] );
+    $("#" + outputID).text("");
+    if( result["type"] == "Expression" ){
+        $("#" + outputID).append( "$" + result["tex_code"] + "$" );
+        renderOutput( outputID );
+    }else if( result["type"] == "Error" ){
+        $("#" + outputID).append( result["error_message"] );
+    }else if( result["type"] == "Plot2D" ){
+        $.plot("#" + outputID, result["plot2d_data"] );
+    }
+    
+}
+
+
+function renderOutput( outputID ){
+    MathJax.Hub.Queue( ["Typeset", MathJax.Hub, outputID] );
+}
+
 
 function removeOldResults( number ){
     $( "#tr_side_" + number ).remove();
@@ -123,11 +117,15 @@ function removeOldResults( number ){
 }
 
 function calculate( object ){
-    result = yacas.eval( object.value );
+    
     
     addEditable( CurrentExpression, object.value, "#tr_input" );
-    printResults( result, "#tr_input" );
-
+    addOutput( CurrentExpression, "#tr_input");
+    
+    result = yacas.eval( object.value );
+    
+    printResults( CurrentExpression, result);
+    
     CurrentExpression++;
     updateInputNumber( CurrentExpression );
     clearInput();
@@ -136,10 +134,14 @@ function calculate( object ){
 function processChange( value, settings, object ){
     
     var number = object.id.split("_")[1];
+    
+    addEditable( CurrentExpression, value, "#tr_out_"+number);
+    addOutput( CurrentExpression, "#tr_out_"+number);
+    
     result = yacas.eval( value );
     
-    addEditable( CurrentExpression, value, "#tr_in_"+number );
-    printResults( result, "#tr_out_"+number );
+    printResults( CurrentExpression, result);
+    
     removeOldResults( number );
     
     CurrentExpression++;
