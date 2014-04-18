@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     yacas->Evaluate("Plot2D'outputs();");
     
-    yacas->Evaluate("Plot2D'yagy(values_IsList, _options'hash) <-- Yagy'Plot2D'Data(values);");
+    yacas->Evaluate("Plot2D'yagy(values_IsList, _options'hash) <-- Yagy'Plot2D'Data(values, options'hash);");
     yacas->Evaluate("Plot2D'outputs() := { {\"default\", \"yagy\"}, {\"data\", \"Plot2D'data\"}, {\"gnuplot\", \"Plot2D'gnuplot\"}, {\"java\", \"Plot2D'java\"}, {\"yagy\", \"Plot2D'yagy\"}, };");
     
     yacas->Evaluate("Plot3DS'outputs();");
@@ -140,27 +140,61 @@ QVariantMap MainWindow::eval(QString expr)
 
         if (result.startsWith("Yagy'Plot2D'Data")) {
             result = result.remove("Yagy'Plot2D'Data(");
-            result = result.remove(")");
-            result = result.remove("{{{");
-            result = result.remove("}}}");
+            result.truncate(result.length() - 1);
             
             QList<QVariant> data;
             
-            foreach (const QString& ps, result.split("}},{{")) {
+            QStringList parts = result.split("}},{{");
+            
+            QString options_string = parts.takeLast().trimmed();
+            options_string.truncate(options_string.length() - 2);
+            
+            QRegExp dict_entry_rx("(\"[^\"]+\"),(.+)");
+            QRegExp number_list_rx("\\{([^,\\}]+)(?:,([^,\\}]+))*\\}");
+            QRegExp string_list_rx("\\{(?:\"([^\"]+)\")(?:,\"([^\"]+)\")*\\}");
+            
+            QStringList labels;
+            
+            foreach (QString os, options_string.split("},{")) {
+
+                dict_entry_rx.exactMatch(os);
+                
+                if (dict_entry_rx.cap(1) == "\"xrange\"") {
+                    number_list_rx.exactMatch(dict_entry_rx.cap(2));
+                }
+                
+                if (dict_entry_rx.cap(1) == "\"yname\"") {
+                    string_list_rx.exactMatch(dict_entry_rx.cap(2));
+                    for (int i = 1; i <= string_list_rx.captureCount(); ++i)
+                        labels.append(string_list_rx.cap(i));
+                }
+            }
+            
+            parts = parts.replaceInStrings("{{{", "");
+            parts = parts.replaceInStrings("}}}", "");
+            
+            for (int i = 0; i < parts.size(); ++i) {
+
                 QList<QVariant> partial_data;
 
-                foreach (const QString& ss, ps.split("},{")) {
+                foreach (const QString& ss, parts[i].split("},{")) {
                     QList<QVariant> p;
-                    foreach (const QString& s, ss.split(",")) {
-                        p.append(s.toDouble());
+                    foreach (QString s, ss.split(",")) {
+                        p.append(s.replace("{", "").replace("}","").toDouble());
                     }
                     partial_data.append(QVariant(p));
                 }
-                data.append(QVariant(partial_data));
+                
+                QVariantMap data_entry;
+                data_entry["label"] = labels[i];
+                data_entry["data"] = partial_data;
+                data.append(data_entry);
+                //data.append(QVariant(partial_data));
             }
             
             evaluation_result["type"] = "Plot2D";
             evaluation_result["plot2d_data"] = data;
+            
         } else if (result.startsWith("Yagy'Plot3DS'Data")) {
         } else {
             const QString texform_expr = QString("TeXForm(Hold(") + result.trimmed() + "));";
