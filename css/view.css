@@ -1,6 +1,6 @@
 
 
-#Elements tr td:first-child{
+#Elements>tbody>tr>td:first-child{
     background-color: LightGray;
     width: 50px;
     font-size: x-small;
@@ -18,7 +18,7 @@ body{
     margin: 0px;
 }
 
-table{
+#Elements{
     border-collapse:collapse;
     width:100%;
 
