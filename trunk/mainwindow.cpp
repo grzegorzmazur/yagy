@@ -2,7 +2,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QtCore/QDebug>
 #include <QtCore/QFile>
+#include <QtCore/QList>
+#include <QtCore/QVariant>
 #include <QtWebKitWidgets/QWebPage>
 #include <QtWebKitWidgets/QWebFrame>
 #include <QtWidgets/QFileDialog>
