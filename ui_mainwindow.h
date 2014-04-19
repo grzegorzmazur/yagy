@@ -39,7 +39,7 @@ public:
     {
         if (Yagy->objectName().isEmpty())
             Yagy->setObjectName(QStringLiteral("Yagy"));
-        Yagy->resize(600, 800);
+        Yagy->resize(600, 600);
         QIcon icon;
         icon.addFile(QStringLiteral(":/img/icon.png"), QSize(), QIcon::Normal, QIcon::Off);
         Yagy->setWindowIcon(icon);
