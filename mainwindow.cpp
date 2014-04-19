@@ -3,9 +3,14 @@
 #include "ui_mainwindow.h"
 
 #include <QtCore/QDebug>
+#include <QtCore/QJsonArray>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonObject>
 #include <QtCore/QFile>
 #include <QtCore/QList>
 #include <QtCore/QVariant>
+#include <QtWebKit/QWebElement>
+#include <QtWebKit/QWebElementCollection>
 #include <QtWebKitWidgets/QWebPage>
 #include <QtWebKitWidgets/QWebFrame>
 #include <QtWidgets/QFileDialog>
@@ -116,11 +121,34 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::on_actionSave_triggered()
 {
     QString fname =
-            QFileDialog::getSaveFileName(this, "Save", "", "Yacas files (*.ys);;All files (*)");
+            QFileDialog::getSaveFileName(this, "Save", "", "Yagy files (*.ygy);;All files (*)");
 
-    if (fname.length() != 0) {
-        setWindowTitle(QFileInfo(fname).baseName() + " - Yagy");
+    if (fname.length() == 0)
+        return;
+
+    if (QFileInfo(fname).suffix() == "")
+        fname += ".ygy";
+    
+    QFile f(fname);
+
+    if (!f.open(QIODevice::WriteOnly)) {
+        qWarning("Couldn't open file for saving.");
+        return;
     }
+
+    const QWebElementCollection c = ui->webView->page()->currentFrame()->findAllElements(".editable");
+    QJsonArray j;
+    foreach (const QWebElement& e, c) {
+        QJsonObject o;
+        o["input"] = e.toPlainText();
+        j.push_back(o);
+    }
+    
+    QJsonDocument d(j);
+
+    f.write(d.toJson());
+    
+    setWindowTitle(QFileInfo(fname).baseName() + " - Yagy");
 }
 
 QVariantMap MainWindow::eval(QString expr)
