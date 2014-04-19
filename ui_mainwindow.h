@@ -40,7 +40,8 @@ public:
         if (Yagy->objectName().isEmpty())
             Yagy->setObjectName(QStringLiteral("Yagy"));
         Yagy->resize(600, 800);
-        const QIcon icon = QIcon(QString::fromUtf8(":/img/icon.png"));
+        QIcon icon;
+        icon.addFile(QStringLiteral(":/img/icon.png"), QSize(), QIcon::Normal, QIcon::Off);
         Yagy->setWindowIcon(icon);
         Yagy->setToolButtonStyle(Qt::ToolButtonFollowStyle);
         Yagy->setDocumentMode(false);
