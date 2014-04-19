@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
+ <class>Yagy</class>
  <widget class="QMainWindow" name="Yagy">
   <property name="geometry">
    <rect>
