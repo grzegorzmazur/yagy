@@ -111,11 +111,25 @@ void MainWindow::on_actionNew_triggered()
 void MainWindow::on_actionOpen_triggered()
 {
     QString fname =
-            QFileDialog::getOpenFileName(this, "Open", "", "Yacas files (*.ys);;All files (*)");
+            QFileDialog::getOpenFileName(this, "Open", "", "Yacas files (*.ygy);;All files (*)");
 
-    if (fname.length() != 0) {
-        setWindowTitle(QFileInfo(fname).baseName() + " - Yagy");
+    if (fname.length() == 0)
+        return;
+
+    QFile f(fname);
+
+    if (!f.open(QIODevice::ReadOnly)) {
+        qWarning("Couldn't open file for loading.");
+        return;
     }
+    
+    QByteArray data = f.readAll();
+
+    foreach (const QJsonValue& v, QJsonDocument::fromJson(data).array()) {
+        qDebug() << v.toObject()["input"].toString();
+    }
+    
+    setWindowTitle(QFileInfo(fname).baseName() + " - Yagy");
 }
 
 void MainWindow::on_actionSave_triggered()
