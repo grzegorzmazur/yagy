@@ -20,9 +20,10 @@ include_directories (
   "${YACAS_PREFIX}/include"
   )
 
+qt5_wrap_ui (ui_mainwindow.h mainwindow.ui)
 qt5_add_resources (qrc_resources.cpp resources.qrc)
 
-add_executable (yagy main.cpp mainwindow.cpp yacasrequest.cpp yacasengine.cpp yacasserver.cpp qrc_resources.cpp)
+add_executable (yagy main.cpp mainwindow.cpp yacasrequest.cpp yacasengine.cpp yacasserver.cpp qrc_resources.cpp ui_mainwindow.h)
 
 add_library (libyacas SHARED IMPORTED)
 set_target_properties (libyacas PROPERTIES IMPORTED_LOCATION "${YACAS_PREFIX}/lib/libyacas.so")
