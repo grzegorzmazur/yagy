@@ -16,6 +16,8 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QVBoxLayout>
@@ -26,14 +28,20 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
-    QAction *actionNew;
-    QAction *actionOpen;
-    QAction *actionSave;
+    QAction *action_New;
+    QAction *action_Open;
+    QAction *action_Save;
+    QAction *action_Save_As;
+    QAction *action_About;
+    QAction *action_Quit;
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout;
     QWebView *webView;
     QStatusBar *statusBar;
     QToolBar *toolBar;
+    QMenuBar *menuBar;
+    QMenu *menu_File;
+    QMenu *menu_Help;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -47,12 +55,18 @@ public:
         MainWindow->setDocumentMode(false);
         MainWindow->setDockNestingEnabled(false);
         MainWindow->setUnifiedTitleAndToolBarOnMac(true);
-        actionNew = new QAction(MainWindow);
-        actionNew->setObjectName(QStringLiteral("actionNew"));
-        actionOpen = new QAction(MainWindow);
-        actionOpen->setObjectName(QStringLiteral("actionOpen"));
-        actionSave = new QAction(MainWindow);
-        actionSave->setObjectName(QStringLiteral("actionSave"));
+        action_New = new QAction(MainWindow);
+        action_New->setObjectName(QStringLiteral("action_New"));
+        action_Open = new QAction(MainWindow);
+        action_Open->setObjectName(QStringLiteral("action_Open"));
+        action_Save = new QAction(MainWindow);
+        action_Save->setObjectName(QStringLiteral("action_Save"));
+        action_Save_As = new QAction(MainWindow);
+        action_Save_As->setObjectName(QStringLiteral("action_Save_As"));
+        action_About = new QAction(MainWindow);
+        action_About->setObjectName(QStringLiteral("action_About"));
+        action_Quit = new QAction(MainWindow);
+        action_Quit->setObjectName(QStringLiteral("action_Quit"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         verticalLayout = new QVBoxLayout(centralWidget);
@@ -75,10 +89,26 @@ public:
         toolBar->setMovable(false);
         toolBar->setFloatable(false);
         MainWindow->addToolBar(Qt::TopToolBarArea, toolBar);
+        menuBar = new QMenuBar(MainWindow);
+        menuBar->setObjectName(QStringLiteral("menuBar"));
+        menuBar->setGeometry(QRect(0, 0, 600, 25));
+        menu_File = new QMenu(menuBar);
+        menu_File->setObjectName(QStringLiteral("menu_File"));
+        menu_Help = new QMenu(menuBar);
+        menu_Help->setObjectName(QStringLiteral("menu_Help"));
+        MainWindow->setMenuBar(menuBar);
 
-        toolBar->addAction(actionNew);
-        toolBar->addAction(actionOpen);
-        toolBar->addAction(actionSave);
+        toolBar->addAction(action_New);
+        toolBar->addAction(action_Open);
+        toolBar->addAction(action_Save);
+        menuBar->addAction(menu_File->menuAction());
+        menuBar->addAction(menu_Help->menuAction());
+        menu_File->addAction(action_New);
+        menu_File->addAction(action_Open);
+        menu_File->addAction(action_Save);
+        menu_File->addAction(action_Save_As);
+        menu_File->addAction(action_Quit);
+        menu_Help->addAction(action_About);
 
         retranslateUi(MainWindow);
 
@@ -88,13 +118,17 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Yagy", 0));
-        actionNew->setText(QApplication::translate("MainWindow", "New", 0));
-        actionNew->setShortcut(QApplication::translate("MainWindow", "Ctrl+N", 0));
-        actionOpen->setText(QApplication::translate("MainWindow", "Open", 0));
-        actionOpen->setShortcut(QApplication::translate("MainWindow", "Ctrl+O", 0));
-        actionSave->setText(QApplication::translate("MainWindow", "Save", 0));
-        actionSave->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", 0));
+        action_New->setText(QApplication::translate("MainWindow", "&New", 0));
+        action_Open->setText(QApplication::translate("MainWindow", "&Open...", 0));
+        action_Save->setText(QApplication::translate("MainWindow", "&Save", 0));
+        action_Save->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", 0));
+        action_Save_As->setText(QApplication::translate("MainWindow", "Save &As...", 0));
+        action_About->setText(QApplication::translate("MainWindow", "&About", 0));
+        action_Quit->setText(QApplication::translate("MainWindow", "&Quit", 0));
+        action_Quit->setShortcut(QApplication::translate("MainWindow", "Ctrl+Q", 0));
         toolBar->setWindowTitle(QApplication::translate("MainWindow", "toolBar", 0));
+        menu_File->setTitle(QApplication::translate("MainWindow", "&File", 0));
+        menu_Help->setTitle(QApplication::translate("MainWindow", "&Help", 0));
     } // retranslateUi
 
 };

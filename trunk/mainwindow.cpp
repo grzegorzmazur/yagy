@@ -14,6 +14,7 @@
 #include <QtWebKitWidgets/QWebPage>
 #include <QtWebKitWidgets/QWebFrame>
 #include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMessageBox>
 
 #ifdef __APPLE__
 #include <CoreFoundation/CoreFoundation.h>
@@ -103,12 +104,12 @@ void MainWindow::initObjectMapping()
 }
 
 
-void MainWindow::on_actionNew_triggered()
+void MainWindow::on_action_New_triggered()
 {
     loadYacasPage();
 }
 
-void MainWindow::on_actionOpen_triggered()
+void MainWindow::on_action_Open_triggered()
 {
     QString fname =
             QFileDialog::getOpenFileName(this, "Open", "", "Yacas files (*.ygy);;All files (*)");
@@ -132,7 +133,12 @@ void MainWindow::on_actionOpen_triggered()
     setWindowTitle(QFileInfo(fname).baseName() + " - Yagy");
 }
 
-void MainWindow::on_actionSave_triggered()
+void MainWindow::on_action_Save_triggered()
+{
+    on_action_Save_As_triggered();
+}
+
+void MainWindow::on_action_Save_As_triggered()
 {
     QString fname =
             QFileDialog::getSaveFileName(this, "Save", "", "Yagy files (*.ygy);;All files (*)");
@@ -163,7 +169,19 @@ void MainWindow::on_actionSave_triggered()
     f.write(d.toJson());
     
     setWindowTitle(QFileInfo(fname).baseName() + " - Yagy");
+
 }
+
+void MainWindow::on_action_Quit_triggered()
+{
+    QApplication::quit();
+}
+
+void MainWindow::on_action_About_triggered()
+{
+    QMessageBox::about(this, "About Yagy", "Yet Another Gui for Yacas");
+}
+
 
 QVariantMap MainWindow::eval(QString expr)
 {
