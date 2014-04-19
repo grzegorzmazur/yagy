@@ -27,9 +27,12 @@ protected:
 private slots:
     void initObjectMapping();
 
-    void on_actionNew_triggered();
-    void on_actionOpen_triggered();
-    void on_actionSave_triggered();
+    void on_action_New_triggered();
+    void on_action_Open_triggered();
+    void on_action_Save_triggered();
+    void on_action_Save_As_triggered();
+    void on_action_Quit_triggered();
+    void on_action_About_triggered();
 
 private:
     Ui::MainWindow* ui;
