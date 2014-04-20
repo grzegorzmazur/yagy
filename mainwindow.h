@@ -18,8 +18,8 @@ public:
     MainWindow(QWidget* parent = 0);
     ~MainWindow();
 
-    // meant to be private
-    Q_INVOKABLE QVariantMap eval(QString expr);
+public slots:
+    void eval(int idx, QString expr);
 
 protected:
     void loadYacasPage();

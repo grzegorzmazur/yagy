@@ -183,10 +183,11 @@ void MainWindow::on_action_About_triggered()
 }
 
 
-QVariantMap MainWindow::eval(QString expr)
+void MainWindow::eval(int idx, QString expr)
 {
     QVariantMap evaluation_result;
     
+    evaluation_result["idx"] = idx;
     evaluation_result["input"] = expr;
     
     side_effects = "";
@@ -274,5 +275,5 @@ QVariantMap MainWindow::eval(QString expr)
         evaluation_result["error_message"] = yacas->Error();
     }
     
-    return evaluation_result;
+    ui->webView->page()->currentFrame()->evaluateJavaScript(QString("printResults(") + (QJsonDocument::fromVariant(evaluation_result)).toJson() + ");");
 }
