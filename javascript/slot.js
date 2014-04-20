@@ -5,7 +5,7 @@
  */
 
 
-function load() {
+function load(){
     //$("#inputExpression").focus();
     $( "#inputExpression" ).autosize();
     
@@ -15,7 +15,7 @@ function load() {
     
 }
 
-var CurrentExpression = 1;
+var currentExpression = 1;
 
 
 function updateInputNumber( updatedNumber) {
@@ -36,7 +36,7 @@ function submitenter( input ,event){
     return true;
 }
 
-function ChangeToEditable( elementID ){
+function changeToEditable( elementID ){
     elementID = "#" + elementID;
     $( elementID ).editable(
                             function(value, settings) { return value; },
@@ -59,7 +59,7 @@ function addEditable( number, value, rootElementID ){
     $( "#" + rowID ).append( "<td id='td_in_" + number + "'>in "+ number + ":</td>" );
     $( "#" + rowID ).append( "<td><span id='" + newElementID+ "' class='editable'>"+ value +"</span></td>" );
     
-    ChangeToEditable( newElementID );
+    changeToEditable( newElementID );
 }
 
 
@@ -81,15 +81,12 @@ function addSideEffects( number, side_effects, rootElementID ){
     $( "#" + rowID ).append("<td><span id='side_effects_" + number + "'>" + side_effects + "</span></td>");
 }
 
-function printResults( number, result){
+function printResults( number, result ){
     outputID = "output_" + number;
     rowID = "#tr_out_" + number;
     
-    
-    
-    if( result.hasOwnProperty( "side_effects" ))
-        addSideEffects(CurrentExpression, result["side_effects"].replace(/\n/g, '<br />'), rowID);
-    
+    if( result.hasOwnProperty( "side_effects" ) )
+        addSideEffects(currentExpression, result["side_effects"].replace(/\n/g, '<br />'), rowID);
     
     $("#" + outputID).addClass( result["type"] );
     $("#" + outputID).text("");
@@ -101,14 +98,11 @@ function printResults( number, result){
     }else if( result["type"] == "Plot2D" ){
         $.plot("#" + outputID, result["plot2d_data"] );
     }
-    
 }
-
 
 function renderOutput( outputID ){
     MathJax.Hub.Queue( ["Typeset", MathJax.Hub, outputID] );
 }
-
 
 function removeOldResults( number ){
     $( "#tr_side_" + number ).remove();
@@ -118,16 +112,15 @@ function removeOldResults( number ){
 
 function calculate( object ){
     
-    
-    addEditable( CurrentExpression, object.value, "#tr_input" );
-    addOutput( CurrentExpression, "#tr_input");
+    addEditable( currentExpression, object.value, "#tr_input" );
+    addOutput( currentExpression, "#tr_input");
     
     result = yacas.eval( object.value );
     
-    printResults( CurrentExpression, result);
+    printResults( currentExpression, result);
     
-    CurrentExpression++;
-    updateInputNumber( CurrentExpression );
+    currentExpression++;
+    updateInputNumber( currentExpression );
     clearInput();
 }
 
@@ -135,18 +128,17 @@ function processChange( value, settings, object ){
     
     var number = object.id.split("_")[1];
     
-    addEditable( CurrentExpression, value, "#tr_out_"+number);
-    addOutput( CurrentExpression, "#tr_out_"+number);
+    addEditable( currentExpression, value, "#tr_out_"+number);
+    addOutput( currentExpression, "#tr_out_"+number);
     
     result = yacas.eval( value );
     
-    printResults( CurrentExpression, result);
+    printResults( currentExpression, result);
     
     removeOldResults( number );
     
-    CurrentExpression++;
-    updateInputNumber( CurrentExpression );
-    
+    currentExpression++;
+    updateInputNumber( currentExpression );    
 }
 
 
