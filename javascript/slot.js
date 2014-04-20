@@ -47,7 +47,7 @@ function changeToEditable( elementID ){
                                 style   : "width:100%",
                                 callback: function( value, settings ){
                                     processChange( value, settings, this  );
-                                },
+                                }
                             });
 }
 
