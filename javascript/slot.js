@@ -82,7 +82,8 @@ function addSideEffects( number, side_effects, rootElementID ){
     $( "#" + rowID ).append("<td><span id='side_effects_" + number + "'>" + side_effects + "</span></td>");
 }
 
-function printResults( number, result ){
+function printResults( result ){
+    number = result["idx"];
     outputID = "output_" + number;
     rowID = "#tr_out_" + number;
     
@@ -117,12 +118,11 @@ function calculate( object ){
     addEditable( currentExpression, object.value, "#tr_input" );
     addOutput( currentExpression, "#tr_input");
     
-    result = yacas.eval( object.value );
-    
-    printResults( currentExpression, result);
+    yacas.eval( currentExpression, object.value );
     
     currentExpression++;
     updateInputNumber( currentExpression );
+
     clearInput();
 }
 
@@ -130,17 +130,13 @@ function processChange( value, settings, object ){
     
     var number = object.id.split("_")[1];
     
-    addEditable( currentExpression, value, "#tr_out_"+number);
-    addOutput( currentExpression, "#tr_out_"+number);
+    addEditable( currentExpression, value, "#tr_out_"+number );
+    addOutput( currentExpression, "#tr_out_"+number );
     
-    result = yacas.eval( value );
-    
-    printResults( currentExpression, result);
+    yacas.eval( currentExpression, value );
     
     removeOldResults( number );
     
     currentExpression++;
     updateInputNumber( currentExpression );    
 }
-
-
