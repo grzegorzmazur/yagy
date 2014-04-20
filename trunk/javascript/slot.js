@@ -27,7 +27,7 @@ function clearInput(){
 }
 
 
-function submitenter( input ,event){
+function submitenter( input, event ){
     if( event.which == 13 && event.shiftKey ){
         calculate( input );
         return false;
