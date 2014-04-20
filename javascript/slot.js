@@ -45,6 +45,7 @@ function changeToEditable( elementID ){
                                 type    : "autogrow",
                                 tooltip : "Click to edit...",
                                 style   : "width:100%",
+                                onblur  : "nothing",
                                 callback: function( value, settings ){
                                     processChange( value, settings, this  );
                                 }
@@ -96,6 +97,7 @@ function printResults( number, result ){
     }else if( result["type"] == "Error" ){
         $("#" + outputID).append( result["error_message"] );
     }else if( result["type"] == "Plot2D" ){
+        
         $.plot("#" + outputID, result["plot2d_data"] );
     }
 }

@@ -25,7 +25,7 @@ $.editable.addInputType( 'autogrow', {
         $( 'textarea', this ).autosize();
         $( 'textarea', this ).keydown( function (e) {
                                  if( e.which == 13 && e.shiftKey ) form.submit();
-                                 if( e.which == 13 ) e.preventDefault();
+                                 //if( e.which == 13 ) e.preventDefault();
                             });
     }
 });
