@@ -98,7 +98,7 @@ void MainWindow::on_action_New_triggered()
 void MainWindow::on_action_Open_triggered()
 {
     QString fname =
-            QFileDialog::getOpenFileName(this, "Open", "", "Yacas files (*.ygy);;All files (*)");
+            QFileDialog::getOpenFileName(this, "Open", "", "Yagy files (*.ygy);;All files (*)");
 
     if (fname.length() == 0)
         return;
