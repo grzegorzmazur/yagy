@@ -16,6 +16,7 @@
 #include <QtWebKitWidgets/QWebFrame>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
+#include <QtPrintSupport/QPrintDialog>
 
 #ifdef __APPLE__
 #include <CoreFoundation/CoreFoundation.h>
@@ -89,6 +90,11 @@ void MainWindow::initObjectMapping()
     ui->webView->page()->currentFrame()->addToJavaScriptWindowObject("yacas", this);
 }
 
+void MainWindow::print(QPrinter* printer)
+{
+    ui->webView->print(printer);
+}
+
 
 void MainWindow::on_action_New_triggered()
 {
@@ -157,6 +163,18 @@ void MainWindow::on_action_Save_As_triggered()
     
     setWindowTitle(QFileInfo(fname).baseName() + " - Yagy");
 
+}
+
+void MainWindow::on_action_Print_triggered()
+{
+    if (!_printer)
+        _printer.reset(new QPrinter);
+
+    QScopedPointer<QPrintDialog> d(new QPrintDialog(_printer.data(), this));
+    d->setAttribute(Qt::WA_DeleteOnClose);
+    connect(d.data(), SIGNAL(accepted(QPrinter*)), SLOT(print(QPrinter*)));
+    d->show();
+    d.take();
 }
 
 void MainWindow::on_action_Quit_triggered()
