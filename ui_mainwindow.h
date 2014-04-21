@@ -34,6 +34,7 @@ public:
     QAction *action_Save_As;
     QAction *action_About;
     QAction *action_Quit;
+    QAction *action_Print;
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout;
     QWebView *webView;
@@ -72,10 +73,24 @@ public:
         action_Save->setIcon(icon3);
         action_Save_As = new QAction(MainWindow);
         action_Save_As->setObjectName(QStringLiteral("action_Save_As"));
+        QIcon icon4;
+        icon4.addFile(QStringLiteral(":/img/document-save-as.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        action_Save_As->setIcon(icon4);
         action_About = new QAction(MainWindow);
         action_About->setObjectName(QStringLiteral("action_About"));
+        QIcon icon5;
+        icon5.addFile(QStringLiteral(":/img/help-about.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        action_About->setIcon(icon5);
         action_Quit = new QAction(MainWindow);
         action_Quit->setObjectName(QStringLiteral("action_Quit"));
+        QIcon icon6;
+        icon6.addFile(QStringLiteral(":/img/application-exit.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        action_Quit->setIcon(icon6);
+        action_Print = new QAction(MainWindow);
+        action_Print->setObjectName(QStringLiteral("action_Print"));
+        QIcon icon7;
+        icon7.addFile(QStringLiteral(":/img/document-print.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        action_Print->setIcon(icon7);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         verticalLayout = new QVBoxLayout(centralWidget);
@@ -117,6 +132,7 @@ public:
         menu_File->addAction(action_Open);
         menu_File->addAction(action_Save);
         menu_File->addAction(action_Save_As);
+        menu_File->addAction(action_Print);
         menu_File->addAction(action_Quit);
         menu_Help->addAction(action_About);
 
@@ -129,6 +145,7 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Yagy", 0));
         action_New->setText(QApplication::translate("MainWindow", "&New", 0));
+        action_New->setShortcut(QApplication::translate("MainWindow", "Ctrl+N", 0));
         action_Open->setText(QApplication::translate("MainWindow", "&Open...", 0));
         action_Save->setText(QApplication::translate("MainWindow", "&Save", 0));
         action_Save->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", 0));
@@ -136,6 +153,8 @@ public:
         action_About->setText(QApplication::translate("MainWindow", "&About", 0));
         action_Quit->setText(QApplication::translate("MainWindow", "&Quit", 0));
         action_Quit->setShortcut(QApplication::translate("MainWindow", "Ctrl+Q", 0));
+        action_Print->setText(QApplication::translate("MainWindow", "&Print...", 0));
+        action_Print->setShortcut(QApplication::translate("MainWindow", "Ctrl+P", 0));
         toolBar->setWindowTitle(QApplication::translate("MainWindow", "toolBar", 0));
         menu_File->setTitle(QApplication::translate("MainWindow", "&File", 0));
         menu_Help->setTitle(QApplication::translate("MainWindow", "&Help", 0));
