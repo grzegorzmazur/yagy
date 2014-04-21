@@ -29,7 +29,7 @@ function clearInput(){
 
 function submitenter( input, event ){
     if( event.which == 13 && event.shiftKey ){
-        calculate( input );
+        calculate( input.value );
         return false;
     }
     if( event.which == 13 ) return false;
@@ -113,12 +113,11 @@ function removeOldResults( number ){
     $( "#tr_in_" + number ).remove();
 }
 
-function calculate( object ){
-    
-    addEditable( currentExpression, object.value, "#tr_input" );
+function calculate( value ){
+    addEditable( currentExpression, value, "#tr_input" );
     addOutput( currentExpression, "#tr_input");
     
-    yacas.eval( currentExpression, object.value );
+    yacas.eval( currentExpression, value );
     
     updateInputNumber( ++currentExpression );
 
