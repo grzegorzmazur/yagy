@@ -65,6 +65,9 @@
    <property name="movable">
     <bool>false</bool>
    </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonIconOnly</enum>
+   </property>
    <property name="floatable">
     <bool>false</bool>
    </property>
@@ -107,16 +110,28 @@
    <addaction name="menu_Help"/>
   </widget>
   <action name="action_New">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/img/document-new.svg</normaloff>:/img/document-new.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;New</string>
    </property>
   </action>
   <action name="action_Open">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/img/document-open.svg</normaloff>:/img/document-open.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;Open...</string>
    </property>
   </action>
   <action name="action_Save">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/img/document-save.svg</normaloff>:/img/document-save.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;Save</string>
    </property>

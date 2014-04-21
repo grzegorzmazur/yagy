@@ -57,10 +57,19 @@ public:
         MainWindow->setUnifiedTitleAndToolBarOnMac(true);
         action_New = new QAction(MainWindow);
         action_New->setObjectName(QStringLiteral("action_New"));
+        QIcon icon1;
+        icon1.addFile(QStringLiteral(":/img/document-new.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        action_New->setIcon(icon1);
         action_Open = new QAction(MainWindow);
         action_Open->setObjectName(QStringLiteral("action_Open"));
+        QIcon icon2;
+        icon2.addFile(QStringLiteral(":/img/document-open.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        action_Open->setIcon(icon2);
         action_Save = new QAction(MainWindow);
         action_Save->setObjectName(QStringLiteral("action_Save"));
+        QIcon icon3;
+        icon3.addFile(QStringLiteral(":/img/document-save.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        action_Save->setIcon(icon3);
         action_Save_As = new QAction(MainWindow);
         action_Save_As->setObjectName(QStringLiteral("action_Save_As"));
         action_About = new QAction(MainWindow);
@@ -87,6 +96,7 @@ public:
         toolBar = new QToolBar(MainWindow);
         toolBar->setObjectName(QStringLiteral("toolBar"));
         toolBar->setMovable(false);
+        toolBar->setToolButtonStyle(Qt::ToolButtonIconOnly);
         toolBar->setFloatable(false);
         MainWindow->addToolBar(Qt::TopToolBarArea, toolBar);
         menuBar = new QMenuBar(MainWindow);
