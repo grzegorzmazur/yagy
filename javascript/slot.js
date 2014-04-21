@@ -120,8 +120,7 @@ function calculate( object ){
     
     yacas.eval( currentExpression, object.value );
     
-    currentExpression++;
-    updateInputNumber( currentExpression );
+    updateInputNumber( ++currentExpression );
 
     clearInput();
 }
@@ -137,6 +136,5 @@ function processChange( value, settings, object ){
     
     removeOldResults( number );
     
-    currentExpression++;
-    updateInputNumber( currentExpression );    
+    updateInputNumber( ++currentExpression );    
 }
