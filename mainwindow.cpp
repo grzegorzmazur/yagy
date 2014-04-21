@@ -112,9 +112,10 @@ void MainWindow::on_action_Open_triggered()
     
     QByteArray data = f.readAll();
 
-    foreach (const QJsonValue& v, QJsonDocument::fromJson(data).array()) {
-        qDebug() << v.toObject()["input"].toString();
-    }
+    loadYacasPage();
+        
+    foreach (const QJsonValue& v, QJsonDocument::fromJson(data).array())
+        ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculate('") + v.toObject()["input"].toString() + "');");
     
     setWindowTitle(QFileInfo(fname).baseName() + " - Yagy");
 }
