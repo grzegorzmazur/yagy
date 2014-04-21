@@ -1,6 +1,6 @@
 TARGET = YAGY
 TEMPLATE = app
-SOURCES += main.cpp mainwindow.cpp
+SOURCES += main.cpp mainwindow.cpp cellproxy.cpp yacasrequest.cpp yacasengine.cpp yacasserver.cpp
 HEADERS += mainwindow.h config.h
 FORMS += mainwindow.ui
 RESOURCES += resources.qrc
