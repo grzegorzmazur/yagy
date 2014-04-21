@@ -1,7 +1,5 @@
 cmake_minimum_required (VERSION 2.8.11)
 
-set (CMAKE_PREFIX_PATH "/opt/Qt5.2.1/5.2.1/gcc_64/")
-
 set (YACAS_PREFIX "${PROJECT_SOURCE_DIR}/../../yacas/trunk-root")
 
 set (CMAKE_INCLUDE_CURRENT_DIR ON)
