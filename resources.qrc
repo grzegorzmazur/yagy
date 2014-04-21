@@ -5,8 +5,13 @@
     <qresource prefix="/img">
         <file>icon.png</file>
         <file>splash.png</file>
+        <file>application-exit.svg</file>
         <file>document-new.svg</file>
+        <file>document-print.svg</file>
         <file>document-open.svg</file>
         <file>document-save.svg</file>
+        <file>document-save-as.svg</file>
+        <file>help-about.svg</file>
+        <file>view-refresh.svg</file>
     </qresource>
 </RCC>
