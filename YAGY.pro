@@ -1,7 +1,7 @@
 TARGET = YAGY
 TEMPLATE = app
 SOURCES += main.cpp mainwindow.cpp cellproxy.cpp yacasrequest.cpp yacasengine.cpp yacasserver.cpp
-HEADERS += mainwindow.h config.h
+HEADERS += mainwindow.h config.h cellproxy.h yacasrequest.h yacasserver.h yacasengine.h
 FORMS += mainwindow.ui
 RESOURCES += resources.qrc
 QT += webkit widgets webkitwidgets
