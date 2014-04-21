@@ -6,6 +6,7 @@
 
 #include <QtWidgets/QMainWindow>
 
+#include "yacasserver.h"
 #include "yacas/yacas.h"
 
 namespace Ui {
@@ -37,10 +38,8 @@ private slots:
 private:
     Ui::MainWindow* ui;
 
-    CYacas* yacas;
-    LispString side_effects;
-    
-    CYacas* yacas2tex;
+    YacasServer _yacas_server;    
+    CYacas _yacas2tex;
 };
 
 #endif // MAINWINDOW_H
