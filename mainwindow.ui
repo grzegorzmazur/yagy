@@ -105,6 +105,7 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
+    <addaction name="actionYacas_Manual"/>
     <addaction name="action_About"/>
    </widget>
    <addaction name="menu_File"/>
@@ -183,6 +184,15 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionYacas_Manual">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/img/icon.png</normaloff>:/img/icon.png</iconset>
+   </property>
+   <property name="text">
+    <string>Yacas &amp;Manual</string>
    </property>
   </action>
  </widget>

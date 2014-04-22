@@ -9,7 +9,9 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QFile>
 #include <QtCore/QList>
+#include <QtCore/QUrl>
 #include <QtCore/QVariant>
+#include <QtGui/QDesktopServices>
 #include <QtWebKit/QWebElement>
 #include <QtWebKit/QWebElementCollection>
 #include <QtWebKitWidgets/QWebPage>
@@ -180,6 +182,11 @@ void MainWindow::on_action_Print_triggered()
 void MainWindow::on_action_Quit_triggered()
 {
     QApplication::quit();
+}
+
+void MainWindow::on_actionYacas_Manual_triggered()
+{
+    QDesktopServices::openUrl(QUrl("http://yacas.sourceforge.net/refmanual.html"));
 }
 
 void MainWindow::on_action_About_triggered()
