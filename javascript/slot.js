@@ -32,6 +32,10 @@ function submitenter( input, event ){
         calculate( input.value );
         return false;
     }
+    if (event.which == 104 && event.ctrlKey ) {
+        yacas.help(input.value, input.selectionStart);
+        return false;
+    }
     if( event.which == 13 ) return false;
     return true;
 }
