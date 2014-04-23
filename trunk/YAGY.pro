@@ -27,6 +27,7 @@ macx{
 }else{
 
 YACAS_PREFIX = $$PWD/../../yacas/trunk-root
+RESOURCES += css.qrc flot.qrc jquery.qrc mathjax.qrc slot.qrc
 
 win32:CONFIG(release, debug|release): LIBS += -L$${YACAS_PREFIX}/lib/release/ -lyacas
 else:win32:CONFIG(debug, debug|release): LIBS += -L$${YACAS_PREFIX}/lib/debug/ -lyacas
