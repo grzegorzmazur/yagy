@@ -36,7 +36,6 @@ function submitenter( input, event ){
         yacas.help(input.value, input.selectionStart);
         return false;
     }
-    if( event.which == 13 ) return false;
     return true;
 }
 
@@ -96,13 +95,13 @@ function printResults( result ){
     
     $("#" + outputID).addClass( result["type"] );
     $("#" + outputID).text("");
+    
     if( result["type"] == "Expression" ){
         $("#" + outputID).append( "$" + result["tex_code"] + "$" );
         renderOutput( outputID );
     }else if( result["type"] == "Error" ){
         $("#" + outputID).append( result["error_message"] );
-    }else if( result["type"] == "Plot2D" ){
-        
+    }else if( result["type"] == "Plot2D" ){         
         $.plot("#" + outputID, result["plot2d_data"] );
     }
 }
@@ -129,12 +128,13 @@ function calculate( value ){
 }
 
 function processChange( value, settings, object ){
-    
+
     var number = object.id.split("_")[1];
-    
+
     addEditable( currentExpression, value, "#tr_out_"+number );
     addOutput( currentExpression, "#tr_out_"+number );
     
+
     yacas.eval( currentExpression, value );
     
     removeOldResults( number );
