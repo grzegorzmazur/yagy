@@ -20,6 +20,8 @@
 #include <QtWidgets/QMessageBox>
 #include <QtPrintSupport/QPrintDialog>
 
+#include "yacas/yacas_version.h"
+
 #ifdef __APPLE__
 #include <CoreFoundation/CoreFoundation.h>
 #endif
@@ -190,7 +192,14 @@ void MainWindow::on_actionYacas_Manual_triggered()
 
 void MainWindow::on_action_About_triggered()
 {
-    QMessageBox::about(this, "About Yagy", "Yet Another Gui for Yacas");
+    QString about = 
+        "Yet Another Gui for Yacas\n"
+        "\n"
+        "Powered by Yacas version %1";
+    
+    
+    
+    QMessageBox::about(this, "About Yagy", about.arg(YACAS_VERSION));
 }
 
 
