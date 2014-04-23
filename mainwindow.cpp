@@ -65,11 +65,10 @@ void MainWindow::loadYacasPage()
     {
         qDebug() << "Error finding Resources URL";
     }
+    const QUrl resource_url = QUrl(QString("file:///") + QString(path) + QString("/"));
 #else
-    char path[] = YAGY_RESOURCES_PATH;
+    const QUrl resource_url = QUrl("qrc:///");
 #endif
-    
-    QString resourcesPath( path );
     
     QFile mFile(":/resources/view.html");
     
@@ -83,7 +82,7 @@ void MainWindow::loadYacasPage()
     mFile.close();
 
     connect(ui->webView->page()->currentFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(initObjectMapping()));
-    ui->webView->setHtml( mText, QUrl("file://"+ resourcesPath + "/")) ;
+    ui->webView->setHtml( mText, resource_url) ;
     ui->webView->page()->currentFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOn);
 }
 
