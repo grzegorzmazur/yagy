@@ -2,6 +2,17 @@ cmake_minimum_required (VERSION 2.8.11)
 
 set (YACAS_PREFIX "${PROJECT_SOURCE_DIR}/../../yacas/trunk-root")
 
+set (YAGY_VERSION_MAJOR 1)
+set (YAGY_VERSION_MINOR 0)
+set (YAGY_VERSION_MICRO 0)
+
+set (YAGY_VERSION ${YAGY_VERSION_MAJOR}.${YAGY_VERSION_MINOR}.${YAGY_VERSION_MICRO})
+
+configure_file (
+  "version.h.in"
+  "version.h"
+  )
+
 set (CMAKE_INCLUDE_CURRENT_DIR ON)
 set (CMAKE_AUTOMOC ON)
 
