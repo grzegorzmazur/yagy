@@ -198,3 +198,29 @@ void MainWindow::eval(int idx, QString expr)
 {
     new CellProxy(ui->webView->page()->currentFrame(), idx, expr, _yacas_server, _yacas2tex);
 }
+
+void MainWindow::help(QString s, int cp)
+{
+    if (s.length() == 0)
+        return;
+    
+    if (cp >= s.length())
+        cp = s.length() - 1;
+    
+    int b = QRegExp("[^a-zA-Z']").lastIndexIn(s, cp);
+    if (b == cp && cp > 0)
+        b = QRegExp("[^a-zA-Z']").lastIndexIn(s, cp - 1);
+    
+    if (b == -1)
+        b = 0;
+
+    QRegExp word_rx("[a-zA-Z']+");
+    
+    if (word_rx.indexIn(s, b) == -1)
+        return;
+    
+    const QString key = word_rx.cap(0);
+    const QString ref = QString("http://yacas.sourceforge.net/ref.html?") + key;
+    
+    QDesktopServices::openUrl(QUrl(ref));
+}
