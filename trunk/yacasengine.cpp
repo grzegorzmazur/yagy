@@ -7,6 +7,7 @@
 #endif
 
 #include "config.h"
+#include <QDebug>
 
 YacasEngine::YacasEngine(YacasRequestQueue& requests, QObject* parent):
     QObject(parent),
