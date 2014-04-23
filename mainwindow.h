@@ -23,6 +23,7 @@ public:
 
 public slots:
     void eval(int idx, QString expr);
+    void help(QString, int);
 
 protected:
     void loadYacasPage();
