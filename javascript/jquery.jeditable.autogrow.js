@@ -21,11 +21,11 @@ $.editable.addInputType( 'autogrow', {
         return( textarea );
     },
     plugin : function( settings, original ) {
-        form = this;
+
         $( 'textarea', this ).autosize();
         $( 'textarea', this ).keydown( function (e) {
-                                 if( e.which == 13 && e.shiftKey ) form.submit();
-                                 //if( e.which == 13 ) e.preventDefault();
+                                if( e.which == 13 && e.shiftKey ) $(this).parent().submit();
+                                //if( e.which == 13 ) e.preventDefault();
                             });
     }
 });
