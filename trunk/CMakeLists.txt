@@ -30,9 +30,11 @@ include_directories (
   )
 
 qt5_wrap_ui (ui_mainwindow.h mainwindow.ui)
-qt5_add_resources (qrc_resources.cpp resources.qrc)
 
-set (YAGY_QRESOURCES qrc_resources.cpp)
+qt5_add_resources (qrc_resources.cpp resources.qrc)
+qt5_add_resources (qrc_img.cpp img.qrc)
+
+set (YAGY_QRESOURCES qrc_resources.cpp qrc_img.cpp)
 
 if (NOT APPLE)
     qt5_add_resources (qrc_css.cpp css.qrc)
