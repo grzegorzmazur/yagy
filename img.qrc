@@ -11,5 +11,6 @@
         <file>img/document-save-as.svg</file>
         <file>img/help-about.svg</file>
         <file>img/view-refresh.svg</file>
+        <file>img/progressbar.indicator.gif</file>
     </qresource>
 </RCC>
