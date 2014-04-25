@@ -74,7 +74,7 @@ function addOutput( number, rootElementID ){
     $( "<tr id='" + rowID + "'></tr>" ).insertBefore( rootElementID );
     $( "#" + rowID ).append( "<td>out "+ number + ":</td>"  );
     $( "#" + rowID ).append( "<td><div id='" + outputID+ "' ></div></td>" );
-    $( "#" + outputID).append( "<img src='javascript/progressbar.indicator.gif' width='20' ></img>");
+    $( "#" + outputID).append( "<img src='img/progressbar.indicator.gif' width='20' ></img>");
     
 }
 
