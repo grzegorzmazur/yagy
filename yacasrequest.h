@@ -46,6 +46,6 @@ private:
     QString _side_effects;
 };
 
-Q_DECLARE_METATYPE(YacasRequest::State);
+Q_DECLARE_METATYPE(YacasRequest::State)
 
 #endif // YACASREQUEST_H
