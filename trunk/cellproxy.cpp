@@ -10,7 +10,7 @@ CellProxy::CellProxy(QWebFrame* frame, int idx, QString expr, YacasServer& yacas
     _expr(expr),
     _yacas_server(yacas_server),
     _yacas2tex(yacas2tex),
-    _request(new YacasRequest(expr + ";"))
+    _request(new YacasRequest(expr.endsWith(";") ? "[" + expr + "];" : "[" + expr + ";];"))
 {
     connect(_request, SIGNAL(state_changed(YacasRequest::State)), this, SLOT(on_request_state_changed(YacasRequest::State)));
     _yacas_server.submit(_request);

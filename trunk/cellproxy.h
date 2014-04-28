@@ -19,7 +19,7 @@ public slots:
 private:
     QWebFrame* _frame;
     const int _idx;
-    const QString _expr;
+    QString _expr;
     YacasServer& _yacas_server;
     CYacas& _yacas2tex;
 
