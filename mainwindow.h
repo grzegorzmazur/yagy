@@ -27,27 +27,40 @@ public slots:
 
 protected:
     void loadYacasPage();
-    
+
 private slots:
     void initObjectMapping();
 
     void print(QPrinter*);
-    
+
     void on_action_New_triggered();
     void on_action_Open_triggered();
     void on_action_Save_triggered();
     void on_action_Save_As_triggered();
     void on_action_Print_triggered();
     void on_action_Quit_triggered();
+
+    void on_action_Copy_triggered();
+    void on_action_Paste_triggered();
+
+    void on_action_Use_triggered();
+    void on_action_Load_triggered();
+    void on_action_Import_triggered();
+
+    void on_actionEvaluate_Current_triggered();
+    void on_actionEvaluate_All_triggered();
+    void on_action_Interrupt_triggered();
+    void on_action_Restart_triggered();
+
     void on_actionYacas_Manual_triggered();
     void on_action_About_triggered();
 
 private:
     Ui::MainWindow* ui;
 
-    YacasServer _yacas_server;    
+    YacasServer _yacas_server;
     CYacas _yacas2tex;
-    
+
     QScopedPointer<QPrinter> _printer;
 };
 

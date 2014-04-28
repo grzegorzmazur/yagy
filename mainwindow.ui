@@ -14,7 +14,7 @@
    <string>Yagy</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
+   <iconset>
     <normaloff>:/img/icon.png</normaloff>:/img/icon.png</iconset>
   </property>
   <property name="toolButtonStyle">
@@ -108,12 +108,40 @@
     <addaction name="actionYacas_Manual"/>
     <addaction name="action_About"/>
    </widget>
+   <widget class="QMenu" name="menu_Edit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="action_Copy"/>
+    <addaction name="action_Paste"/>
+   </widget>
+   <widget class="QMenu" name="menuScript">
+    <property name="title">
+     <string>&amp;Script</string>
+    </property>
+    <addaction name="action_Use"/>
+    <addaction name="action_Load"/>
+    <addaction name="separator"/>
+    <addaction name="action_Import"/>
+   </widget>
+   <widget class="QMenu" name="menu_Yacas">
+    <property name="title">
+     <string>&amp;Yacas</string>
+    </property>
+    <addaction name="actionEvaluate_Current"/>
+    <addaction name="actionEvaluate_All"/>
+    <addaction name="action_Interrupt"/>
+    <addaction name="action_Restart"/>
+   </widget>
    <addaction name="menu_File"/>
+   <addaction name="menu_Edit"/>
+   <addaction name="menuScript"/>
+   <addaction name="menu_Yacas"/>
    <addaction name="menu_Help"/>
   </widget>
   <action name="action_New">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset>
      <normaloff>:/img/document-new.svg</normaloff>:/img/document-new.svg</iconset>
    </property>
    <property name="text">
@@ -125,7 +153,7 @@
   </action>
   <action name="action_Open">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset>
      <normaloff>:/img/document-open.svg</normaloff>:/img/document-open.svg</iconset>
    </property>
    <property name="text">
@@ -134,7 +162,7 @@
   </action>
   <action name="action_Save">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset>
      <normaloff>:/img/document-save.svg</normaloff>:/img/document-save.svg</iconset>
    </property>
    <property name="text">
@@ -146,7 +174,7 @@
   </action>
   <action name="action_Save_As">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset>
      <normaloff>:/img/document-save-as.svg</normaloff>:/img/document-save-as.svg</iconset>
    </property>
    <property name="text">
@@ -155,7 +183,7 @@
   </action>
   <action name="action_About">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset>
      <normaloff>:/img/help-about.svg</normaloff>:/img/help-about.svg</iconset>
    </property>
    <property name="text">
@@ -164,7 +192,7 @@
   </action>
   <action name="action_Quit">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset>
      <normaloff>:/img/application-exit.svg</normaloff>:/img/application-exit.svg</iconset>
    </property>
    <property name="text">
@@ -176,7 +204,7 @@
   </action>
   <action name="action_Print">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset>
      <normaloff>:/img/document-print.svg</normaloff>:/img/document-print.svg</iconset>
    </property>
    <property name="text">
@@ -188,11 +216,56 @@
   </action>
   <action name="actionYacas_Manual">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset>
      <normaloff>:/img/icon.png</normaloff>:/img/icon.png</iconset>
    </property>
    <property name="text">
     <string>Yacas &amp;Manual</string>
+   </property>
+  </action>
+  <action name="action_Copy">
+   <property name="text">
+    <string>&amp;Copy</string>
+   </property>
+  </action>
+  <action name="action_Paste">
+   <property name="text">
+    <string>&amp;Paste</string>
+   </property>
+  </action>
+  <action name="action_Load">
+   <property name="text">
+    <string>&amp;Load</string>
+   </property>
+  </action>
+  <action name="action_Use">
+   <property name="text">
+    <string>&amp;Use</string>
+   </property>
+  </action>
+  <action name="action_Import">
+   <property name="text">
+    <string>&amp;Import</string>
+   </property>
+  </action>
+  <action name="action_Restart">
+   <property name="text">
+    <string>&amp;Restart</string>
+   </property>
+  </action>
+  <action name="action_Interrupt">
+   <property name="text">
+    <string>&amp;Interrupt</string>
+   </property>
+  </action>
+  <action name="actionEvaluate_Current">
+   <property name="text">
+    <string>Evaluate &amp;Current</string>
+   </property>
+  </action>
+  <action name="actionEvaluate_All">
+   <property name="text">
+    <string>Evaluate &amp;All</string>
    </property>
   </action>
  </widget>
