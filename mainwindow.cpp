@@ -185,6 +185,84 @@ void MainWindow::on_action_Quit_triggered()
     QApplication::quit();
 }
 
+void MainWindow::on_action_Copy_triggered()
+{
+}
+
+void MainWindow::on_action_Paste_triggered()
+{
+}
+
+void MainWindow::on_action_Use_triggered()
+{
+    QString fname =
+            QFileDialog::getOpenFileName(this, "Open", "", "Yacas scripts (*.ys);;All files (*)");
+
+    if (fname.length() == 0)
+        return;
+
+    QFile f(fname);
+
+    if (!f.open(QIODevice::ReadOnly)) {
+        qWarning("Couldn't open file for loading.");
+        return;
+    }
+    
+    QByteArray data = f.readAll();
+}
+
+void MainWindow::on_action_Load_triggered()
+{
+    QString fname =
+            QFileDialog::getOpenFileName(this, "Open", "", "Yacas scripts (*.ys);;All files (*)");
+
+    if (fname.length() == 0)
+        return;
+
+    QFile f(fname);
+
+    if (!f.open(QIODevice::ReadOnly)) {
+        qWarning("Couldn't open file for loading.");
+        return;
+    }
+    
+    QByteArray data = f.readAll();
+}
+
+void MainWindow::on_action_Import_triggered()
+{
+    QString fname =
+            QFileDialog::getOpenFileName(this, "Open", "", "Yacas scripts (*.ys);;All files (*)");
+
+    if (fname.length() == 0)
+        return;
+
+    QFile f(fname);
+
+    if (!f.open(QIODevice::ReadOnly)) {
+        qWarning("Couldn't open file for loading.");
+        return;
+    }
+    
+    QByteArray data = f.readAll();
+}
+
+void MainWindow::on_actionEvaluate_Current_triggered()
+{
+}
+
+void MainWindow::on_actionEvaluate_All_triggered()
+{
+}
+
+void MainWindow::on_action_Interrupt_triggered()
+{
+}
+
+void MainWindow::on_action_Restart_triggered()
+{
+}
+
 void MainWindow::on_actionYacas_Manual_triggered()
 {
     QDesktopServices::openUrl(QUrl("http://yacas.sourceforge.net/refmanual.html"));
