@@ -28,7 +28,8 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    _yacas_server(new YacasServer)
 {
 #ifdef __APPLE__
     CFBundleRef mainBundle = CFBundleGetMainBundle();
@@ -53,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete _yacas_server;
     delete ui;
 }
 
@@ -261,6 +263,14 @@ void MainWindow::on_action_Interrupt_triggered()
 
 void MainWindow::on_action_Restart_triggered()
 {
+    const QMessageBox::StandardButton reply =
+        QMessageBox::question(this, "Restart", "Restart Yacas?",
+                              QMessageBox::Yes|QMessageBox::No);
+    
+    if (reply == QMessageBox::Yes) {
+        delete _yacas_server;
+        _yacas_server = new YacasServer;
+    }
 }
 
 void MainWindow::on_actionYacas_Manual_triggered()
@@ -283,7 +293,7 @@ void MainWindow::on_action_About_triggered()
 
 void MainWindow::eval(int idx, QString expr)
 {
-    new CellProxy(ui->webView->page()->currentFrame(), idx, expr, _yacas_server, _yacas2tex);
+    new CellProxy(ui->webView->page()->currentFrame(), idx, expr, *_yacas_server, _yacas2tex);
 }
 
 void MainWindow::help(QString s, int cp)

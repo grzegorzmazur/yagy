@@ -58,7 +58,7 @@ private slots:
 private:
     Ui::MainWindow* ui;
 
-    YacasServer _yacas_server;
+    YacasServer* _yacas_server;
     CYacas _yacas2tex;
 
     QScopedPointer<QPrinter> _printer;
