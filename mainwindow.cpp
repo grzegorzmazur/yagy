@@ -249,6 +249,22 @@ void MainWindow::on_action_Import_triggered()
     QByteArray data = f.readAll();
 }
 
+void MainWindow::on_action_Export_triggered()
+{
+    QString fname =
+            QFileDialog::getSaveFileName(this, "Open", "", "Yacas scripts (*.ys);;All files (*)");
+
+    if (fname.length() == 0)
+        return;
+
+    QFile f(fname);
+
+    if (!f.open(QIODevice::WriteOnly)) {
+        qWarning("Couldn't open file for saving.");
+        return;
+    }
+}
+
 void MainWindow::on_actionEvaluate_Current_triggered()
 {
 }
