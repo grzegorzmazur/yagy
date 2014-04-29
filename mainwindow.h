@@ -46,6 +46,7 @@ private slots:
     void on_action_Use_triggered();
     void on_action_Load_triggered();
     void on_action_Import_triggered();
+    void on_action_Export_triggered();
 
     void on_actionEvaluate_Current_triggered();
     void on_actionEvaluate_All_triggered();
