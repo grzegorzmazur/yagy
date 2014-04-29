@@ -123,6 +123,7 @@
     <addaction name="action_Load"/>
     <addaction name="separator"/>
     <addaction name="action_Import"/>
+    <addaction name="action_Export"/>
    </widget>
    <widget class="QMenu" name="menu_Yacas">
     <property name="title">
@@ -266,6 +267,11 @@
   <action name="actionEvaluate_All">
    <property name="text">
     <string>Evaluate &amp;All</string>
+   </property>
+  </action>
+  <action name="action_Export">
+   <property name="text">
+    <string>&amp;Export</string>
    </property>
   </action>
  </widget>
