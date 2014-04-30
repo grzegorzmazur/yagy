@@ -167,7 +167,6 @@ void MainWindow::on_action_Save_As_triggered()
     f.write(d.toJson());
     
     setWindowTitle(QFileInfo(fname).baseName() + " - Yagy");
-
 }
 
 void MainWindow::on_action_Print_triggered()
@@ -262,6 +261,16 @@ void MainWindow::on_action_Export_triggered()
     if (!f.open(QIODevice::WriteOnly)) {
         qWarning("Couldn't open file for saving.");
         return;
+    }
+
+    const QWebElementCollection c = ui->webView->page()->currentFrame()->findAllElements(".editable");
+
+    foreach (const QWebElement& e, c) {
+        const QString s = e.toPlainText().trimmed();
+        f.write(s.toLatin1());
+        if (!s.endsWith(";"))
+            f.write(";");
+        f.write("\n");
     }
 }
 
