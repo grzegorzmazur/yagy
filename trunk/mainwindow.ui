@@ -305,6 +305,7 @@
  </customwidgets>
  <resources>
   <include location="resources.qrc"/>
+  <include location="img.qrc"/>
  </resources>
  <connections/>
 </ui>
