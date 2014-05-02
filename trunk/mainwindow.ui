@@ -225,11 +225,19 @@
    </property>
   </action>
   <action name="action_Copy">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/img/edit-copy.svg</normaloff>:/img/edit-copy.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;Copy</string>
    </property>
   </action>
   <action name="action_Paste">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/img/edit-paste.svg</normaloff>:/img/edit-paste.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;Paste</string>
    </property>
