@@ -3,12 +3,14 @@
     <qresource>
         <file>img/icon.png</file>
         <file>img/splash.png</file>
-        <file>img/application-exit.svg</file>
         <file>img/document-new.svg</file>
         <file>img/document-print.svg</file>
         <file>img/document-open.svg</file>
         <file>img/document-save.svg</file>
         <file>img/document-save-as.svg</file>
+        <file>img/application-exit.svg</file>
+        <file>img/edit-copy.svg</file>
+        <file>img/edit-paste.svg</file>
         <file>img/document-import.svg</file>
         <file>img/document-export.svg</file>
         <file>img/view-refresh.svg</file>
