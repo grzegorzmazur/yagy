@@ -49,6 +49,7 @@ function changeToEditable( elementID ){
                                 tooltip : "Click to edit...",
                                 style   : "width:100%",
                                 onblur  : "nothing",
+                            name    : elementID,
                                 callback: function( value, settings ){
                                     processChange( value, settings, this  );
                                 }
@@ -91,7 +92,7 @@ function printResults( result ){
     rowID = "#tr_out_" + number;
     
     if( result.hasOwnProperty( "side_effects" ) )
-        addSideEffects(currentExpression, result["side_effects"].replace(/\n/g, '<br />'), rowID);
+        addSideEffects(number, result["side_effects"].replace(/\n/g, '<br />'), rowID);
     
     $("#" + outputID).addClass( result["type"] );
     $("#" + outputID).text("");
@@ -129,25 +130,31 @@ function calculate( value ){
 }
 
 function calculateAll(){
-    
-    for( i = 1; i < currentExpression; i++ ){
+    //currentExpression will increase if there was any editable in edit state when callin "calculateALL"
+    //only existing expressions should be evaluated
+    numberOfExpressions = currentExpression;
+
+    for( i = 1; i < numberOfExpressions; i++ ){
         elementID = "editable_" + i;
         
         if ( $( "#" + elementID ).length ){
-            
             $( "#tr_side_" + i ).remove();
             
+            value = $( "#"+ elementID ).text();
+            
+            if ( value == "" ){
+                $( "#" + elementID).find("form:first").trigger("submit");
+                continue;
+            }
+
             outputID = "output_" + i;
             rowID = "tr_out_" + i;
             
             $( "#" + outputID ).parent().remove();
             $( "#" + rowID ).append( "<td><div id='" + outputID+ "' ></div></td>" );
             $( "#" + outputID ).append( "<img src='img/progressbar.indicator.gif' width='20' ></img>");
-
-            value = $( "#"+ elementID ).text();
+            
             yacas.eval( i, value );
-            
-            
         }
     }
 }
