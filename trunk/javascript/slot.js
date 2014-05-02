@@ -104,6 +104,7 @@ function printResults( result ){
     }else if( result["type"] == "Plot2D" ){         
         $.plot("#" + outputID, result["plot2d_data"] );
     }
+
 }
 
 function renderOutput( outputID ){
@@ -125,6 +126,30 @@ function calculate( value ){
     updateInputNumber( ++currentExpression );
 
     clearInput();
+}
+
+function calculateAll(){
+    
+    for( i = 1; i < currentExpression; i++ ){
+        elementID = "editable_" + i;
+        
+        if ( $( "#" + elementID ).length ){
+            
+            $( "#tr_side_" + i ).remove();
+            
+            outputID = "output_" + i;
+            rowID = "tr_out_" + i;
+            
+            $( "#" + outputID ).parent().remove();
+            $( "#" + rowID ).append( "<td><div id='" + outputID+ "' ></div></td>" );
+            $( "#" + outputID ).append( "<img src='img/progressbar.indicator.gif' width='20' ></img>");
+
+            value = $( "#"+ elementID ).text();
+            yacas.eval( i, value );
+            
+            
+        }
+    }
 }
 
 function processChange( value, settings, object ){
