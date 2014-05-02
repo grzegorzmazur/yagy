@@ -124,11 +124,15 @@ void MainWindow::on_action_Open_triggered()
     QByteArray data = f.readAll();
 
     loadYacasPage();
-        
-    foreach (const QJsonValue& v, QJsonDocument::fromJson(data).array())
-        ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculate('") + v.toObject()["input"].toString() + "');");
-    
+
+    foreach (const QJsonValue& v, QJsonDocument::fromJson(data).array()){
+        QString torun = QString("calculate('Plot2D(Sin(x))')");
+        QString toevaluate = QString("calculate('") + v.toObject()["input"].toString() + QString("')");
+        qDebug() << toevaluate;
+        ui->webView->page()->currentFrame()->evaluateJavaScript(toevaluate);
+    }
     setWindowTitle(QFileInfo(fname).baseName() + " - Yagy");
+
 }
 
 void MainWindow::on_action_Save_triggered()
@@ -280,6 +284,8 @@ void MainWindow::on_actionEvaluate_Current_triggered()
 
 void MainWindow::on_actionEvaluate_All_triggered()
 {
+    ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculateAll()"));
+
 }
 
 void MainWindow::on_action_Interrupt_triggered()
