@@ -49,7 +49,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
     loadYacasPage();
-    setUnifiedTitleAndToolBarOnMac(true);
 }
 
 MainWindow::~MainWindow()
