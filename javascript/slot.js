@@ -38,6 +38,7 @@ function changeToEditable( elementID ){
     $( elementID ).editable(
                             function(value, settings) { return value; },
                             {
+                                //NOTE: if changed text on empty editable it is needed to update CalculateAll function
                                 width   : '100%',
                                 type    : "autogrow",
                                 tooltip : "Click to edit...",
