@@ -133,10 +133,12 @@ function calculateAll(){
                                 $(this).find("form:first").trigger("submit");
                               }else{
                                 //if editable is empty it's value is "Click to edit"
-                                if ( value == "Click to edit") value = "";
+                                if ( value == "Click to edit" ) value = "";
                                 processChange( value, null, this );
                               }
                            });
+    inputVal = $( "#inputExpression" ).val();
+    if ( inputVal != "" ) calculate( inputVal );
 }
 
 function getAllInputs(){
@@ -145,13 +147,16 @@ function getAllInputs(){
                               value = $(this).text()
                               
                               if ( value == "" ){
-                                inputs.push($(this).find("textarea:first").val() );
+                                inputs.push( $(this).find("textarea:first").val() );
                               }else{
-                              //if editable is empty it's value is "Click to edit"
-                              if ( value == "Click to edit") value = "";
+                                //if editable is empty it's value is "Click to edit"
+                                if ( value == "Click to edit" ) value = "";
                                 inputs.push( value );
                               }
                               });
+    inputVal = $( "#inputExpression" ).val();
+    if ( inputVal != "" ) inputs.push( inputVal );
+    
     return inputs;
 }
 
