@@ -1,9 +1,3 @@
-/**
- * This is run after the the web page has been rendered.
- * $(document).ready documented here:
- * http://docs.jquery.com/Tutorials:Introducing_$(document).ready()
- */
-
 
 function load(){
     //$("#inputExpression").focus();
@@ -32,7 +26,7 @@ function submitenter( input, event ){
         calculate( input.value );
         return false;
     }
-    if ( event.which == 104 && ( event.ctrlKey || event.metaKey ) ){
+    if ( event.which == 104 && event.ctrlKey ){
         yacas.help(input.value, input.selectionStart);
         return false;
     }
@@ -129,34 +123,19 @@ function calculate( value ){
     clearInput();
 }
 
+
 function calculateAll(){
-    //currentExpression will increase if there was any editable in edit state when callin "calculateALL"
-    //only existing expressions should be evaluated
-    numberOfExpressions = currentExpression;
-
-    for( i = 1; i < numberOfExpressions; i++ ){
-        elementID = "editable_" + i;
-        
-        if ( $( "#" + elementID ).length ){
-            $( "#tr_side_" + i ).remove();
-            
-            value = $( "#"+ elementID ).text();
-            
-            if ( value == "" ){
-                $( "#" + elementID).find("form:first").trigger("submit");
-                continue;
-            }
-
-            outputID = "output_" + i;
-            rowID = "tr_out_" + i;
-            
-            $( "#" + outputID ).parent().remove();
-            $( "#" + rowID ).append( "<td><div id='" + outputID+ "' ></div></td>" );
-            $( "#" + outputID ).append( "<img src='img/progressbar.indicator.gif' width='20' ></img>");
-            
-            yacas.eval( i, value );
-        }
-    }
+    $("[id^=editable_]").each( function() {
+                              value = $(this).text()
+                              
+                              if ( value == ""){
+                                $(this).find("form:first").trigger("submit");
+                              }else{
+                                //if editable is empty it's value is "Click to edit"
+                                if ( value == "Click to edit") value = "";
+                                processChange( value, null, this );
+                              }
+                           });
 }
 
 function processChange( value, settings, object ){
@@ -166,7 +145,6 @@ function processChange( value, settings, object ){
     addEditable( currentExpression, value, "#tr_out_"+number );
     addOutput( currentExpression, "#tr_out_"+number );
     
-
     yacas.eval( currentExpression, value );
     
     removeOldResults( number );
