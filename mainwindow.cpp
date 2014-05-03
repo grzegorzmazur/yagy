@@ -29,7 +29,9 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    _yacas_server(new YacasServer)
+    _yacas_server(new YacasServer),
+    _modified(false),
+    _fname("")
 {
 #ifdef __APPLE__
     CFBundleRef mainBundle = CFBundleGetMainBundle();
@@ -48,6 +50,9 @@ MainWindow::MainWindow(QWidget *parent) :
     _yacas2tex.Evaluate("Load(\"yacasinit.ys\");");
 
     ui->setupUi(this);
+    
+    _update_title();
+    
     loadYacasPage();
 }
 
@@ -115,7 +120,9 @@ void MainWindow::on_action_Open_triggered()
     if (fname.length() == 0)
         return;
 
-    QFile f(fname);
+    _fname = fname;
+    
+    QFile f(_fname);
 
     if (!f.open(QIODevice::ReadOnly)) {
         qWarning("Couldn't open file for loading.");
@@ -129,12 +136,16 @@ void MainWindow::on_action_Open_triggered()
     foreach (const QJsonValue& v, QJsonDocument::fromJson(data).array())
         ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculate('") + v.toObject()["input"].toString() + "');");
 
-    setWindowTitle(QFileInfo(fname).baseName() + " - Yagy");
+    _modified = false;
+    _update_title();
 }
 
 void MainWindow::on_action_Save_triggered()
 {
-    on_action_Save_As_triggered();
+    if (_fname.isEmpty())
+        on_action_Save_As_triggered();
+    else
+        _save();
 }
 
 void MainWindow::on_action_Save_As_triggered()
@@ -148,26 +159,9 @@ void MainWindow::on_action_Save_As_triggered()
     if (QFileInfo(fname).suffix() == "")
         fname += ".ygy";
     
-    QFile f(fname);
-
-    if (!f.open(QIODevice::WriteOnly)) {
-        qWarning("Couldn't open file for saving.");
-        return;
-    }
-
-    const QWebElementCollection c = ui->webView->page()->currentFrame()->findAllElements(".editable");
-    QJsonArray j;
-    foreach (const QWebElement& e, c) {
-        QJsonObject o;
-        o["input"] = e.toPlainText();
-        j.push_back(o);
-    }
+    _fname = fname;
     
-    QJsonDocument d(j);
-
-    f.write(d.toJson());
-    
-    setWindowTitle(QFileInfo(fname).baseName() + " - Yagy");
+    _save();
 }
 
 void MainWindow::on_action_Print_triggered()
@@ -328,6 +322,8 @@ void MainWindow::on_action_About_triggered()
 void MainWindow::eval(int idx, QString expr)
 {
     new CellProxy(ui->webView->page()->currentFrame(), idx, expr, *_yacas_server, _yacas2tex);
+    _modified = true;
+    _update_title();
 }
 
 void MainWindow::help(QString s, int cp)
@@ -354,4 +350,49 @@ void MainWindow::help(QString s, int cp)
     const QString ref = QString("http://yacas.sourceforge.net/ref.html?") + key;
     
     QDesktopServices::openUrl(QUrl(ref));
+}
+
+void MainWindow::_save()
+{
+    QFile f(_fname);
+
+    if (!f.open(QIODevice::WriteOnly)) {
+        qWarning("Couldn't open file for saving.");
+        return;
+    }
+
+    const QWebElementCollection c = ui->webView->page()->currentFrame()->findAllElements(".editable");
+    QJsonArray j;
+    foreach (const QWebElement& e, c) {
+        QJsonObject o;
+        o["input"] = e.toPlainText();
+        j.push_back(o);
+    }
+    
+    QJsonDocument d(j);
+
+    f.write(d.toJson());
+    
+    _modified = false;
+    
+    _update_title();
+}
+
+void MainWindow::_update_title()
+{
+    QString title;
+    
+    qDebug() << _fname << _fname.isEmpty();
+    
+    if (_fname.isEmpty())
+        title = "untitled";
+    else
+        title = QFileInfo(_fname).baseName();
+    
+    if (_modified)
+        title = "*" + title;
+    
+    title += " - Yagy";
+    
+    setWindowTitle(title);
 }

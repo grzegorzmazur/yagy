@@ -58,12 +58,18 @@ private slots:
     void on_action_About_triggered();
 
 private:
+    void _save();
+    void _update_title();
+    
     Ui::MainWindow* ui;
 
     YacasServer* _yacas_server;
     CYacas _yacas2tex;
 
     QScopedPointer<QPrinter> _printer;
+    
+    bool _modified;
+    QString _fname;
 };
 
 #endif // MAINWINDOW_H
