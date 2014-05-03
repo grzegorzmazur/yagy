@@ -1,5 +1,6 @@
 TARGET = YAGY
 TEMPLATE = app
+QMAKE_CXXFLAGS += -std=c++11
 SOURCES += main.cpp mainwindow.cpp cellproxy.cpp yacasrequest.cpp yacasengine.cpp yacasserver.cpp
 HEADERS += mainwindow.h config.h cellproxy.h yacasrequest.h yacasserver.h yacasengine.h
 FORMS += mainwindow.ui
