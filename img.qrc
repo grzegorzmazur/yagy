@@ -15,10 +15,7 @@
         <file>img/document-export.svg</file>
         <file>img/view-refresh.svg</file>
         <file>img/process-stop.svg</file>
-        <file>img/document-import.svg</file>
-        <file>img/document-export.svg</file>
         <file>img/help-about.svg</file>
-        <file>img/view-refresh.svg</file>
         <file>img/progressbar.indicator.gif</file>
     </qresource>
 </RCC>
