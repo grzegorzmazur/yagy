@@ -34,6 +34,9 @@ MainWindow::MainWindow(QWidget *parent) :
     _fname("")
 {
 #ifdef __APPLE__
+
+    QApplication::instance()->setAttribute(Qt::AA_DontShowIconsInMenus);
+    
     CFBundleRef mainBundle = CFBundleGetMainBundle();
     CFURLRef frameworkURL = CFBundleCopySharedFrameworksURL (mainBundle);
     char path[PATH_MAX];
