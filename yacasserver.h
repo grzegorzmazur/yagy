@@ -14,14 +14,17 @@ public:
     ~YacasServer();
 
     void submit(YacasRequest*);
+    void cancel();
 
 signals:
     void start_processing();
+    void interrupt();
 
 public slots:
 
 private:
     YacasRequestQueue _requests;
+    YacasEngine* _engine;
     QThread _engine_thread;
 };
 

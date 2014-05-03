@@ -286,6 +286,7 @@ void MainWindow::on_actionEvaluate_All_triggered()
 
 void MainWindow::on_action_Interrupt_triggered()
 {
+    _yacas_server->cancel();
 }
 
 void MainWindow::on_action_Restart_triggered()

@@ -45,6 +45,11 @@ YacasEngine::~YacasEngine()
     delete _yacas;
 }
 
+void YacasEngine::cancel()
+{
+    _yacas->getDefEnv().getEnv().stop_evaluation = true;
+}
+
 void YacasEngine::on_start_processing()
 {
     for (;;) {
@@ -59,6 +64,8 @@ void YacasEngine::on_start_processing()
         if (_requests.shutdown)
             return;
 
+        _yacas->getDefEnv().getEnv().stop_evaluation = false;
+        
         while (!_requests.waiting.empty()) {
             YacasRequest* request = _requests.waiting.dequeue();
 
@@ -66,7 +73,7 @@ void YacasEngine::on_start_processing()
             _requests.mtx.unlock();
 
             const QString expr = request->take();
-
+            
             _side_effects = "";
             _yacas->Evaluate((expr + ";").toStdString().c_str());
 
