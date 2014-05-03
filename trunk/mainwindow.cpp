@@ -361,14 +361,15 @@ void MainWindow::_save()
         return;
     }
 
-    const QWebElementCollection c = ui->webView->page()->currentFrame()->findAllElements(".editable");
+    QVariant v = ui->webView->page()->currentFrame()->evaluateJavaScript("getAllInputs()");
+
     QJsonArray j;
-    foreach (const QWebElement& e, c) {
+    foreach (const QVariant e, v.toList()) {
         QJsonObject o;
-        o["input"] = e.toPlainText();
+        o["input"] = e.toString();
         j.push_back(o);
     }
-    
+
     QJsonDocument d(j);
 
     f.write(d.toJson());
