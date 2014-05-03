@@ -32,7 +32,7 @@ function submitenter( input, event ){
         calculate( input.value );
         return false;
     }
-    if (event.which == 104 && event.ctrlKey ) {
+    if ( event.which == 104 && ( event.ctrlKey || event.metaKey ) ){
         yacas.help(input.value, input.selectionStart);
         return false;
     }
