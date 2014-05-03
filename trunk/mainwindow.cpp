@@ -383,8 +383,6 @@ void MainWindow::_update_title()
 {
     QString title;
     
-    qDebug() << _fname << _fname.isEmpty();
-    
     if (_fname.isEmpty())
         title = "untitled";
     else
