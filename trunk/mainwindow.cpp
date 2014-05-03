@@ -102,7 +102,9 @@ void MainWindow::print(QPrinter* printer)
 
 void MainWindow::on_action_New_triggered()
 {
-    loadYacasPage();
+    MainWindow* w = new MainWindow();
+
+    w->show();
 }
 
 void MainWindow::on_action_Open_triggered()
@@ -178,6 +180,11 @@ void MainWindow::on_action_Print_triggered()
     connect(d.data(), SIGNAL(accepted(QPrinter*)), SLOT(print(QPrinter*)));
     d->show();
     d.take();
+}
+
+void MainWindow::on_action_Close_triggered()
+{
+    close();
 }
 
 void MainWindow::on_action_Quit_triggered()
