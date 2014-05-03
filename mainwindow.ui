@@ -267,6 +267,10 @@
    </property>
   </action>
   <action name="action_Interrupt">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/img/process-stop.svg</normaloff>:/img/process-stop.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;Interrupt</string>
    </property>

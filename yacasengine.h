@@ -25,6 +25,8 @@ public:
     explicit YacasEngine(YacasRequestQueue& requests, QObject* = 0);
     ~YacasEngine();
 
+    void cancel();
+    
 public slots:
     void on_start_processing();
 
