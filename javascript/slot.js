@@ -129,7 +129,7 @@ function calculateAll(){
     $("[id^=editable_]").each( function() {
                               value = $(this).text()
                               
-                              if ( value == ""){
+                              if ( value == "" ){
                                 $(this).find("form:first").trigger("submit");
                               }else{
                                 //if editable is empty it's value is "Click to edit"
@@ -137,6 +137,22 @@ function calculateAll(){
                                 processChange( value, null, this );
                               }
                            });
+}
+
+function getAllInputs(){
+    var inputs = [];
+    $("[id^=editable_]").each( function() {
+                              value = $(this).text()
+                              
+                              if ( value == "" ){
+                                inputs.push($(this).find("textarea:first").val() );
+                              }else{
+                              //if editable is empty it's value is "Click to edit"
+                              if ( value == "Click to edit") value = "";
+                                inputs.push( value );
+                              }
+                              });
+    return inputs;
 }
 
 function processChange( value, settings, object ){
