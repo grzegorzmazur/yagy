@@ -97,8 +97,9 @@ function printResults( result ){
         renderOutput( outputID );
     }else if( result["type"] == "Error" ){
         $("#" + outputID).append( result["error_message"] );
-    }else if( result["type"] == "Plot2D" ){         
+    }else if( result["type"] == "Plot2D" ){
         $.plot("#" + outputID, result["plot2d_data"] );
+        $("#" + outputID).resizable({ containment: "parent" });
     }
 
 }
