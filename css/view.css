@@ -5,6 +5,9 @@
     width: 50px;
     font-size: x-small;
     color: black;
+    min-width: 50px;
+    max-width: 50px;
+    overflow: hidden;
 }
 
 td{
@@ -21,7 +24,7 @@ body{
 #Elements{
     border-collapse:collapse;
     width:100%;
-
+    table-layout: fixed;
 }
 
 textarea{
@@ -32,7 +35,10 @@ textarea{
     padding: 4px;
 
 }
+.containment{
+    width:100%;
 
+}
 .editable{
     color: SlateGray;
 }
