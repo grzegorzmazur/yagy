@@ -3,7 +3,6 @@
     <qresource>
         <file>javascript/jquery-ui-1.10.4.custom.min.js</file>
         <file>javascript/jquery-1.11.0.min.js</file>
-        <file>javascript/jquery.autogrow.js</file>
         <file>javascript/jquery.autosize.min.js</file>
         <file>javascript/jquery.jeditable.autogrow.js</file>
         <file>javascript/jquery.jeditable.js</file>
