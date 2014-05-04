@@ -117,6 +117,7 @@ void MainWindow::loadYacasPage()
     mFile.close();
 
     connect(ui->webView->page()->currentFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(initObjectMapping()));
+    connect(ui->webView->page(), SIGNAL(contentsChanged()), this, SLOT(on_contentsChanged()));
     ui->webView->setHtml( mText, resource_url) ;
     ui->webView->page()->currentFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOn);
 }
@@ -350,8 +351,11 @@ void MainWindow::on_action_About_triggered()
 void MainWindow::eval(int idx, QString expr)
 {
     new CellProxy(ui->webView->page()->currentFrame(), idx, expr, *_yacas_server, _yacas2tex);
-    _modified = true;
-    _update_title();
+    
+    if (!_modified) {
+        _modified = true;
+        _update_title();
+    }
 }
 
 void MainWindow::help(QString s, int cp)
@@ -378,6 +382,14 @@ void MainWindow::help(QString s, int cp)
     const QString ref = QString("http://yacas.sourceforge.net/ref.html?") + key;
     
     QDesktopServices::openUrl(QUrl(ref));
+}
+
+void MainWindow::on_contentsChanged()
+{
+    if (!_modified) {
+        _modified = true;
+        _update_title();
+    }
 }
 
 void MainWindow::_save()
