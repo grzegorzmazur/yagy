@@ -129,7 +129,7 @@ function evaluateCurrent(){
     if ( active.id == "inputExpression" && active.value != ""){
         calculate( active.value );
     }else{
-        $(document.activeElement).first().parent().trigger("submit");
+        $(document.activeElement).parent().trigger("submit");
     }
 }
 
