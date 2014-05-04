@@ -57,12 +57,35 @@ MainWindow::MainWindow(QWidget *parent) :
     _update_title();
     
     loadYacasPage();
+    
+    _windows.append(this);
 }
 
 MainWindow::~MainWindow()
 {
+    _windows.removeOne(this);
+    
     delete _yacas_server;
     delete ui;
+}
+
+void MainWindow::closeEvent(QCloseEvent* event)
+{
+    if (!_modified) {
+        event->accept();
+    } else {
+        const QMessageBox::StandardButton reply = 
+            QMessageBox::question(this, "Save notebook?", "Save changes before closing?\n\nYour changes will be lost if you don't save them.",
+                                QMessageBox::Save | QMessageBox::Cancel | QMessageBox::Close);
+        
+        if (reply == QMessageBox::Save)
+            on_action_Save_triggered();
+        
+        if (reply == QMessageBox::Cancel)
+            event->ignore();
+        else
+            event->accept();
+    }
 }
 
 void MainWindow::loadYacasPage()
@@ -186,7 +209,8 @@ void MainWindow::on_action_Close_triggered()
 
 void MainWindow::on_action_Quit_triggered()
 {
-    QApplication::quit();
+    foreach (MainWindow* w, _windows)
+        w->close();
 }
 
 void MainWindow::on_action_Copy_triggered()
@@ -322,7 +346,6 @@ void MainWindow::on_action_About_triggered()
     QMessageBox::about(this, "About Yagy", about.arg(YACAS_VERSION));
 }
 
-
 void MainWindow::eval(int idx, QString expr)
 {
     new CellProxy(ui->webView->page()->currentFrame(), idx, expr, *_yacas_server, _yacas2tex);
@@ -401,3 +424,5 @@ void MainWindow::_update_title()
     
     ui->action_Save->setEnabled(_modified);
 }
+
+QList<MainWindow*> MainWindow::_windows;
