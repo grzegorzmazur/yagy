@@ -4,6 +4,8 @@
 #include <QtCore/QMap>
 #include <QtCore/QVariant>
 
+#include <QtGui/QCloseEvent>
+
 #include <QtWidgets/QMainWindow>
 
 #include <QtPrintSupport/QPrinter>
@@ -26,6 +28,8 @@ public slots:
     void help(QString, int);
 
 protected:
+    void closeEvent(QCloseEvent*);
+    
     void loadYacasPage();
 
 private slots:
@@ -70,6 +74,8 @@ private:
     
     bool _modified;
     QString _fname;
+    
+    static QList<MainWindow*> _windows;
 };
 
 #endif // MAINWINDOW_H
