@@ -48,6 +48,12 @@
     </property>
     <item>
      <widget class="QWebView" name="webView">
+      <property name="minimumSize">
+       <size>
+        <width>250</width>
+        <height>100</height>
+       </size>
+      </property>
       <property name="url">
        <url>
         <string>qrc:/view.html</string>
