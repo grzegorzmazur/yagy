@@ -124,8 +124,16 @@ function calculate( value ){
     clearInput();
 }
 
+function evaluateCurrent(){
+    var active = document.activeElement;
+    if ( active.id == "inputExpression" && active.value != ""){
+        calculate( active.value );
+    }else{
+        $(document.activeElement).first().parent().trigger("submit");
+    }
+}
 
-function calculateAll(){
+function evaluateAll(){
     $("[id^=editable_]").each( function() {
                               value = $(this).text()
                               

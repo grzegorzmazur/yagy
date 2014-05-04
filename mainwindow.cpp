@@ -279,11 +279,12 @@ void MainWindow::on_action_Export_triggered()
 
 void MainWindow::on_actionEvaluate_Current_triggered()
 {
+    ui->webView->page()->currentFrame()->evaluateJavaScript(QString("evaluateCurrent()"));
 }
 
 void MainWindow::on_actionEvaluate_All_triggered()
 {
-    ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculateAll()"));
+    ui->webView->page()->currentFrame()->evaluateJavaScript(QString("evaluateAll()"));
 
 }
 
