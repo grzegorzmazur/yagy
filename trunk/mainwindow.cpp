@@ -55,6 +55,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
     
+    ui->toolBar->setIconSize(QSize(20, 20));
+    
     _update_title();
     
     loadYacasPage();
