@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RCC version="1.0">
     <qresource>
+        <file>css/jquery-ui-1.10.4.custom.min.css</file>
         <file>css/view.css</file>
     </qresource>
 </RCC>
