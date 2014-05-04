@@ -240,7 +240,7 @@ void MainWindow::on_action_Use_triggered()
         return;
     }
     
-    QByteArray data = f.readAll();
+    ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculate('Use(\"") + fname + "\")');");
 }
 
 void MainWindow::on_action_Load_triggered()
@@ -258,7 +258,7 @@ void MainWindow::on_action_Load_triggered()
         return;
     }
     
-    QByteArray data = f.readAll();
+    ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculate('Load(\"") + fname + "\")');");
 }
 
 void MainWindow::on_action_Import_triggered()
