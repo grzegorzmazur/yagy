@@ -26,6 +26,8 @@ public:
 public slots:
     void eval(int idx, QString expr);
     void help(QString, int);
+    
+    void on_contentsChanged();
 
 protected:
     void closeEvent(QCloseEvent*);
