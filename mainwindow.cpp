@@ -30,8 +30,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     _yacas_server(new YacasServer),
+    _has_file(false),
     _modified(false),
-    _fname("")
+    _fname(QString("Untitled Notebook ") + QString::number(_cntr++))
 {
 #ifdef __APPLE__
 
@@ -145,10 +146,8 @@ void MainWindow::on_action_Open_triggered()
 
     if (fname.length() == 0)
         return;
-
-    _fname = fname;
     
-    QFile f(_fname);
+    QFile f(fname);
 
     if (!f.open(QIODevice::ReadOnly)) {
         qWarning("Couldn't open file for loading.");
@@ -162,13 +161,15 @@ void MainWindow::on_action_Open_triggered()
     foreach (const QJsonValue& v, QJsonDocument::fromJson(data).array())
         ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculate('") + v.toObject()["input"].toString() + "');");
 
+    _fname = fname;
     _modified = false;
+    _has_file = true;
     _update_title();
 }
 
 void MainWindow::on_action_Save_triggered()
 {
-    if (_fname.isEmpty())
+    if (!_has_file)
         on_action_Save_As_triggered();
     else
         _save();
@@ -402,18 +403,13 @@ void MainWindow::_save()
     f.write(d.toJson());
     
     _modified = false;
-    
+    _has_file = true;
     _update_title();
 }
 
 void MainWindow::_update_title()
 {
-    QString title;
-    
-    if (_fname.isEmpty())
-        title = "untitled";
-    else
-        title = QFileInfo(_fname).baseName();
+    QString title = QFileInfo(_fname).baseName();
     
     if (_modified)
         title = "*" + title;
@@ -426,3 +422,4 @@ void MainWindow::_update_title()
 }
 
 QList<MainWindow*> MainWindow::_windows;
+unsigned MainWindow::_cntr = 1;

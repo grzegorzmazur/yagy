@@ -71,11 +71,13 @@ private:
     CYacas _yacas2tex;
 
     QScopedPointer<QPrinter> _printer;
-    
+
+    bool _has_file;
     bool _modified;
     QString _fname;
     
     static QList<MainWindow*> _windows;
+    static unsigned _cntr;
 };
 
 #endif // MAINWINDOW_H
