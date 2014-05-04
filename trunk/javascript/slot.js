@@ -147,6 +147,7 @@ function evaluateAll(){
                            });
     inputVal = $( "#inputExpression" ).val();
     if ( inputVal != "" ) calculate( inputVal );
+    $("#inputExpression").focus();
 }
 
 function getAllInputs(){
