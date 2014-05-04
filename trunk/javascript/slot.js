@@ -5,6 +5,9 @@ function load(){
     
     $( window ).on( 'resize', function(){
         MathJax.Hub.Queue(["Rerender", MathJax.Hub]);
+        w = $(".Plot2D").first().parent().width();
+        $( ".Plot2D" ).resizable( "option", "maxWidth", w );
+        $( ".Plot2D" ).each( function(){ if ($(this).width() > w ) $(this).width(w); })
     });
     
 }
@@ -99,7 +102,11 @@ function printResults( result ){
         $("#" + outputID).append( result["error_message"] );
     }else if( result["type"] == "Plot2D" ){
         $.plot("#" + outputID, result["plot2d_data"] );
-        $("#" + outputID).resizable({ containment: "parent" });
+
+        $("#" + outputID).resizable({ maxWidth: $("#" + outputID).parent().width() });
+        $("#" + outputID).resizable({ minWidth: 200 });
+        $("#" + outputID).resizable({ minHeight: 200 });
+
     }
 
 }
