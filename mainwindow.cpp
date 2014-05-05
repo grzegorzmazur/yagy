@@ -276,7 +276,59 @@ void MainWindow::on_action_Import_triggered()
         return;
     }
     
-    QByteArray data = f.readAll();
+    QString data = f.readAll();
+    
+    QList<QString> l;
+    
+    QString s;
+    bool in_string = false;
+    int level = 0;
+    for (QString::const_iterator i = data.begin(); i != data.end(); ++i) {
+        
+        if (in_string) {
+            s.push_back(*i);
+            if (*i == '"')
+                in_string = false;
+            continue;
+        }
+        
+        if (*i == '"') {
+            s.push_back(*i);
+            in_string = true;
+            continue;
+        }
+        
+        if (*i == '[') {
+            s.push_back(*i);
+            level += 1;
+            continue;
+        }
+
+        if (*i == ']') {
+            s.push_back(*i);
+            level -= 1;
+            continue;
+        }
+        
+        if (*i == '\n' && s.isEmpty())
+            continue;
+
+        if (*i == ';' && level == 0) {
+            l.push_back(s);
+            s.clear();
+            continue;
+        }
+        
+        if (*i == '\n') {
+            s.push_back("\\n");
+            continue;
+        }
+        
+        s.push_back(*i);
+    }
+
+    foreach (const QString& s, l)
+        ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculate('") + s + "');");
 }
 
 void MainWindow::on_action_Export_triggered()
