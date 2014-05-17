@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RCC version="1.0">
-    <qresource>
-        <file>javascript/pre3d/pre3d.js</file>
-        <file>javascript/pre3d/pre3d_path_utils.js</file>
-        <file>javascript/pre3d/pre3d_shape_utils.js</file>
-    </qresource>
-</RCC>
