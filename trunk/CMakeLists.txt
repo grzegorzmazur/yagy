@@ -45,10 +45,9 @@ if (NOT APPLE)
     qt5_add_resources (qrc_flot.cpp flot.qrc)
     qt5_add_resources (qrc_jquery.cpp jquery.qrc)
     qt5_add_resources (qrc_mathjax.cpp mathjax.qrc -compress 9)
-    qt5_add_resources (qrc_pre3d.cpp pre3d.qrc)
     qt5_add_resources (qrc_slot.cpp slot.qrc)
 
-    set (YAGY_QRESOURCES ${YAGY_QRESOURCES} qrc_css.cpp qrc_flot.cpp qrc_jquery.cpp qrc_mathjax.cpp qrc_pre3d.cpp qrc_slot.cpp)
+    set (YAGY_QRESOURCES ${YAGY_QRESOURCES} qrc_css.cpp qrc_flot.cpp qrc_jquery.cpp qrc_mathjax.cpp qrc_slot.cpp)
 endif ()
 
 
