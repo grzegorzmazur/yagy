@@ -286,6 +286,9 @@
    <property name="text">
     <string>Evaluate &amp;Current</string>
    </property>
+   <property name="shortcut">
+    <string>Shift+Return</string>
+   </property>
   </action>
   <action name="actionEvaluate_All">
    <property name="icon">
