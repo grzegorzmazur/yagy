@@ -106,9 +106,139 @@ function printResults( result ){
         $("#" + outputID).resizable({ maxWidth: $("#" + outputID).parent().width() });
         $("#" + outputID).resizable({ minWidth: 200 });
         $("#" + outputID).resizable({ minHeight: 200 });
+    }else if( result["type"] == "Plot3D" ){
+        
+        var data = result["plot3d_data"][0]["data"]; 
+        
+        var xmin = data[0][0];
+        var xmax = data[0][0];
+        
+        var ymin = data[0][1];
+        var ymax = data[0][1];
 
+        var zmin = data[0][2];
+        var zmax = data[0][2];
+        
+        for (var i = 1; i < data.length; ++i) {
+            if (data[i][0] < xmin)
+                xmin = data[i][0];
+            if (data[i][0] > xmax)
+                xmax = data[i][0];
+            if (data[i][1] < ymin)
+                ymin = data[i][1];
+            if (data[i][1] > ymax)
+                ymax = data[i][1];
+            if (data[i][2] < zmin)
+                zmin = data[i][2];
+            if (data[i][2] > zmax)
+                zmax = data[i][2];
+        }
+
+        var size = 500;
+
+        var xscale = size / (xmax - xmin);
+        var yscale = size / (ymax - ymin);
+        var zscale = size / (zmax - zmin);
+
+        xoffset = -size / 2;
+        yoffset = -size / 2;
+        zoffset = -size / 2;
+
+        var scene, camera, renderer;
+        var controls;
+
+        init();
+        render();
+
+        function init() {
+
+            scene = new THREE.Scene();
+
+            var axisHelper = new THREE.AxisHelper( 300 );
+            scene.add( axisHelper );
+
+            camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
+            camera.position.z = 1000;
+            
+            controls = new THREE.TrackballControls( camera );
+
+            var geometry = new THREE.Geometry();
+            
+            for (var i = 0; i < data.length - 2; ++i) {
+                var p0 = data[i];
+                var p1 = data[i + 1];
+                
+                if (p0[0] != p1[0])
+                    continue;
+                
+                var p2 = undefined;
+                
+                for (var j = i + 2; j < data.length; ++j) {
+                    if (data[j][1] == p0[1]) {
+                       p2 = data[j];
+                       break;
+                    }
+                }
+                
+                if (p2 === undefined)
+                    break;
+
+                geometry.vertices.push( new THREE.Vector3( (p0[0] - xmin) * xscale + xoffset,  (p0[1] - ymin) * yscale + yoffset, (p0[2] - zmin) * zscale + zoffset ) );
+                geometry.vertices.push( new THREE.Vector3( (p1[0] - xmin) * xscale + xoffset,  (p1[1] - ymin) * yscale + yoffset, (p1[2] - zmin) * zscale + zoffset ) );
+                geometry.vertices.push( new THREE.Vector3( (p2[0] - xmin) * xscale + xoffset,  (p2[1] - ymin) * yscale + yoffset, (p2[2] - zmin) * zscale + zoffset ) );
+
+                geometry.faces.push( new THREE.Face3( geometry.vertices.length - 3, geometry.vertices.length - 2, geometry.vertices.length - 1 ) );
+            }
+
+            for (var i = 1; i < data.length; ++i) {
+                var p0 = data[i];
+                var p1 = data[i - 1];
+                
+                if (p0[0] != p1[0])
+                    continue;
+                
+                var p2 = undefined;
+                for (var j = i - 2; j >= 0; --j) {
+                    if (data[j][1] == p0[1]) {
+                       p2 = data[j];
+                       break;
+                    }
+                }
+
+                if (p2 === undefined)
+                    continue;
+
+                geometry.vertices.push( new THREE.Vector3( (p0[0] - xmin) * xscale + xoffset,  (p0[1] - ymin) * yscale + yoffset, (p0[2] - zmin) * zscale + zoffset ) );
+                geometry.vertices.push( new THREE.Vector3( (p1[0] - xmin) * xscale + xoffset,  (p1[1] - ymin) * yscale + yoffset, (p1[2] - zmin) * zscale + zoffset ) );
+                geometry.vertices.push( new THREE.Vector3( (p2[0] - xmin) * xscale + xoffset,  (p2[1] - ymin) * yscale + yoffset, (p2[2] - zmin) * zscale + zoffset ) );
+
+                geometry.faces.push( new THREE.Face3( geometry.vertices.length - 3, geometry.vertices.length - 2, geometry.vertices.length - 1 ) );
+            }
+
+            geometry.computeBoundingSphere();
+
+            var material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
+            var mesh = new THREE.Mesh( geometry, material );
+
+            scene.add( mesh );
+
+            renderer = new THREE.WebGLRenderer();
+            
+            renderer.setClearColor(0xffffff, 1);
+            
+            renderer.setSize( $("#" + outputID).parent().width(), 200 );
+            $("#" + outputID).resizable({ maxWidth: $("#" + outputID).parent().width() });
+            $("#" + outputID).resizable({ minWidth: 200 });
+            $("#" + outputID).resizable({ minHeight: 200 });
+            $("#" + outputID).append(renderer.domElement);
+        }
+
+        function render() {
+            requestAnimationFrame( render );
+            renderer.render( scene, camera );
+            controls.update();
+        }
     }
-
 }
 
 function renderOutput( outputID ){

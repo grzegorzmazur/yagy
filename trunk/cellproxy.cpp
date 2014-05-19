@@ -104,8 +104,55 @@ void CellProxy::on_request_state_changed(YacasRequest::State state)
                 break;
             }
             case YacasRequest::PLOT3D: {
-                evaluation_result["type"] = "Error";
-                evaluation_result["error_message"] = "Not implemented";
+                QList<QVariant> data;
+
+                const QString result = _request->result().trimmed();
+
+                QStringList parts = result.split("}},{{");
+
+                QString options_string = parts.takeLast().trimmed();
+                options_string.truncate(options_string.length() - 2);
+
+                QRegExp dict_entry_rx("(\"[^\"]+\"),(.+)");
+                QRegExp number_list_rx("\\{([^,\\}]+)(?:,([^,\\}]+))*\\}");
+                QRegExp string_list_rx("\\{(?:\"([^\"]+)\")(?:,\"([^\"]+)\")*\\}");
+
+                QStringList labels;
+
+                foreach (QString os, options_string.split("},{")) {
+                    dict_entry_rx.exactMatch(os);
+
+                    if (dict_entry_rx.cap(1) == "\"zname\"") {
+                        string_list_rx.exactMatch(dict_entry_rx.cap(2));
+                        for (int i = 1; i <= string_list_rx.captureCount(); ++i)
+                            labels.append(string_list_rx.cap(i));
+                    }
+                }
+
+                parts = parts.replaceInStrings("{{{", "");
+                parts = parts.replaceInStrings("}}}", "");
+
+                for (int i = 0; i < parts.size(); ++i) {
+
+                    QList<QVariant> partial_data;
+
+                    foreach (const QString& ss, parts[i].split("},{")) {
+                        QList<QVariant> p;
+                        foreach (QString s, ss.split(",")) {
+                            p.append(s.replace("{", "").replace("}","").toDouble());
+                        }
+                        partial_data.append(QVariant(p));
+                    }
+
+                    QVariantMap data_entry;
+                    data_entry["label"] = labels[i];
+                    data_entry["data"] = partial_data;
+                    data.append(data_entry);
+                }
+
+                evaluation_result["type"] = "Plot3D";
+                evaluation_result["plot3d_data"] = data;
+                
                 break;
             }
             case YacasRequest::ERROR: {
