@@ -157,7 +157,7 @@ function printResults( result ){
             var axisHelper = new THREE.AxisHelper( 300 );
             scene.add( axisHelper );
 
-            camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
+            camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 2000 );
             camera.position.z = 1000;
             
             controls = new THREE.TrackballControls( camera );
