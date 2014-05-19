@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RCC version="1.0">
+    <qresource>
+        <file>javascript/three/three.min.js</file>
+        <file>javascript/three/TrackballControls.js</file>
+    </qresource>
+</RCC>
