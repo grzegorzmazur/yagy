@@ -86,9 +86,11 @@ void YacasEngine::on_start_processing()
                     result_type = YacasRequest::PLOT2D;
                     result = result.remove("Yagy'Plot2D'Data(");
                     result.truncate(result.length() - 1);
-                } else if (result.startsWith("Yagy'Plot3DS'Data"))
+                } else if (result.startsWith("Yagy'Plot3DS'Data")) {
                     result_type = YacasRequest::PLOT3D;
-
+                    result = result.remove("Yagy'Plot3DS'Data(");
+                    result.truncate(result.length() - 1);
+                }
                 request->answer(_idx++, result_type, result, QString(_side_effects.c_str()));
             } else {
                 QString msg = _yacas->Error();
