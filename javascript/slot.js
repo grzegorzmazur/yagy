@@ -140,15 +140,30 @@ function printResults( result ){
         var yscale = size / (ymax - ymin);
         var zscale = size / (zmax - zmin);
 
-        xoffset = -size / 2;
-        yoffset = -size / 2;
-        zoffset = -size / 2;
+        var xoffset = -size / 2;
+        var yoffset = -size / 2;
+        var zoffset = -size / 2;
 
         var scene, camera, renderer;
         var controls;
 
         init();
         render();
+
+        function g2w(x, y, z) {
+            
+            var size = 500;
+
+            var xscale = size / (xmax - xmin);
+            var yscale = size / (ymax - ymin);
+            var zscale = size / (zmax - zmin);
+
+            var xoffset = -size / 2;
+            var yoffset = -size / 2;
+            var zoffset = -size / 2;
+            
+            return new THREE.Vector3((x - xmin) * xscale + xoffset,  (y - ymin) * yscale + yoffset, (z - zmin) * zscale + zoffset);
+        }
 
         function init() {
 
@@ -185,16 +200,17 @@ function printResults( result ){
                 if (p2 === null)
                     continue;
                 
-                geometry.vertices.push( new THREE.Vector3( (p0[0] - xmin) * xscale + xoffset,  (p0[1] - ymin) * yscale + yoffset, (p0[2] - zmin) * zscale + zoffset ) );
-                geometry.vertices.push( new THREE.Vector3( (p1[0] - xmin) * xscale + xoffset,  (p1[1] - ymin) * yscale + yoffset, (p1[2] - zmin) * zscale + zoffset ) );
-                geometry.vertices.push( new THREE.Vector3( (p2[0] - xmin) * xscale + xoffset,  (p2[1] - ymin) * yscale + yoffset, (p2[2] - zmin) * zscale + zoffset ) );
+                geometry.vertices.push(g2w(p0[0], p0[1], p0[2]));
+                geometry.vertices.push(g2w(p1[0], p1[1], p1[2]));
+                geometry.vertices.push(g2w(p2[0], p2[1], p2[2]));
 
                 geometry.faces.push( new THREE.Face3( geometry.vertices.length - 3, geometry.vertices.length - 2, geometry.vertices.length - 1 ) );
                 
                 if (p3 === null)
                     continue;
 
-                geometry.vertices.push( new THREE.Vector3( (p3[0] - xmin) * xscale + xoffset,  (p3[1] - ymin) * yscale + yoffset, (p3[2] - zmin) * zscale + zoffset ) );
+                //geometry.vertices.push( new THREE.Vector3( (p3[0] - xmin) * xscale + xoffset,  (p3[1] - ymin) * yscale + yoffset, (p3[2] - zmin) * zscale + zoffset ) );
+                geometry.vertices.push(g2w(p3[0], p3[1], p3[2]));
 
                 // note: the orientation of the face is opposite to the previous one
                 geometry.faces.push( new THREE.Face3( geometry.vertices.length - 3, geometry.vertices.length - 2, geometry.vertices.length - 1 ) );
