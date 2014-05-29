@@ -154,9 +154,6 @@ function printResults( result ){
 
             scene = new THREE.Scene();
 
-            var axisHelper = new THREE.AxisHelper( 300 );
-            scene.add( axisHelper );
-
             camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 2000 );
             camera.position.z = 1000;
             
@@ -209,6 +206,35 @@ function printResults( result ){
             var mesh = new THREE.Mesh( geometry, material );
 
             scene.add( mesh );
+
+            material = new THREE.LineBasicMaterial( { color: 0x000000 } );            
+
+            geometry = new THREE.Geometry();
+            
+            geometry.vertices.push(new THREE.Vector3(-size / 2, -size / 2, -size / 2));
+            geometry.vertices.push(new THREE.Vector3( size / 2, -size / 2, -size / 2));
+
+            var line = new THREE.Line(geometry, material);
+            
+            scene.add(line);
+
+            geometry = new THREE.Geometry();
+            
+            geometry.vertices.push(new THREE.Vector3(-size / 2, -size / 2, -size / 2));
+            geometry.vertices.push(new THREE.Vector3(-size / 2,  size / 2, -size / 2));
+            
+            line = new THREE.Line(geometry, material);
+            
+            scene.add(line);
+
+            geometry = new THREE.Geometry();
+            
+            geometry.vertices.push(new THREE.Vector3(-size / 2, -size / 2, -size / 2));
+            geometry.vertices.push(new THREE.Vector3(-size / 2, -size / 2,  size / 2));
+            
+            var line = new THREE.Line(geometry, material);
+            
+            scene.add(line);
 
             renderer = new THREE.WebGLRenderer();
             
