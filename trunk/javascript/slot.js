@@ -221,7 +221,6 @@ function printResults( result ){
                 if (p3 === null)
                     continue;
 
-                //geometry.vertices.push( new THREE.Vector3( (p3[0] - xmin) * xscale + xoffset,  (p3[1] - ymin) * yscale + yoffset, (p3[2] - zmin) * zscale + zoffset ) );
                 geometry.vertices.push(g2w(p3[0], p3[1], p3[2]));
 
                 // note: the orientation of the face is opposite to the previous one
