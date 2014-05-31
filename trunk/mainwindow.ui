@@ -141,8 +141,16 @@
     <addaction name="action_Interrupt"/>
     <addaction name="action_Restart"/>
    </widget>
+   <widget class="QMenu" name="menu_Cell">
+    <property name="title">
+     <string>&amp;Cell</string>
+    </property>
+    <addaction name="actionInsert_Before"/>
+    <addaction name="actionInsert_After"/>
+   </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
+   <addaction name="menu_Cell"/>
    <addaction name="menuScript"/>
    <addaction name="menu_Yacas"/>
    <addaction name="menu_Help"/>
@@ -318,6 +326,16 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionInsert_Before">
+   <property name="text">
+    <string>Insert &amp;Before</string>
+   </property>
+  </action>
+  <action name="actionInsert_After">
+   <property name="text">
+    <string>Insert &amp;After</string>
    </property>
   </action>
  </widget>

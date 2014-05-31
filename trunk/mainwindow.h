@@ -50,6 +50,9 @@ private slots:
     void on_action_Copy_triggered();
     void on_action_Paste_triggered();
 
+    void on_actionInsert_Before_triggered();
+    void on_actionInsert_After_triggered();
+    
     void on_action_Use_triggered();
     void on_action_Load_triggered();
     void on_action_Import_triggered();

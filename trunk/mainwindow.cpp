@@ -225,6 +225,16 @@ void MainWindow::on_action_Paste_triggered()
 {
 }
 
+void MainWindow::on_actionInsert_Before_triggered()
+{
+    
+}
+
+void MainWindow::on_actionInsert_After_triggered()
+{
+    
+}
+
 void MainWindow::on_action_Use_triggered()
 {
     QString fname =
