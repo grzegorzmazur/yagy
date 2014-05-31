@@ -165,6 +165,18 @@ function printResults( result ){
             return new THREE.Vector3((x - xmin) * xscale + xoffset,  (y - ymin) * yscale + yoffset, (z - zmin) * zscale + zoffset);
         }
 
+        function axis_params(min, max) {
+            var delta = max - min;
+
+            var scale = Math.pow(10, Math.floor((Math.round(Math.log(delta) / Math.LN10 * 1e6) / 1e6) - 1));
+            var b = Math.ceil(min / scale) * scale;
+            var e = Math.floor(max / scale) * scale;
+            var d = Math.floor((e - b) / (10 * scale)) * scale;
+            
+            return { b: b, e: e, d: d };
+        }
+
+
         function init() {
 
             scene = new THREE.Scene();
@@ -251,6 +263,51 @@ function printResults( result ){
             var line = new THREE.Line(geometry, material);
             
             scene.add(line);
+
+            var x_params = axis_params(xmin, xmax);
+
+            for (var t = x_params.b; t < x_params.e; t += x_params.d) {
+                var tb = g2w(t, ymin, zmin);
+                tb.y = -size / 2;
+                tb.z = -size / 2;
+                var te = tb.clone();
+                te.y += size / 33;
+                geometry = new THREE.Geometry();
+                geometry.vertices.push(tb);
+                geometry.vertices.push(te);
+                var line = new THREE.Line(geometry, material);
+                scene.add(line);
+            }
+
+            var y_params = axis_params(ymin, ymax);
+
+            for (var t = y_params.b; t < y_params.e; t += y_params.d) {
+                var tb = g2w(xmin, t, zmin);
+                tb.x = -size / 2;
+                tb.z = -size / 2;
+                var te = tb.clone();
+                te.x += size / 33;
+                geometry = new THREE.Geometry();
+                geometry.vertices.push(tb);
+                geometry.vertices.push(te);
+                var line = new THREE.Line(geometry, material);
+                scene.add(line);
+            }
+
+            var z_params = axis_params(zmin, zmax);
+
+            for (var t = z_params.b; t < z_params.e; t += z_params.d) {
+                var tb = g2w(xmin, ymin, t);
+                tb.x = -size / 2;
+                tb.y = -size / 2;
+                var te = tb.clone();
+                te.x += size / 33;
+                geometry = new THREE.Geometry();
+                geometry.vertices.push(tb);
+                geometry.vertices.push(te);
+                var line = new THREE.Line(geometry, material);
+                scene.add(line);
+            }
 
             renderer = new THREE.WebGLRenderer();
             
