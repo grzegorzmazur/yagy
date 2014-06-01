@@ -213,8 +213,6 @@ function printResults( result ){
 
             camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 2000 );
             camera.position.z = 1000;
-            
-            controls = new THREE.TrackballControls( camera );
 
             var geometry = new THREE.Geometry();
 
@@ -381,6 +379,7 @@ function printResults( result ){
             $("#" + outputID).resizable({ minWidth: 200 });
             $("#" + outputID).resizable({ minHeight: 200 });
             $("#" + outputID).append(renderer.domElement);
+            controls = new THREE.TrackballControls( camera, renderer.domElement );
         }
 
         function render() {
