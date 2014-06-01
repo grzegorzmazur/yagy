@@ -96,7 +96,7 @@ function printResults( result ){
     $("#" + outputID).text("");
     
     if( result["type"] == "Expression" ){
-        $("#" + outputID).append( "$" + result["tex_code"] + "$" );
+        $("#" + outputID).append( "$$" + result["tex_code"] + "$$" );
         renderOutput( outputID );
     }else if( result["type"] == "Error" ){
         $("#" + outputID).append( result["error_message"] );
