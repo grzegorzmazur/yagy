@@ -176,9 +176,39 @@ function printResults( result ){
             return { b: b, e: e, d: d };
         }
 
+        function label(text) {
+            var canvas = document.createElement('canvas');
+            var context = canvas.getContext('2d');
+            var font_size = 256;
+            context.font = "normal " + font_size + "px Arial";
+            
+            var text_width = context.measureText(text).width;
+            var text_height = 200;
+            
+            canvas.width = text_width;
+            
+            context.textAlign = "center";
+            context.textBaseline = "middle";
+            context.fillStyle = "#000000";
+            context.fillText(text, text_width / 2, text_height / 2);
+            
+            var texture = new THREE.Texture(canvas);
+            texture.needsUpdate = true;
+            
+            var material = new THREE.SpriteMaterial({
+                map: texture,
+                useScreenCoordinates: false,
+                transparent: true
+            });
+
+            var sprite = new THREE.Sprite(material);
+            sprite.scale.set(text_width / text_height * font_size, font_size, 1);
+
+            return sprite;
+        }
 
         function init() {
-
+            
             scene = new THREE.Scene();
 
             camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 2000 );
@@ -187,7 +217,7 @@ function printResults( result ){
             controls = new THREE.TrackballControls( camera );
 
             var geometry = new THREE.Geometry();
-            
+
             for (var i = 0; i < data.length - 2; ++i) {
                 var p0 = data[i];
                 var p1 = data[i + 1];
@@ -265,7 +295,7 @@ function printResults( result ){
 
             var x_params = axis_params(xmin, xmax);
 
-            for (var t = x_params.b; t < x_params.e; t += x_params.d) {
+            for (var t = x_params.b; t <= x_params.e; t += x_params.d) {
                 var tb = g2w(t, ymin, zmin);
                 tb.y = -size / 2;
                 tb.z = -size / 2;
@@ -280,11 +310,16 @@ function printResults( result ){
                 geometry.vertices.push(te);
                 var line = new THREE.Line(geometry, material);
                 scene.add(line);
+                
+                var tn = new Number(t);
+                var l = label(tn.toFixed(2));
+                l.position.set(tb.x, -size / 2, -size / 2);
+                scene.add(l);
             }
 
             var y_params = axis_params(ymin, ymax);
 
-            for (var t = y_params.b; t < y_params.e; t += y_params.d) {
+            for (var t = y_params.b; t <= y_params.e; t += y_params.d) {
                 var tb = g2w(xmin, t, zmin);
                 tb.x = -size / 2;
                 tb.z = -size / 2;
@@ -299,11 +334,18 @@ function printResults( result ){
                 geometry.vertices.push(te);
                 var line = new THREE.Line(geometry, material);
                 scene.add(line);
+
+                if (t != y_params.b) {
+                    var tn = new Number(t);
+                    var l = label(tn.toFixed(2));
+                    l.position.set(-size / 2, tb.y, -size / 2);
+                    scene.add(l);
+                }
             }
 
             var z_params = axis_params(zmin, zmax);
 
-            for (var t = z_params.b; t < z_params.e; t += z_params.d) {
+            for (var t = z_params.b; t <= z_params.e; t += z_params.d) {
                 var tb = g2w(xmin, ymin, t);
                 tb.x = -size / 2;
                 tb.y = -size / 2;
@@ -318,6 +360,11 @@ function printResults( result ){
                 geometry.vertices.push(te);
                 var line = new THREE.Line(geometry, material);
                 scene.add(line);
+                
+                var tn = new Number(t);
+                var l = label(tn.toFixed(2));
+                l.position.set(-size / 2, -size / 2, tb.z + 40);
+                scene.add(l);
             }
 
             renderer = new THREE.WebGLRenderer();
