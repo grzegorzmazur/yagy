@@ -367,7 +367,12 @@ function printResults( result ){
                 scene.add(l);
             }
 
-            renderer = new THREE.WebGLRenderer();
+            // blacklist MacOS until we find out the way to make WebGL work
+            // reliably, or, in the worst case, make this a configuration option
+            if (window.navigator.platform === 'MacIntel')
+                renderer = new THREE.CanvasRenderer();
+            else
+                renderer = new THREE.WebGLRenderer();
             
             renderer.setClearColor(0xffffff, 1);
             
