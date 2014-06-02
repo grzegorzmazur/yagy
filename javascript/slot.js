@@ -79,8 +79,7 @@ function Plot3D(series, w, h) {
 
         geometry.vertices.push(self.g2w(p3[0], p3[1], p3[2]));
 
-        // note: the orientation of the face is opposite to the previous one
-        geometry.faces.push(new THREE.Face3(geometry.vertices.length - 3, geometry.vertices.length - 2, geometry.vertices.length - 1));
+        geometry.faces.push(new THREE.Face3(geometry.vertices.length - 1, geometry.vertices.length - 2, geometry.vertices.length - 3));
     }
 
     var material = new THREE.MeshBasicMaterial({
