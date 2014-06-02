@@ -2,5 +2,6 @@
 <RCC version="1.0">
     <qresource>
         <file>javascript/slot.js</file>
+        <file>javascript/plot3d.js</file>
     </qresource>
 </RCC>
