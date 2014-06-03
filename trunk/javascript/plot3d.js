@@ -10,30 +10,35 @@
 function Plot3D(series, w, h) {
     var self = this;
     
-    var data = series[0]["data"];
+    var data = [];
+    
+    for (var s = 0; s < series.length; ++s)
+        data.push(series[s]["data"]);
 
-    self.xmin = data[0][0];
-    self.xmax = data[0][0];
+    self.xmin = data[0][0][0];
+    self.xmax = data[0][0][0];
 
-    self.ymin = data[0][1];
-    self.ymax = data[0][1];
+    self.ymin = data[0][0][1];
+    self.ymax = data[0][0][1];
 
-    self.zmin = data[0][2];
-    self.zmax = data[0][2];
+    self.zmin = data[0][0][2];
+    self.zmax = data[0][0][2];
 
-    for (var i = 1; i < data.length; ++i) {
-        if (data[i][0] < self.xmin)
-            self.xmin = data[i][0];
-        if (data[i][0] > self.xmax)
-            self.xmax = data[i][0];
-        if (data[i][1] < self.ymin)
-            self.ymin = data[i][1];
-        if (data[i][1] > self.ymax)
-            self.ymax = data[i][1];
-        if (data[i][2] < self.zmin)
-            self.zmin = data[i][2];
-        if (data[i][2] > self.zmax)
-            self.zmax = data[i][2];
+    for (var s = 0; s < series.length; ++s) {
+        for (var i = 1; i < data[s].length; ++i) {
+            if (data[s][i][0] < self.xmin)
+                self.xmin = data[s][i][0];
+            if (data[s][i][0] > self.xmax)
+                self.xmax = data[s][i][0];
+            if (data[s][i][1] < self.ymin)
+                self.ymin = data[s][i][1];
+            if (data[s][i][1] > self.ymax)
+                self.ymax = data[s][i][1];
+            if (data[s][i][2] < self.zmin)
+                self.zmin = data[s][i][2];
+            if (data[s][i][2] > self.zmax)
+                self.zmax = data[s][i][2];
+        }
     }
 
     self.size = 500;
@@ -51,55 +56,57 @@ function Plot3D(series, w, h) {
     self.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
     self.camera.position.z = 1000;
 
-    var geometry = new THREE.Geometry();
+    for (var s = 0; s < series.length; ++s) {
+        var geometry = new THREE.Geometry();
 
-    for (var i = 0; i < data.length - 2; ++i) {
-        var p0 = data[i];
-        var p1 = data[i + 1];
+        for (var i = 0; i < data[s].length - 2; ++i) {
+            var p0 = data[s][i];
+            var p1 = data[s][i + 1];
 
-        if (p0[0] !== p1[0])
-            continue;
+            if (p0[0] !== p1[0])
+                continue;
 
-        var p2 = null;
-        var p3 = null;
+            var p2 = null;
+            var p3 = null;
 
-        for (var j = i + 2; j < data.length; ++j) {
-            if (p2 === null && data[j][1] == p0[1])
-                p2 = data[j];
+            for (var j = i + 2; j < data[s].length; ++j) {
+                if (p2 === null && data[s][j][1] == p0[1])
+                    p2 = data[s][j];
 
-            if (p3 === null && data[j][1] == p1[1])
-                p3 = data[j];
+                if (p3 === null && data[s][j][1] == p1[1])
+                    p3 = data[s][j];
 
-            if (p2 !== null && p3 !== null)
-                break;
+                if (p2 !== null && p3 !== null)
+                    break;
+            }
+
+            if (p2 === null)
+                continue;
+
+            geometry.vertices.push(self.g2w(p0[0], p0[1], p0[2]));
+            geometry.vertices.push(self.g2w(p1[0], p1[1], p1[2]));
+            geometry.vertices.push(self.g2w(p2[0], p2[1], p2[2]));
+
+            geometry.faces.push(new THREE.Face3(geometry.vertices.length - 3, geometry.vertices.length - 2, geometry.vertices.length - 1));
+
+            if (p3 === null)
+                continue;
+
+            geometry.vertices.push(self.g2w(p3[0], p3[1], p3[2]));
+
+            geometry.faces.push(new THREE.Face3(geometry.vertices.length - 1, geometry.vertices.length - 2, geometry.vertices.length - 3));
         }
 
-        if (p2 === null)
-            continue;
+        var material = new THREE.MeshBasicMaterial({
+            color: 0xff0000,
+            wireframe: true,
+            side: THREE.DoubleSide
+        });
+        var mesh = new THREE.Mesh(geometry, material);
 
-        geometry.vertices.push(self.g2w(p0[0], p0[1], p0[2]));
-        geometry.vertices.push(self.g2w(p1[0], p1[1], p1[2]));
-        geometry.vertices.push(self.g2w(p2[0], p2[1], p2[2]));
-
-        geometry.faces.push(new THREE.Face3(geometry.vertices.length - 3, geometry.vertices.length - 2, geometry.vertices.length - 1));
-
-        if (p3 === null)
-            continue;
-
-        geometry.vertices.push(self.g2w(p3[0], p3[1], p3[2]));
-
-        geometry.faces.push(new THREE.Face3(geometry.vertices.length - 1, geometry.vertices.length - 2, geometry.vertices.length - 3));
+        self.scene.add(mesh);
     }
-
-    var material = new THREE.MeshBasicMaterial({
-        color: 0xff0000,
-        wireframe: true,
-        side: THREE.DoubleSide
-    });
-    var mesh = new THREE.Mesh(geometry, material);
-
-    self.scene.add(mesh);
-
+    
     material = new THREE.LineBasicMaterial({color: 0x000000});
     geometry = new THREE.Geometry();
 
