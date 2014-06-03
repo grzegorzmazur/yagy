@@ -41,6 +41,11 @@ function Plot3D(series, w, h) {
         }
     }
 
+    if (self.zmin == self.zmax) {
+        self.zmin -= 1;
+        self.zmax += 1;
+    }
+
     self.size = 500;
 
     self.xscale = self.size / (self.xmax - self.xmin);
