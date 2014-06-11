@@ -10,6 +10,10 @@
 
 #include <QtPrintSupport/QPrinter>
 
+#ifdef YAGY_ENABLE_INSPECTOR
+#include <QtWebKitWidgets/QWebInspector>
+#endif
+
 #include "yacasserver.h"
 #include "yacas/yacas.h"
 
@@ -83,6 +87,10 @@ private:
     
     static QList<MainWindow*> _windows;
     static unsigned _cntr;
+    
+#ifdef YAGY_ENABLE_INSPECTOR    
+    QWebInspector* _inspector;
+#endif
 };
 
 #endif // MAINWINDOW_H
