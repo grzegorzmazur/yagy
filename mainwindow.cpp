@@ -33,11 +33,15 @@ MainWindow::MainWindow(QWidget *parent) :
     _has_file(false),
     _modified(false),
     _fname(QString("Untitled Notebook ") + QString::number(_cntr++))
+#ifdef YAGY_ENABLE_INSPECTOR
+    ,
+    _inspector(nullptr)
+#endif
 {
 #ifdef __APPLE__
 
     QApplication::instance()->setAttribute(Qt::AA_DontShowIconsInMenus);
-    
+
     CFBundleRef mainBundle = CFBundleGetMainBundle();
     CFURLRef frameworkURL = CFBundleCopySharedFrameworksURL (mainBundle);
     char path[PATH_MAX];
@@ -50,24 +54,24 @@ MainWindow::MainWindow(QWidget *parent) :
 #else
     _yacas2tex.Evaluate((std::string("DefaultDirectory(\"") + std::string(YACAS_PREFIX) + std::string("/share/yacas/scripts/\");")).c_str());
 #endif
-    
+
     _yacas2tex.Evaluate("Load(\"yacasinit.ys\");");
 
     ui->setupUi(this);
-    
+
     ui->toolBar->setIconSize(QSize(20, 20));
-    
+
     _update_title();
-    
+
     loadYacasPage();
-    
+
     _windows.append(this);
 }
 
 MainWindow::~MainWindow()
 {
     _windows.removeOne(this);
-    
+
     delete _yacas_server;
     delete ui;
 }
@@ -77,13 +81,13 @@ void MainWindow::closeEvent(QCloseEvent* event)
     if (!_modified) {
         event->accept();
     } else {
-        const QMessageBox::StandardButton reply = 
+        const QMessageBox::StandardButton reply =
             QMessageBox::question(this, "Save notebook?", "Save changes before closing?\n\nYour changes will be lost if you don't save them.",
                                 QMessageBox::Save | QMessageBox::Cancel | QMessageBox::Close);
-        
+
         if (reply == QMessageBox::Save)
             on_action_Save_triggered();
-        
+
         if (reply == QMessageBox::Cancel)
             event->ignore();
         else
@@ -106,14 +110,14 @@ void MainWindow::loadYacasPage()
 #else
     const QUrl resource_url = QUrl("qrc:///");
 #endif
-    
+
     QFile mFile(":/resources/view.html");
-    
+
     if(!mFile.open(QFile::ReadOnly | QFile::Text)){
         qDebug() << "could not open file for read (view.html)";
         return;
     }
-    
+
     QTextStream in(&mFile);
     QString mText = in.readAll();
     mFile.close();
@@ -122,6 +126,14 @@ void MainWindow::loadYacasPage()
     connect(ui->webView->page(), SIGNAL(contentsChanged()), this, SLOT(on_contentsChanged()));
     ui->webView->setHtml( mText, resource_url) ;
     ui->webView->page()->currentFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOn);
+
+#ifdef YAGY_ENABLE_INSPECTOR
+    ui->webView->page()->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+
+    _inspector = new QWebInspector();
+    _inspector->setPage(ui->webView->page());
+    //_inspector->setVisible(true);
+#endif
 }
 
 void MainWindow::initObjectMapping()
@@ -149,14 +161,14 @@ void MainWindow::on_action_Open_triggered()
 
     if (fname.length() == 0)
         return;
-    
+
     QFile f(fname);
 
     if (!f.open(QIODevice::ReadOnly)) {
         qWarning("Couldn't open file for loading.");
         return;
     }
-    
+
     QByteArray data = f.readAll();
 
     loadYacasPage();
@@ -188,9 +200,9 @@ void MainWindow::on_action_Save_As_triggered()
 
     if (QFileInfo(fname).suffix() == "")
         fname += ".ygy";
-    
+
     _fname = fname;
-    
+
     _save();
 }
 
@@ -227,12 +239,12 @@ void MainWindow::on_action_Paste_triggered()
 
 void MainWindow::on_actionInsert_Before_triggered()
 {
-    
+
 }
 
 void MainWindow::on_actionInsert_After_triggered()
 {
-    
+
 }
 
 void MainWindow::on_action_Use_triggered()
@@ -249,7 +261,7 @@ void MainWindow::on_action_Use_triggered()
         qWarning("Couldn't open file for loading.");
         return;
     }
-    
+
     ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculate('Use(\"") + fname + "\")');");
 }
 
@@ -267,7 +279,7 @@ void MainWindow::on_action_Load_triggered()
         qWarning("Couldn't open file for loading.");
         return;
     }
-    
+
     ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculate('Load(\"") + fname + "\")');");
 }
 
@@ -285,29 +297,29 @@ void MainWindow::on_action_Import_triggered()
         qWarning("Couldn't open file for loading.");
         return;
     }
-    
+
     QString data = f.readAll();
-    
+
     QList<QString> l;
-    
+
     QString s;
     bool in_string = false;
     int level = 0;
     for (QString::const_iterator i = data.begin(); i != data.end(); ++i) {
-        
+
         if (in_string) {
             s.push_back(*i);
             if (*i == '"')
                 in_string = false;
             continue;
         }
-        
+
         if (*i == '"') {
             s.push_back(*i);
             in_string = true;
             continue;
         }
-        
+
         if (*i == '[') {
             s.push_back(*i);
             level += 1;
@@ -319,7 +331,7 @@ void MainWindow::on_action_Import_triggered()
             level -= 1;
             continue;
         }
-        
+
         if (*i == '\n' && s.isEmpty())
             continue;
 
@@ -328,12 +340,12 @@ void MainWindow::on_action_Import_triggered()
             s.clear();
             continue;
         }
-        
+
         if (*i == '\n') {
             s.push_back("\\n");
             continue;
         }
-        
+
         s.push_back(*i);
     }
 
@@ -388,7 +400,7 @@ void MainWindow::on_action_Restart_triggered()
     const QMessageBox::StandardButton reply =
         QMessageBox::question(this, "Restart", "Restart Yacas?",
                               QMessageBox::Yes|QMessageBox::No);
-    
+
     if (reply == QMessageBox::Yes) {
         delete _yacas_server;
         _yacas_server = new YacasServer;
@@ -402,20 +414,20 @@ void MainWindow::on_actionYacas_Manual_triggered()
 
 void MainWindow::on_action_About_triggered()
 {
-    QString about = 
+    QString about =
         "Yet Another Gui for Yacas\n"
         "\n"
         "Powered by Yacas version %1";
-    
-    
-    
+
+
+
     QMessageBox::about(this, "About Yagy", about.arg(YACAS_VERSION));
 }
 
 void MainWindow::eval(int idx, QString expr)
 {
     new CellProxy(ui->webView->page()->currentFrame(), idx, expr, *_yacas_server, _yacas2tex);
-    
+
     if (!_modified) {
         _modified = true;
         _update_title();
@@ -426,25 +438,25 @@ void MainWindow::help(QString s, int cp)
 {
     if (s.length() == 0)
         return;
-    
+
     if (cp >= s.length())
         cp = s.length() - 1;
-    
+
     int b = QRegExp("[^a-zA-Z']").lastIndexIn(s, cp);
     if (b == cp && cp > 0)
         b = QRegExp("[^a-zA-Z']").lastIndexIn(s, cp - 1);
-    
+
     if (b == -1)
         b = 0;
 
     QRegExp word_rx("[a-zA-Z']+");
-    
+
     if (word_rx.indexIn(s, b) == -1)
         return;
-    
+
     const QString key = word_rx.cap(0);
     const QString ref = QString("http://yacas.sourceforge.net/ref.html?") + key;
-    
+
     QDesktopServices::openUrl(QUrl(ref));
 }
 
@@ -477,7 +489,7 @@ void MainWindow::_save()
     QJsonDocument d(j);
 
     f.write(d.toJson());
-    
+
     _modified = false;
     _has_file = true;
     _update_title();
@@ -486,14 +498,14 @@ void MainWindow::_save()
 void MainWindow::_update_title()
 {
     QString title = QFileInfo(_fname).baseName();
-    
+
     if (_modified)
         title = "*" + title;
-    
+
     title += " - Yagy";
-    
+
     setWindowTitle(title);
-    
+
     ui->action_Save->setEnabled(_modified);
 }
 
