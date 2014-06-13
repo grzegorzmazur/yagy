@@ -209,3 +209,9 @@ function processChange( value, settings, object ){
     
     updateInputNumber( ++currentExpression );    
 }
+
+function insertBeforeCurrent(){
+}
+
+function insertAfterCurrent(){
+}
