@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RCC version="1.0">
     <qresource>
+        <file>javascript/images/MenuArrow-15.png</file>
         <file>javascript/mathjax/MathJax.js</file>
         <file>javascript/mathjax/config/local/local.js</file>
         <file>javascript/mathjax/config/MMLorHTML.js</file>
