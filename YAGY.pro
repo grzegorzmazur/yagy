@@ -6,6 +6,7 @@ HEADERS += mainwindow.h config.h cellproxy.h yacasrequest.h yacasserver.h yacase
 FORMS += mainwindow.ui
 RESOURCES += resources.qrc img.qrc
 QT += webkit widgets webkitwidgets
+CONFIG += c++11
 ICON = icon.icns
 
 macx{
