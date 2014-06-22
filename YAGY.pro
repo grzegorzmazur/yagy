@@ -10,7 +10,7 @@ CONFIG += c++11
 ICON = icon.icns
 
 macx{
-    YACAS_PREFIX = /Users/Marta/Documents/Grzesiek/yacas/code/build/Debug
+    YACAS_PREFIX = ../../yacas/code/Debug
 
     LIBS += -framework CoreFoundation
     LIBS += -F$${YACAS_PREFIX} -framework yacas
