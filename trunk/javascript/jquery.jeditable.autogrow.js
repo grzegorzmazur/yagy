@@ -22,10 +22,37 @@ $.editable.addInputType( 'autogrow', {
     },
     plugin : function( settings, original ) {
 
+                        
         $( 'textarea', this ).autosize();
         $( 'textarea', this ).keydown( function (e) {
-                                if( e.which == 13 && e.shiftKey ) $(this).parent().submit();
+                                var number = this.name.split("_")[1];
+                                if( e.which == 13 && e.shiftKey ){
+
+                                      $(this).parent().submit();
+                                }
                                 //if( e.which == 13 ) e.preventDefault();
+                                if( e.which == 38 && e.shiftKey ){
+                                    if( !goUp( number ))
+                                      return;
+                                }
+                                if( e.which == 40 && e.shiftKey ){
+                                    if( !goDown( number ))
+                                        return;
+                                }
+                                      
                             });
+        $( 'textarea', this ).keyup( function (e) {
+                                
+                                original = $(this).parents("span")[0].calculatedExpression;
+                                if ( original != this.value ){
+                                      $(this).parents("tbody").addClass("Modified");
+                                }else{
+                                      $(this).parents("tbody").removeClass("Modified");
+                                }
+                            });
+                                      
+
+                                      
+                                
     }
 });

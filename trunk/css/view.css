@@ -1,14 +1,41 @@
 
 
 #Elements>tbody>tr>td:first-child{
-    background-color: LightGray;
     width: 50px;
     font-size: x-small;
-    color: black;
     min-width: 50px;
     max-width: 50px;
     overflow: hidden;
 }
+
+.Expression>tr>td:first-child{
+    background-color: #66CD00;
+    color: white;
+}
+
+.Plot2D>tr>td:first-child{
+    background-color: #66CD00;
+    color: white;
+}
+.Plot3D>tr>td:first-child{
+    background-color: #66CD00;
+    color: white;
+}
+.New>tr>td:first-child{
+    background-color: LightGray;
+    color: black;
+}
+
+.Modified>tr>td:first-child{
+    background-color: gold;
+    color: black;
+}
+
+.Error>tr>td:first-child{
+    background-color: red;
+    color: white;
+}
+
 
 td{
     font-family: courier;

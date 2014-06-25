@@ -28,12 +28,32 @@ function submitenter( input, event ){
         calculate( input.value );
         return false;
     }
-    if ( event.which == 104 && event.ctrlKey ){
+    if( event.which == 104 && event.ctrlKey ){
         yacas.help(input.value, input.selectionStart);
         return false;
     }
+    if( event.which == 38 && event.shiftKey ){
+        if( !goUp( 0 ))
+            return true;
+    }
+    
     return true;
 }
+
+function editableReset( element ){
+    original = $(element).parents("span")[0].calculatedExpression;
+    revert = $(element).parents("span")[0].revert;
+    if ( original == revert ){
+        $(element).parents("tbody").removeClass("Modified");
+    }
+}
+
+function editableBlur( element ){
+    $(element).parents("tbody").addClass("NotToCalculate");
+    $(element).children().submit();
+}
+
+var EmptyEditableText = "Click to edit...";
 
 function changeToEditable( elementID ){
     elementID = "#" + elementID;
@@ -43,10 +63,15 @@ function changeToEditable( elementID ){
                                 //NOTE: if changed text on empty editable it is needed to update CalculateAll function
                                 width   : '100%',
                                 type    : "autogrow",
-                                tooltip : "Click to edit...",
+                                tooltip : EmptyEditableText,
                                 style   : "width:100%",
-                                onblur  : "nothing",
-                            name    : elementID,
+                                onreset: function(value,settings){
+                                    editableReset( this );
+                                },
+                                onblur  : function( value, setting){
+                                    editableBlur ( this );
+                                },
+                                name    : elementID,
                                 callback: function( value, settings ){
                                     processChange( value, settings, this  );
                                 }
@@ -57,9 +82,11 @@ function addEditable( number, value, rootElementID ){
     newElementID = "editable_" + number;
     rowID = "tr_in_" + number;
     
-    $( "<tr id='" + rowID + "'></tr>" ).insertBefore( rootElementID );
+    $( rootElementID ).append( "<tr id='" + rowID + "'></tr>" );
     $( "#" + rowID ).append( "<td id='td_in_" + number + "'>in "+ number + ":</td>" );
     $( "#" + rowID ).append( "<td><span id='" + newElementID+ "' class='editable'>"+ value +"</span></td>" );
+    object =    $("#" + newElementID);
+    $("#" + newElementID)[0].calculatedExpression = value;
     
     changeToEditable( newElementID );
 }
@@ -69,7 +96,8 @@ function addOutput( number, rootElementID ){
     outputID = "output_" + number;
     rowID = "tr_out_" + number;
 
-    $( "<tr id='" + rowID + "'></tr>" ).insertBefore( rootElementID );
+    $( rootElementID ).append( "<tr id='" + rowID + "'></tr>" );
+
     $( "#" + rowID ).append( "<td>out "+ number + ":</td>"  );
     $( "#" + rowID ).append( "<td><div id='" + outputID+ "' ></div></td>" );
     $( "#" + outputID).append( "<img src='img/progressbar.indicator.gif' width='20' ></img>");
@@ -92,6 +120,9 @@ function printResults( result ){
         addSideEffects(number, result["side_effects"].replace(/\n/g, '<br />'), rowID);
     
     $("#" + outputID).addClass( result["type"] );
+    $("#expression_"+number).addClass( result["type"]);
+    $("#expression_"+number).removeClass("Modified");
+
     $("#" + outputID).text("");
     
     if( result["type"] == "Expression" ){
@@ -135,20 +166,43 @@ function renderOutput( outputID ){
 }
 
 function removeOldResults( number ){
-    $( "#tr_side_" + number ).remove();
-    $( "#tr_out_" + number ).remove();
-    $( "#tr_in_" + number ).remove();
+    $( "#expression_" + number ).remove();
+}
+
+function addExpressionCells( expressionid, value, rootElementID){
+    
+    $("<tbody id='expression_" + expressionid + "' class='Modified'></tbody").insertBefore( rootElementID );
+    addEditable( expressionid, value, "#expression_" + expressionid);
+    addOutput( expressionid, "#expression_" + expressionid);
+    
 }
 
 function calculate( value ){
-    addEditable( currentExpression, value, "#tr_input" );
-    addOutput( currentExpression, "#tr_input");
+    
+    addExpressionCells( currentExpression, value, "#expression_0");
     
     yacas.eval( currentExpression, value );
     
     updateInputNumber( ++currentExpression );
-
     clearInput();
+}
+
+function processChange( value, settings, object ){
+    
+    var number = object.id.split("_")[1];
+    
+    if ( $("#expression_"+number).hasClass("NotToCalculate")){
+        $("#expression_"+number).removeClass("NotToCalculate");
+        return;
+    }
+    
+    addExpressionCells( currentExpression, value, "#expression_" + number);
+    
+    yacas.eval( currentExpression, value );
+    
+    updateInputNumber( ++currentExpression );
+    removeOldResults( number );
+
 }
 
 function evaluateCurrent(){
@@ -167,8 +221,8 @@ function evaluateAll(){
                               if ( value == "" ){
                                 $(this).find("form:first").trigger("submit");
                               }else{
-                                //if editable is empty it's value is "Click to edit"
-                                if ( value == "Click to edit" ) value = "";
+                              
+                                if ( value == EmptyEditableText ) value = "";
                                 processChange( value, null, this );
                               }
                            });
@@ -185,8 +239,8 @@ function getAllInputs(){
                               if ( value == "" ){
                                 inputs.push( $(this).find("textarea:first").val() );
                               }else{
-                                //if editable is empty it's value is "Click to edit"
-                                if ( value == "Click to edit" ) value = "";
+                              
+                                if ( value == EmptyEditableText ) value = "";
                                 inputs.push( value );
                               }
                               });
@@ -196,18 +250,39 @@ function getAllInputs(){
     return inputs;
 }
 
-function processChange( value, settings, object ){
+function findPreviousExpression( number ){
+    var previous = $("#expression_"+ number).prev("tbody");
+    if ( previous.length == 0 ) return null; //First row
+    return previous[0].id.split("_")[1];
+    
+}
 
-    var number = object.id.split("_")[1];
+function findNextExpression( number ){
+    var previous = $("#expression_"+ number).next("tbody");
+    if ( previous.length == 0 ) return null; //First row
+    return previous[0].id.split("_")[1];
+    
+}
 
-    addEditable( currentExpression, value, "#tr_out_"+number );
-    addOutput( currentExpression, "#tr_out_"+number );
+function goUp( number ){
+    prev = findPreviousExpression( number );
+    if ( prev == null ) return false;
+    goto ( prev );
+    return true;
     
-    yacas.eval( currentExpression, value );
+}
+
+function goDown( number ){
+    next = findNextExpression( number );
+    if ( next == null ) return false;
+    goto ( next );
+    return true;
+}
+
+function goto( number ){
+    if ( number == 0 ) $("#inputExpression").focus();
+    else $("#editable_"+number).click();
     
-    removeOldResults( number );
-    
-    updateInputNumber( ++currentExpression );    
 }
 
 function insertBeforeCurrent(){
