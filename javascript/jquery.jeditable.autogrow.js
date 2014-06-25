@@ -25,7 +25,7 @@ $.editable.addInputType( 'autogrow', {
                         
         $( 'textarea', this ).autosize();
         $( 'textarea', this ).keydown( function (e) {
-                                var number = this.name.split("_")[1];
+                                var number = this.name;
                                 if( e.which == 13 && e.shiftKey ){
 
                                       $(this).parent().submit();
