@@ -55,12 +55,10 @@ function editableBlur( element ){
 
 var EmptyEditableText = "Click to edit...";
 
-function changeToEditable( elementID ){
-    elementID = "#" + elementID;
+function changeToEditable( elementID, number ){
     $( elementID ).editable(
                             function(value, settings) { return value; },
                             {
-                                //NOTE: if changed text on empty editable it is needed to update CalculateAll function
                                 width   : '100%',
                                 type    : "autogrow",
                                 tooltip : EmptyEditableText,
@@ -71,71 +69,77 @@ function changeToEditable( elementID ){
                                 onblur  : function( value, setting){
                                     editableBlur ( this );
                                 },
-                                name    : elementID,
+                                name    : number,
                                 callback: function( value, settings ){
-                                    processChange( value, settings, this  );
+                                    processChange( value, settings.name, this  );
                                 }
                             });
 }
 
 function addEditable( number, value, rootElementID ){
-    newElementID = "editable_" + number;
-    rowID = "tr_in_" + number;
+
+    var row = $( "<tr class='In'></tr>" );
+    row.append( "<td>in "+ number + ":</td>" );
+    row.append( "<td><span class='editable'>"+ value +"</span></td>" );
+    $( rootElementID ).append( row );
     
-    $( rootElementID ).append( "<tr id='" + rowID + "'></tr>" );
-    $( "#" + rowID ).append( "<td id='td_in_" + number + "'>in "+ number + ":</td>" );
-    $( "#" + rowID ).append( "<td><span id='" + newElementID+ "' class='editable'>"+ value +"</span></td>" );
-    object =    $("#" + newElementID);
-    $("#" + newElementID)[0].calculatedExpression = value;
+    var editable = row.find(".editable");
+    editable[0].calculatedExpression = value;
     
-    changeToEditable( newElementID );
+    changeToEditable( editable, number );
 }
 
 
 function addOutput( number, rootElementID ){
     outputID = "output_" + number;
-    rowID = "tr_out_" + number;
 
-    $( rootElementID ).append( "<tr id='" + rowID + "'></tr>" );
-
-    $( "#" + rowID ).append( "<td>out "+ number + ":</td>"  );
-    $( "#" + rowID ).append( "<td><div id='" + outputID+ "' ></div></td>" );
-    $( "#" + outputID).append( "<img src='img/progressbar.indicator.gif' width='20' ></img>");
+    var row = $( "<tr class='Out'></tr>" );
+    row.append( "<td>out "+ number + ":</td>"  );
+    row.append( "<td><div id='" + outputID+ "' ></div></td>" );
     
+    $( rootElementID ).append( row );
+    $( "#" + outputID ).append( "<img src='img/progressbar.indicator.gif' width='20' ></img>");
 }
 
 function addSideEffects( number, side_effects, rootElementID ){
-    rowID = "tr_side_" + number;
-    $( "<tr id='" + rowID + "'></tr>" ).insertBefore( rootElementID );
-    $( "#" + rowID ).append("<td id='td_side_" + number + "'></td>" );
-    $( "#" + rowID ).append("<td><span id='side_effects_" + number + "'>" + side_effects + "</span></td>");
+    var row = $( "<tr></tr>" ).insertBefore( rootElementID );
+    row.append("<td></td>" );
+    row.append("<td><span>" + side_effects + "</span></td>");
 }
 
 function printResults( result ){
     number = result["idx"];
     outputID = "output_" + number;
-    rowID = "#tr_out_" + number;
     
-    if( result.hasOwnProperty( "side_effects" ) )
-        addSideEffects(number, result["side_effects"].replace(/\n/g, '<br />'), rowID);
+    var ExpressionElement = $("#expression_"+number);
     
-    $("#" + outputID).addClass( result["type"] );
-    $("#expression_"+number).addClass( result["type"]);
-    $("#expression_"+number).removeClass("Modified");
+    
+    
+    if( result.hasOwnProperty( "side_effects" ) ){
+        var outRow = ExpressionElement.children(".Out");
+        addSideEffects(number, result["side_effects"].replace(/\n/g, '<br />'), outRow);
+    }
+    
+    var output = $("#" + outputID);
+    
+    output.addClass( result["type"] );
 
-    $("#" + outputID).text("");
+    ExpressionElement.addClass( result["type"]);
+    ExpressionElement.removeClass("Modified");
+
+    output.text("");
     
     if( result["type"] == "Expression" ){
-        $("#" + outputID).append( "$$" + result["tex_code"] + "$$" );
+        output.append( "$$" + result["tex_code"] + "$$" );
         renderOutput( outputID );
     }else if( result["type"] == "Error" ){
-        $("#" + outputID).append( result["error_message"] );
+        output.append( result["error_message"] );
     }else if( result["type"] == "Plot2D" ){
-        $.plot("#" + outputID, result["plot2d_data"] );
+        $.plot(output, result["plot2d_data"] );
 
-        $("#" + outputID).resizable({ maxWidth: $("#" + outputID).parent().width() });
-        $("#" + outputID).resizable({ minWidth: 200 });
-        $("#" + outputID).resizable({ minHeight: 200 });
+        output.resizable({ maxWidth: output.parent().width() });
+        output.resizable({ minWidth: 200 });
+        output.resizable({ minHeight: 200 });
     }else if( result["type"] == "Plot3D" ){
 
         var width = $("#" + outputID).parent().width();
@@ -174,7 +178,6 @@ function addExpressionCells( expressionid, value, rootElementID){
     $("<tbody id='expression_" + expressionid + "' class='Modified'></tbody").insertBefore( rootElementID );
     addEditable( expressionid, value, "#expression_" + expressionid);
     addOutput( expressionid, "#expression_" + expressionid);
-    
 }
 
 function calculate( value ){
@@ -187,9 +190,8 @@ function calculate( value ){
     clearInput();
 }
 
-function processChange( value, settings, object ){
+function processChange( value, number, object ){
     
-    var number = object.id.split("_")[1];
     
     if ( $("#expression_"+number).hasClass("NotToCalculate")){
         $("#expression_"+number).removeClass("NotToCalculate");
@@ -215,7 +217,7 @@ function evaluateCurrent(){
 }
 
 function evaluateAll(){
-    $("[id^=editable_]").each( function() {
+    $(".editable").each( function() {
                               value = $(this).text()
                               
                               if ( value == "" ){
@@ -223,7 +225,9 @@ function evaluateAll(){
                               }else{
                               
                                 if ( value == EmptyEditableText ) value = "";
-                                processChange( value, null, this );
+                        
+                                number = $(this).parents("tbody")[0].id.split("_")[1];
+                                processChange( value, number, this );
                               }
                            });
     inputVal = $( "#inputExpression" ).val();
@@ -233,7 +237,7 @@ function evaluateAll(){
 
 function getAllInputs(){
     var inputs = [];
-    $("[id^=editable_]").each( function() {
+    $(".editable").each( function() {
                               value = $(this).text()
                               
                               if ( value == "" ){
@@ -258,9 +262,9 @@ function findPreviousExpression( number ){
 }
 
 function findNextExpression( number ){
-    var previous = $("#expression_"+ number).next("tbody");
-    if ( previous.length == 0 ) return null; //First row
-    return previous[0].id.split("_")[1];
+    var next = $("#expression_"+ number).next("tbody");
+    if ( next.length == 0 ) return null; //First row
+    return next[0].id.split("_")[1];
     
 }
 
@@ -281,12 +285,29 @@ function goDown( number ){
 
 function goto( number ){
     if ( number == 0 ) $("#inputExpression").focus();
-    else $("#editable_"+number).click();
+    else $("#expression_"+number).find(".editable").click();
     
 }
 
+function addInputCells( expressionid, value, rootElementID){
+    
+    $("<tbody id='expression_" + expressionid + "' class='New'></tbody").insertBefore( rootElementID );
+    addEditable( expressionid, value, "#expression_" + expressionid);
+}
+
 function insertBeforeCurrent(){
+    var focused = $(':focus').parents("tbody");
+    expressionid = ++currentExpression;
+    
+    $("<tbody id='expression_" + expressionid + "' class='New'></tbody").insertBefore( focused );
+    
+    addEditable(expressionid, "", "#expression_" + expressionid);
 }
 
 function insertAfterCurrent(){
+    var focused = $(':focus').parents("tbody");
+    expressionid = ++currentExpression;
+    $("<tbody id='expression_" + expressionid + "' class='New'></tbody").insertAfter( focused );
+    addEditable(expressionid, "", "#expression_" + expressionid);
+
 }
