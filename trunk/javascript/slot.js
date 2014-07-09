@@ -4,15 +4,23 @@ function load(){
     
     $( window ).on( 'resize', function(){
         MathJax.Hub.Queue(["Rerender", MathJax.Hub]);
-        w = $(".Plot2D").first().parent().width();
-        $( ".Plot2D" ).resizable( "option", "maxWidth", w );
-        $( ".Plot2D" ).each( function(){ if ($(this).width() > w ) $(this).width(w); })
+        w = $(".Plot2D.resizable").first().parent().width();
+        $( ".Plot2D.resizable" ).resizable( "option", "maxWidth", w );
+        $( ".Plot2D.resizable" ).each( function(){ if ($(this).width() > w ) $(this).width(w); })
     });
+    
+    MathJax.Hub.Config({ "HTML-CSS": {  styles: {
+                       ".MathJax_Display": {
+                            margin: "4px 0px",
+                       }
+                    }
+                }
+            });
     
 }
 
 var currentExpression = 1;
-
+var numberOfLines = 1;
 
 function updateInputNumber( updatedNumber) {
     $( "#inputCounter" ).html( "in " + updatedNumber + ":" );
@@ -76,22 +84,23 @@ function changeToEditable( elementID, number ){
                             });
 }
 
-function addEditable( number, value, rootElementID ){
+function addEditable( lineid, number, value, rootElementID ){
 
     var row = $( "<tr class='In'></tr>" );
-    row.append( "<td>in "+ number + ":</td>" );
+    row.append( "<td>in&nbsp&nbsp"+ number + ":</td>" );
     row.append( "<td><span class='editable'>"+ value +"</span></td>" );
     $( rootElementID ).append( row );
     
     var editable = row.find(".editable");
     editable[0].calculatedExpression = value;
     
-    changeToEditable( editable, number );
+    changeToEditable( editable, lineid );
+    return editable;
 }
 
 
-function addOutput( number, rootElementID ){
-    outputID = "output_" + number;
+function addOutput( lineid, number, rootElementID ){
+    outputID = "output_" + lineid;
 
     var row = $( "<tr class='Out'></tr>" );
     row.append( "<td>out "+ number + ":</td>"  );
@@ -113,8 +122,6 @@ function printResults( result ){
     
     var ExpressionElement = $("#expression_"+number);
     
-    
-    
     if( result.hasOwnProperty( "side_effects" ) ){
         var outRow = ExpressionElement.children(".Out");
         addSideEffects(number, result["side_effects"].replace(/\n/g, '<br />'), outRow);
@@ -123,6 +130,7 @@ function printResults( result ){
     var output = $("#" + outputID);
     
     output.addClass( result["type"] );
+    
 
     ExpressionElement.addClass( result["type"]);
     ExpressionElement.removeClass("Modified");
@@ -137,9 +145,14 @@ function printResults( result ){
     }else if( result["type"] == "Plot2D" ){
         $.plot(output, result["plot2d_data"] );
 
-        output.resizable({ maxWidth: output.parent().width() });
-        output.resizable({ minWidth: 200 });
-        output.resizable({ minHeight: 200 });
+        var width = $("#" + outputID).parent().width();
+        
+        $("#" + outputID).resizable({ maxWidth: width} );
+        $("#" + outputID).resizable({ minWidth: 200 } );
+        $("#" + outputID).resizable({ minHeight: 200 } );
+    
+        output.addClass( "resizable");
+        
     }else if( result["type"] == "Plot3D" ){
 
         var width = $("#" + outputID).parent().width();
@@ -173,20 +186,22 @@ function removeOldResults( number ){
     $( "#expression_" + number ).remove();
 }
 
-function addExpressionCells( expressionid, value, rootElementID){
+function addExpressionCells( lineID, expressionid, value, rootElementID){
     
-    $("<tbody id='expression_" + expressionid + "' class='Modified'></tbody").insertBefore( rootElementID );
-    addEditable( expressionid, value, "#expression_" + expressionid);
-    addOutput( expressionid, "#expression_" + expressionid);
+    $("<tbody id='expression_" + lineID + "' class='Modified'></tbody").insertBefore( rootElementID );
+    addEditable( lineID, expressionid, value, "#expression_" + lineID);
+    addOutput( lineID, expressionid, "#expression_" + lineID);
 }
 
 function calculate( value ){
     
-    addExpressionCells( currentExpression, value, "#expression_0");
+    addExpressionCells( numberOfLines, currentExpression, value, "#expression_0");
     
-    yacas.eval( currentExpression, value );
+    yacas.eval( numberOfLines, value );
     
-    updateInputNumber( ++currentExpression );
+    currentExpression++;
+    numberOfLines++;
+    
     clearInput();
 }
 
@@ -198,11 +213,13 @@ function processChange( value, number, object ){
         return;
     }
     
-    addExpressionCells( currentExpression, value, "#expression_" + number);
+    addExpressionCells( numberOfLines, currentExpression, value, "#expression_" + number);
     
-    yacas.eval( currentExpression, value );
+    yacas.eval( numberOfLines, value );
     
-    updateInputNumber( ++currentExpression );
+    currentExpression++;
+    numberOfLines++;
+    
     removeOldResults( number );
 
 }
@@ -289,25 +306,45 @@ function goto( number ){
     
 }
 
-function addInputCells( expressionid, value, rootElementID){
-    
-    $("<tbody id='expression_" + expressionid + "' class='New'></tbody").insertBefore( rootElementID );
-    addEditable( expressionid, value, "#expression_" + expressionid);
-}
 
-function insertBeforeCurrent(){
+
+
+function insertElement( whetherAfterOrBefore ){
     var focused = $(':focus').parents("tbody");
-    expressionid = ++currentExpression;
     
-    $("<tbody id='expression_" + expressionid + "' class='New'></tbody").insertBefore( focused );
+    if (focused.length == 0 ){
+        return;
+    }
     
-    addEditable(expressionid, "", "#expression_" + expressionid);
+    var element = $("<tbody id='expression_" + numberOfLines + "' class='New'></tbody");
+    var value = "";
+    var clickNew = true;
+    
+    if ( whetherAfterOrBefore == "after" && $(focused)[0].id == "expression_0"){
+        whetherAfterOrBefore = "before";
+        value = $("#inputExpression").val();
+        clearInput();
+        clickNew = false;
+    }
+    
+    if( whetherAfterOrBefore == "before"){
+        element.insertBefore( focused );
+    }else{
+        element.insertAfter( focused );
+    }
+    
+    var editable = addEditable(numberOfLines, "", value, "#expression_" + numberOfLines);
+    
+    if ( clickNew ){
+        editable.click();
+    }
+    numberOfLines++;
 }
 
 function insertAfterCurrent(){
-    var focused = $(':focus').parents("tbody");
-    expressionid = ++currentExpression;
-    $("<tbody id='expression_" + expressionid + "' class='New'></tbody").insertAfter( focused );
-    addEditable(expressionid, "", "#expression_" + expressionid);
+    insertElement( "after");
+}
 
+function insertBeforeCurrent(){
+    insertElement( "before" );
 }
