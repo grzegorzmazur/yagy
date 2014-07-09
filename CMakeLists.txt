@@ -4,7 +4,7 @@ project (YAGY CXX)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pedantic -Wall -DYAGY_ENABLE_INSPECTOR")
 
-set (YACAS_PREFIX "${PROJECT_SOURCE_DIR}/../../yacas/trunk-root")
+set (YACAS_PREFIX "${PROJECT_SOURCE_DIR}/../../yacas/yacas-trunk/install/linux/release")
 
 set (YAGY_VERSION_MAJOR 1)
 set (YAGY_VERSION_MINOR 0)
@@ -16,6 +16,12 @@ configure_file (
   "version.h.in"
   "version.h"
   )
+
+configure_file (
+  "config.h.in"
+  "config.h"
+  )
+
 
 set (CMAKE_INCLUDE_CURRENT_DIR ON)
 set (CMAKE_AUTOMOC ON)
