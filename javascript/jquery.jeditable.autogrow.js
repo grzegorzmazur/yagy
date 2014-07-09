@@ -43,6 +43,9 @@ $.editable.addInputType( 'autogrow', {
                             });
         $( 'textarea', this ).keyup( function (e) {
                                 
+                                if ( $(this).parents("tbody").hasClass("New"))
+                                    return;
+                                    
                                 original = $(this).parents("span")[0].calculatedExpression;
                                 if ( original != this.value ){
                                       $(this).parents("tbody").addClass("Modified");

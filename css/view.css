@@ -1,9 +1,9 @@
 
 
 #Elements>tbody>tr>td:first-child{
-    width: 50px;
+    width: 40px;
     font-size: x-small;
-    min-width: 50px;
+    min-width: 40px;
     max-width: 50px;
     overflow: hidden;
 }
@@ -60,6 +60,7 @@ textarea{
     font-size: small;
     resize: none;
     padding: 4px;
+    height: 14px;
 
 }
 .containment{
