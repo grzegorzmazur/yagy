@@ -332,10 +332,16 @@
    <property name="text">
     <string>Insert &amp;Before</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+Up</string>
+   </property>
   </action>
   <action name="actionInsert_After">
    <property name="text">
     <string>Insert &amp;After</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+Down</string>
    </property>
   </action>
  </widget>
