@@ -4,7 +4,7 @@ function load(){
     
     $( window ).on( 'resize', function(){
         MathJax.Hub.Queue(["Rerender", MathJax.Hub]);
-        w = $(".Plot2D.resizable").first().parent().width();
+        w = $(".resizable").first().parent().width();
         $( ".resizable" ).resizable( "option", "maxWidth", w );
         $( ".resizable" ).each( function(){ if ($(this).width() > w ) $(this).width(w); })
     });
@@ -158,10 +158,7 @@ function printResults( result ){
         var width = $("#" + outputID).parent().width();
         var height = 300;
 
-        $("#" + outputID).resizable({ maxWidth: width });
-        $("#" + outputID).resizable({ minWidth: 200 });
-        $("#" + outputID).resizable({ minHeight: height });
-        output.addClass( "resizable");
+
         output.resize( function(){ Plot3dResized( this );});
         
         var plot3d = new Plot3D(result["plot3d_data"], width, height);
@@ -176,9 +173,12 @@ function printResults( result ){
             plot3d.renderer.render(plot3d.scene, plot3d.camera);
             controls.update();
         }
-        
-        
 
+        $("#" + outputID).resizable({ maxWidth: width });
+        $("#" + outputID).resizable({ minWidth: 200 });
+        $("#" + outputID).resizable({ minHeight: 200 });
+        output.addClass( "resizable");
+        
         render();
     }
 }
