@@ -5,8 +5,8 @@ function load(){
     $( window ).on( 'resize', function(){
         MathJax.Hub.Queue(["Rerender", MathJax.Hub]);
         w = $(".Plot2D.resizable").first().parent().width();
-        $( ".Plot2D.resizable" ).resizable( "option", "maxWidth", w );
-        $( ".Plot2D.resizable" ).each( function(){ if ($(this).width() > w ) $(this).width(w); })
+        $( ".resizable" ).resizable( "option", "maxWidth", w );
+        $( ".resizable" ).each( function(){ if ($(this).width() > w ) $(this).width(w); })
     });
     
     MathJax.Hub.Config({ "HTML-CSS": {  styles: {
@@ -156,15 +156,18 @@ function printResults( result ){
     }else if( result["type"] == "Plot3D" ){
 
         var width = $("#" + outputID).parent().width();
-        var height = 200;
+        var height = 300;
 
         $("#" + outputID).resizable({ maxWidth: width });
         $("#" + outputID).resizable({ minWidth: 200 });
         $("#" + outputID).resizable({ minHeight: height });
+        output.addClass( "resizable");
+        output.resize( function(){ Plot3dResized( this );});
         
         var plot3d = new Plot3D(result["plot3d_data"], width, height);
         
         $("#" + outputID).append(plot3d.renderer.domElement);
+        $("#" + outputID)[0].plot3D = plot3d;
 
         var controls = new THREE.TrackballControls(plot3d.camera, plot3d.renderer.domElement);
 
@@ -173,9 +176,17 @@ function printResults( result ){
             plot3d.renderer.render(plot3d.scene, plot3d.camera);
             controls.update();
         }
+        
+        
 
         render();
     }
+}
+
+function Plot3dResized( output ){
+    var height = $(output).height();
+    var width = $(output).width();
+    output.plot3D.resizePlot( width, height);
 }
 
 function renderOutput( outputID ){
@@ -289,8 +300,7 @@ function goUp( number ){
     prev = findPreviousExpression( number );
     if ( prev == null ) return false;
     goto ( prev );
-    return true;
-    
+    return true;    
 }
 
 function goDown( number ){
@@ -305,9 +315,6 @@ function goto( number ){
     else $("#expression_"+number).find(".editable").click();
     
 }
-
-
-
 
 function insertElement( whetherAfterOrBefore ){
     var focused = $(':focus').parents("tbody");
