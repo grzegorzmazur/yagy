@@ -1,4 +1,3 @@
-#include "config.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "cellproxy.h"
@@ -21,6 +20,11 @@
 #include <QtPrintSupport/QPrintDialog>
 
 #include "yacas/yacas_version.h"
+
+#ifndef __APPLE__
+#include "config.h"
+#endif
+
 
 #ifdef __APPLE__
 #include <CoreFoundation/CoreFoundation.h>
