@@ -233,19 +233,7 @@ function Plot3D(series, w, h) {
     self.renderer = renderer;
     self.renderer.setClearColor(0xffffff, 1);
     self.renderer.setSize(w, h);
-
-    self.resizePlot = function (width, height) {
-
-        this.camera.aspect = width / height;
-        this.camera.updateProjectionMatrix();
-        
-        this.renderer.setSize( width, height);
-
-    }
-
-
 }
-
 
 Plot3D.prototype.g2w = function (x, y, z) {
    return new THREE.Vector3((x - this.xmin) * this.xscale + this.xoffset,  (y - this.ymin) * this.yscale + this.yoffset, (z - this.zmin) * this.zscale + this.zoffset);
@@ -292,4 +280,13 @@ Plot3D.prototype.label = function (text) {
     sprite.scale.set(text_width / text_height * font_size, font_size, 1);
 
     return sprite;
+}
+
+Plot3D.prototype.resizePlot = function (width, height) {
+
+    this.camera.aspect = width / height;
+    this.camera.updateProjectionMatrix();
+
+    this.renderer.setSize( width, height);
+
 }
