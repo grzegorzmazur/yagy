@@ -66,10 +66,6 @@ function Plot3D(series, w, h) {
     self.camera.up.set( 0, 0, 1 );
     self.camera.position.set( 155,-772,1);
     self.camera.lookAt(self.scene.position);
-
-//  var axes = new THREE.AxisHelper(100);
-//	self.scene.add( axes );
-
     
     for (var s = 0; s < series.length; ++s) {
         var geometry = new THREE.Geometry();
@@ -229,7 +225,6 @@ function Plot3D(series, w, h) {
     else
         renderer = new THREE.CanvasRenderer();
 
-    //self.renderer = new THREE.CanvasRenderer();
     self.renderer = renderer;
     self.renderer.setClearColor(0xffffff, 1);
     self.renderer.setSize(w, h);
