@@ -69,6 +69,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     loadYacasPage();
 
+    ui->webView->addAction(ui->actionInsert_Before);
+    ui->webView->addAction(ui->actionInsert_After);
+    
     _windows.append(this);
 }
 
