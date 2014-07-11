@@ -108,13 +108,25 @@ function Plot3D(series, w, h) {
             geometry.faces.push(new THREE.Face3(geometry.vertices.length - 1, geometry.vertices.length - 2, geometry.vertices.length - 3));
         }
 
-        var material = new THREE.MeshBasicMaterial({
+        var mf = new THREE.MeshBasicMaterial({
             color: 0xff0000,
-            wireframe: true,
-            side: THREE.DoubleSide
+            side: THREE.FrontSide
         });
-        var mesh = new THREE.Mesh(geometry, material);
   
+        var mb = new THREE.MeshBasicMaterial({
+            color: 0x00ff00,
+            side: THREE.BackSide
+        });
+
+        var mesh = THREE.SceneUtils.createMultiMaterialObject(geometry, [mf, mb]);
+        
+//        var material = new THREE.MeshBasicMaterial({
+//            color: 0xff0000,
+//            wireframe: true,
+//            side: THREE.DoubleSide
+//        });
+//        var mesh = new THREE.Mesh(geometry, material);
+//  
         self.scene.add(mesh);
     }
     
