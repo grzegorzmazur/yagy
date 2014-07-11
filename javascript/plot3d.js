@@ -108,13 +108,15 @@ function Plot3D(series, w, h) {
             geometry.faces.push(new THREE.Face3(geometry.vertices.length - 1, geometry.vertices.length - 2, geometry.vertices.length - 3));
         }
 
+        var no_colors = self.colors.length;
+
         var mf = new THREE.MeshBasicMaterial({
-            color: 0xff0000,
+            color: self.colors[s % no_colors][0],
             side: THREE.FrontSide
         });
   
         var mb = new THREE.MeshBasicMaterial({
-            color: 0x00ff00,
+            color: self.colors[s % no_colors][1],
             side: THREE.BackSide
         });
         var wfb = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true, transparent: true,side: THREE.BackSide } );
@@ -122,13 +124,6 @@ function Plot3D(series, w, h) {
         
         var mesh = THREE.SceneUtils.createMultiMaterialObject(geometry, [mf, mb, wfb, wff]);
         
-//        var material = new THREE.MeshBasicMaterial({
-//            color: 0xff0000,
-//            wireframe: true,
-//            side: THREE.DoubleSide
-//        });
-//        var mesh = new THREE.Mesh(geometry, material);
-//  
         self.scene.add(mesh);
     }
     
@@ -244,6 +239,15 @@ function Plot3D(series, w, h) {
     self.renderer.setClearColor(0xffffff, 1);
     self.renderer.setSize(w, h);
 }
+
+Plot3D.prototype.colors = [
+    [0xff0000, 0x00ff00],
+    [0xff8000, 0x00ff80],
+    [0xffff00, 0x00ffff],
+    [0x80ff00, 0x0080ff],
+    [0x00ff00, 0x0000ff], 
+    [0x00ff80, 0x8000ff]
+];
 
 Plot3D.prototype.g2w = function (x, y, z) {
    return new THREE.Vector3((x - this.xmin) * this.xscale + this.xoffset,  (y - this.ymin) * this.yscale + this.yoffset, (z - this.zmin) * this.zscale + this.zoffset);
