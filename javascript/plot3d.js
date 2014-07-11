@@ -49,21 +49,22 @@ function Plot3D(series, w, h) {
     }
 
     self.size = 500;
+    self.zsize = 300;
 
     self.xscale = self.size / (self.xmax - self.xmin);
     self.yscale = self.size / (self.ymax - self.ymin);
-    self.zscale = self.size / (self.zmax - self.zmin);
+    self.zscale = self.zsize / (self.zmax - self.zmin);
 
     self.xoffset = -self.size / 2;
     self.yoffset = -self.size / 2;
-    self.zoffset = -self.size / 2;
+    self.zoffset = -self.zsize / 2;
 
     self.scene = new THREE.Scene();
 
     self.camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 2000);
 
     self.camera.up.set( 0, 0, 1 );
-    self.camera.position.set( 216,-1100,35);
+    self.camera.position.set( 155,-772,1);
     self.camera.lookAt(self.scene.position);
 
 //  var axes = new THREE.AxisHelper(100);
@@ -124,8 +125,8 @@ function Plot3D(series, w, h) {
     material = new THREE.LineBasicMaterial({color: 0x000000});
     geometry = new THREE.Geometry();
 
-    geometry.vertices.push(new THREE.Vector3(-self.size / 2, -self.size / 2, -self.size / 2));
-    geometry.vertices.push(new THREE.Vector3(self.size / 2, -self.size / 2, -self.size / 2));
+    geometry.vertices.push(new THREE.Vector3(-self.size / 2, -self.size / 2, -self.zsize / 2));
+    geometry.vertices.push(new THREE.Vector3(self.size / 2, -self.size / 2, -self.zsize / 2));
 
     var line = new THREE.Line(geometry, material);
 
@@ -133,8 +134,8 @@ function Plot3D(series, w, h) {
 
     geometry = new THREE.Geometry();
 
-    geometry.vertices.push(new THREE.Vector3(-self.size / 2, -self.size / 2, -self.size / 2));
-    geometry.vertices.push(new THREE.Vector3(-self.size / 2, self.size / 2, -self.size / 2));
+    geometry.vertices.push(new THREE.Vector3(-self.size / 2, -self.size / 2, -self.zsize / 2));
+    geometry.vertices.push(new THREE.Vector3(-self.size / 2, self.size / 2, -self.zsize / 2));
 
     line = new THREE.Line(geometry, material);
 
@@ -142,8 +143,8 @@ function Plot3D(series, w, h) {
 
     geometry = new THREE.Geometry();
 
-    geometry.vertices.push(new THREE.Vector3(-self.size / 2, -self.size / 2, -self.size / 2));
-    geometry.vertices.push(new THREE.Vector3(-self.size / 2, -self.size / 2, self.size / 2));
+    geometry.vertices.push(new THREE.Vector3(-self.size / 2, -self.size / 2, -self.zsize / 2));
+    geometry.vertices.push(new THREE.Vector3(-self.size / 2, -self.size / 2, self.zsize / 2));
 
     var line = new THREE.Line(geometry, material);
 
@@ -154,14 +155,14 @@ function Plot3D(series, w, h) {
     for (var t = x_params.b; t <= x_params.e; t += x_params.d) {
         var tb = self.g2w(t, self.ymin, self.zmin);
         tb.y = -self.size / 2;
-        tb.z = -self.size / 2;
+        tb.z = -self.zsize / 2;
         var te = tb.clone();
         te.y += self.size / 50;
         geometry = new THREE.Geometry();
         geometry.vertices.push(tb);
         geometry.vertices.push(te);
         te = tb.clone();
-        te.z += self.size / 50;
+        te.z += self.zsize / 50;
         geometry.vertices.push(tb);
         geometry.vertices.push(te);
         var line = new THREE.Line(geometry, material);
@@ -169,7 +170,7 @@ function Plot3D(series, w, h) {
 
         var tn = new Number(t);
         var l = self.label(tn.toFixed(2));
-        l.position.set(tb.x, -self.size / 2, -self.size / 2);
+        l.position.set(tb.x, -self.size / 2, -self.zsize / 2);
         self.scene.add(l);
     }
 
@@ -178,14 +179,14 @@ function Plot3D(series, w, h) {
     for (var t = y_params.b; t <= y_params.e; t += y_params.d) {
         var tb = self.g2w(self.xmin, t, self.zmin);
         tb.x = -self.size / 2;
-        tb.z = -self.size / 2;
+        tb.z = -self.zsize / 2;
         var te = tb.clone();
         te.x += self.size / 50;
         geometry = new THREE.Geometry();
         geometry.vertices.push(tb);
         geometry.vertices.push(te);
         te = tb.clone();
-        te.z += self.size / 50;
+        te.z += self.zsize / 50;
         geometry.vertices.push(tb);
         geometry.vertices.push(te);
         var line = new THREE.Line(geometry, material);
@@ -194,7 +195,7 @@ function Plot3D(series, w, h) {
         if (t != y_params.b) {
             var tn = new Number(t);
             var l = self.label(tn.toFixed(2));
-            l.position.set(-self.size / 2, tb.y, -self.size / 2);
+            l.position.set(-self.size / 2, tb.y, -self.zsize / 2);
             self.scene.add(l);
         }
     }
