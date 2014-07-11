@@ -150,7 +150,7 @@ function Plot3D(series, w, h) {
 
     self.scene.add(line);
 
-    var x_params = self.axis_params(self.xmin, self.xmax);
+    var x_params = self.axis_params(self.xmin, self.xmax, 10);
 
     for (var t = x_params.b; t <= x_params.e; t += x_params.d) {
         var tb = self.g2w(t, self.ymin, self.zmin);
@@ -174,7 +174,7 @@ function Plot3D(series, w, h) {
         self.scene.add(l);
     }
 
-    var y_params = self.axis_params(self.ymin, self.ymax);
+    var y_params = self.axis_params(self.ymin, self.ymax, 10);
 
     for (var t = y_params.b; t <= y_params.e; t += y_params.d) {
         var tb = self.g2w(self.xmin, t, self.zmin);
@@ -200,7 +200,7 @@ function Plot3D(series, w, h) {
         }
     }
 
-    var z_params = self.axis_params(self.zmin, self.zmax);
+    var z_params = self.axis_params(self.zmin, self.zmax, 5);
 
     for (var t = z_params.b; t <= z_params.e; t += z_params.d) {
         var tb = self.g2w(self.xmin, self.ymin, t);
@@ -240,13 +240,13 @@ Plot3D.prototype.g2w = function (x, y, z) {
 }
 
 
-Plot3D.prototype.axis_params = function (min, max) {
+Plot3D.prototype.axis_params = function (min, max, no_ticks) {
     var delta = max - min;
 
     var scale = Math.pow(10, Math.floor((Math.round(Math.log(delta) / Math.LN10 * 1e6) / 1e6) - 1));
     var b = Math.ceil(min / scale) * scale;
     var e = Math.floor(max / scale) * scale;
-    var d = Math.floor((e - b) / (10 * scale)) * scale;
+    var d = Math.floor((e - b) / (no_ticks * scale)) * scale;
 
     return { b: b, e: e, d: d };
 }
