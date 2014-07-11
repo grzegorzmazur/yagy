@@ -58,7 +58,7 @@ function Plot3D(series, w, h) {
 
     self.scene = new THREE.Scene();
 
-    self.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
+    self.camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 2000);
     self.camera.position.z = 1000;
 
     for (var s = 0; s < series.length; ++s) {
