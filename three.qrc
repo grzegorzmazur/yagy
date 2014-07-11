@@ -2,6 +2,7 @@
 <RCC version="1.0">
     <qresource>
         <file>javascript/three/three.min.js</file>
+        <file>javascript/three/Detector.js</file>
         <file>javascript/three/TrackballControls.js</file>
     </qresource>
 </RCC>

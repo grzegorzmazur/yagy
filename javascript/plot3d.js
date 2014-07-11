@@ -108,7 +108,7 @@ function Plot3D(series, w, h) {
             side: THREE.DoubleSide
         });
         var mesh = new THREE.Mesh(geometry, material);
-
+  
         self.scene.add(mesh);
     }
     
@@ -213,6 +213,11 @@ function Plot3D(series, w, h) {
         l.position.set(-self.size / 2, -self.size / 2, tb.z + 40);
         self.scene.add(l);
     }
+
+    if (Detector.webgl)
+        renderer = new THREE.WebGLRenderer( {antialias:true} );
+    else
+	renderer = new THREE.CanvasRenderer();
 
     self.renderer = new THREE.WebGLRenderer();
     self.renderer.setClearColor(0xffffff, 1);
