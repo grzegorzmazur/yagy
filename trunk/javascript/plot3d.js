@@ -63,7 +63,7 @@ function Plot3D(series, w, h) {
     self.camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 2000);
 
     self.camera.up.set( 0, 0, 1 );
-    self.camera.position.set( 1000,500,100);
+    self.camera.position.set( 216,-1100,35);
     self.camera.lookAt(self.scene.position);
 
 //  var axes = new THREE.AxisHelper(100);
