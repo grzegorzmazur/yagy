@@ -117,8 +117,10 @@ function Plot3D(series, w, h) {
             color: 0x00ff00,
             side: THREE.BackSide
         });
-
-        var mesh = THREE.SceneUtils.createMultiMaterialObject(geometry, [mf, mb]);
+        var wfb = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true, transparent: true,side: THREE.BackSide } );
+        var wff = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true, transparent: true,side: THREE.FrontSide } );
+        
+        var mesh = THREE.SceneUtils.createMultiMaterialObject(geometry, [mf, mb, wfb, wff]);
         
 //        var material = new THREE.MeshBasicMaterial({
 //            color: 0xff0000,
@@ -237,6 +239,7 @@ function Plot3D(series, w, h) {
     else
         renderer = new THREE.CanvasRenderer();
 
+    //self.renderer = new THREE.CanvasRenderer();
     self.renderer = renderer;
     self.renderer.setClearColor(0xffffff, 1);
     self.renderer.setSize(w, h);
