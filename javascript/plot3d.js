@@ -7,6 +7,8 @@
  *   http://www.opensource.org/licenses/mit-license.php
  */
 
+
+
 function Plot3D(series, w, h) {
     var self = this;
     
@@ -59,8 +61,15 @@ function Plot3D(series, w, h) {
     self.scene = new THREE.Scene();
 
     self.camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 2000);
-    self.camera.position.z = 1000;
 
+    self.camera.up.set( 0, 0, 1 );
+    self.camera.position.set( 1000,500,100);
+    self.camera.lookAt(self.scene.position);
+
+//  var axes = new THREE.AxisHelper(100);
+//	self.scene.add( axes );
+
+    
     for (var s = 0; s < series.length; ++s) {
         var geometry = new THREE.Geometry();
 
@@ -217,14 +226,15 @@ function Plot3D(series, w, h) {
     if (Detector.webgl)
         renderer = new THREE.WebGLRenderer( {antialias:true} );
     else
-	renderer = new THREE.CanvasRenderer();
+        renderer = new THREE.CanvasRenderer();
 
-    self.renderer = new THREE.WebGLRenderer();
+    //self.renderer = new THREE.CanvasRenderer();
+    self.renderer = renderer;
     self.renderer.setClearColor(0xffffff, 1);
     self.renderer.setSize(w, h);
 
     self.resizePlot = function (width, height) {
-        //var camera = this;
+
         this.camera.aspect = width / height;
         this.camera.updateProjectionMatrix();
         
@@ -237,7 +247,7 @@ function Plot3D(series, w, h) {
 
 
 Plot3D.prototype.g2w = function (x, y, z) {
-    return new THREE.Vector3((x - this.xmin) * this.xscale + this.xoffset,  (y - this.ymin) * this.yscale + this.yoffset, (z - this.zmin) * this.zscale + this.zoffset);
+   return new THREE.Vector3((x - this.xmin) * this.xscale + this.xoffset,  (y - this.ymin) * this.yscale + this.yoffset, (z - this.zmin) * this.zscale + this.zoffset);
 }
 
 
