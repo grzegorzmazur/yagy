@@ -251,8 +251,8 @@ Plot3D.prototype.axis_params = function (min, max, no_ticks) {
     var delta = max - min;
 
     var scale = Math.pow(10, Math.floor((Math.round(Math.log(delta) / Math.LN10 * 1e6) / 1e6) - 1));
-    var b = Math.ceil(min / scale) * scale;
-    var e = Math.floor(max / scale) * scale;
+    var b = Math.floor(min / scale) * scale;
+    var e = Math.ceil(max / scale) * scale;
     var d = Math.floor((e - b) / (no_ticks * scale)) * scale;
 
     return { b: b, e: e, d: d };
