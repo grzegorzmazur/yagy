@@ -6,7 +6,10 @@
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
+#ifndef __APPLE__
 #include "config.h"
+#endif
+
 #include <QDebug>
 
 YacasEngine::YacasEngine(YacasRequestQueue& requests, QObject* parent):
