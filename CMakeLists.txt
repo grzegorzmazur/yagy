@@ -26,10 +26,10 @@ configure_file (
 set (CMAKE_INCLUDE_CURRENT_DIR ON)
 set (CMAKE_AUTOMOC ON)
 
-find_package (Qt5Core)
-find_package (Qt5Widgets)
-find_package (Qt5WebKit)
-find_package (Qt5WebKitWidgets)
+find_package (Qt5Core REQUIRED)
+find_package (Qt5Widgets REQUIRED)
+find_package (Qt5WebKit REQUIRED)
+find_package (Qt5WebKitWidgets REQUIRED)
 
 if (Qt5_POSITION_INDEPENDENT_CODE)
   set(CMAKE_POSITION_INDEPENDENT_CODE ON)
