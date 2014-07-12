@@ -60,8 +60,8 @@ endif ()
 
 add_executable (yagy main.cpp mainwindow.cpp cellproxy.cpp yacasrequest.cpp yacasengine.cpp yacasserver.cpp ui_mainwindow.h ${YAGY_QRESOURCES})
 
-add_library (libyacas SHARED IMPORTED)
-set_target_properties (libyacas PROPERTIES IMPORTED_LOCATION "${YACAS_PREFIX}/lib/libyacas.so")
+add_library (libyacas STATIC IMPORTED)
+set_target_properties (libyacas PROPERTIES IMPORTED_LOCATION "${YACAS_PREFIX}/lib/libyacas.a")
 
 target_link_libraries(yagy Qt5::Widgets Qt5::WebKit Qt5::WebKitWidgets libyacas)
 
