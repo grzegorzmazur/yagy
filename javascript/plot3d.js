@@ -125,6 +125,10 @@ function Plot3D(series, w, h) {
         var mesh = THREE.SceneUtils.createMultiMaterialObject(geometry, [mf, mb, wfb, wff]);
         
         self.scene.add(mesh);
+        
+        var l = self.label(series[s]["label"], self.colors[s][1]);
+        l.position.set(self.size / 2, -self.size / 2, self.zsize / 1.6 - s * 24);
+        self.scene.add(l);
     }
     
     material = new THREE.LineBasicMaterial({color: 0x000000});
@@ -174,7 +178,7 @@ function Plot3D(series, w, h) {
         self.scene.add(line);
 
         var tn = new Number(t);
-        var l = self.label(tn.toFixed(2));
+        var l = self.label(tn.toFixed(2), 0);
         l.position.set(tb.x, -self.size / 2, -self.zsize / 2);
         self.scene.add(l);
     }
@@ -199,7 +203,7 @@ function Plot3D(series, w, h) {
 
         if (t != y_params.b) {
             var tn = new Number(t);
-            var l = self.label(tn.toFixed(2));
+            var l = self.label(tn.toFixed(2), 0);
             l.position.set(-self.size / 2, tb.y, -self.zsize / 2);
             self.scene.add(l);
         }
@@ -224,7 +228,7 @@ function Plot3D(series, w, h) {
         self.scene.add(line);
 
         var tn = new Number(t);
-        var l = self.label(tn.toFixed(2));
+        var l = self.label(tn.toFixed(2), 0);
         l.position.set(-self.size / 2, -self.size / 2, tb.z + 40);
         self.scene.add(l);
     }
@@ -265,7 +269,7 @@ Plot3D.prototype.axis_params = function (min, max, no_ticks) {
     return { b: b, e: e, d: d };
 }
 
-Plot3D.prototype.label = function (text) {
+Plot3D.prototype.label = function (text, color) {
     var canvas = document.createElement('canvas');
     var context = canvas.getContext('2d');
     var font_size = 256;
@@ -278,7 +282,7 @@ Plot3D.prototype.label = function (text) {
 
     context.textAlign = "center";
     context.textBaseline = "middle";
-    context.fillStyle = "#000000";
+    context.fillStyle = "#" + Number(0x1000000 + color).toString(16).substring(1);
     context.fillText(text, text_width / 2, text_height / 2);
 
     var texture = new THREE.Texture(canvas);
