@@ -4,7 +4,7 @@ project (YAGY CXX)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pedantic -Wall -DYAGY_ENABLE_INSPECTOR")
 
-set (YACAS_PREFIX "${PROJECT_SOURCE_DIR}/../../yacas/yacas-trunk/install/linux/release")
+set (YACAS_PREFIX "${PROJECT_SOURCE_DIR}/../../yacas/yacas-trunk/install/win32/release")
 
 set (YAGY_VERSION_MAJOR 1)
 set (YAGY_VERSION_MINOR 0)
@@ -57,15 +57,42 @@ if (NOT APPLE)
     set (YAGY_QRESOURCES ${YAGY_QRESOURCES} qrc_css.cpp qrc_flot.cpp qrc_jquery.cpp qrc_mathjax.cpp qrc_three.cpp qrc_slot.cpp)
 endif ()
 
+set (YAGY_SOURCES main.cpp mainwindow.cpp cellproxy.cpp yacasrequest.cpp yacasengine.cpp yacasserver.cpp ui_mainwindow.h)
 
-add_executable (yagy main.cpp mainwindow.cpp cellproxy.cpp yacasrequest.cpp yacasengine.cpp yacasserver.cpp ui_mainwindow.h ${YAGY_QRESOURCES})
+if (WIN32)
+    set (YAGY_SOURCES ${YAGY_SOURCES} winres/yagy.rc)
+endif ()
+
+add_executable (yagy ${YAGY_SOURCES} ${YAGY_QRESOURCES})
 
 add_library (libyacas STATIC IMPORTED)
 set_target_properties (libyacas PROPERTIES IMPORTED_LOCATION "${YACAS_PREFIX}/lib/libyacas.a")
 
 target_link_libraries(yagy Qt5::Widgets Qt5::WebKit Qt5::WebKitWidgets libyacas)
 
+if (WIN32)
+  target_link_libraries (yagy shlwapi)
+endif()
+
 install (TARGETS yagy RUNTIME DESTINATION bin)
+install (DIRECTORY ${YACAS_PREFIX}/share/yacas/scripts DESTINATION share/yagy)
+
+if (WIN32)
+    # FIXME: this is plain ugly, there must be a better way
+    # install all the dlls we use
+    install (FILES "/usr/lib/gcc/i686-w64-mingw32/4.8/libgcc_s_sjlj-1.dll" DESTINATION bin)
+    get_target_property(QtCore_location Qt5::Core LOCATION)
+    get_filename_component(QT_DLL_DIR ${QtCore_location} DIRECTORY)
+
+    set (QT_DLLS libgcc_s_dw2-1.dll libstdc++-6.dll libwinpthread-1.dll Qt5WebKit.dll Qt5WebKitWidgets.dll icuin52.dll icuuc52.dll icudt52.dll Qt5Core.dll  Qt5Gui.dll Qt5Multimedia.dll Qt5MultimediaWidgets.dll Qt5Network.dll Qt5OpenGL.dll Qt5Positioning.dll Qt5PrintSupport.dll Qt5Qml.dll Qt5Quick.dll Qt5Sensors.dll Qt5Sql.dll Qt5Svg.dll Qt5Widgets.dll)
+    foreach (_dll ${QT_DLLS})
+        install (FILES "${QT_DLL_DIR}/${_dll}" DESTINATION bin)
+    endforeach ()
+    
+    install (DIRECTORY "${QT_DLL_DIR}/../plugins/platforms" DESTINATION bin)
+    install (DIRECTORY "${QT_DLL_DIR}/../plugins/imageformats" DESTINATION bin)
+    install (DIRECTORY "${QT_DLL_DIR}/../plugins/iconengines" DESTINATION bin)
+endif ()
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     set (CPACK_GENERATOR DEB)
@@ -73,6 +100,15 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     string (REGEX REPLACE "(\r?\n)+$" "" CPACK_DEBIAN_PACKAGE_ARCHITECTURE "${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
     set (CPACK_DEBIAN_PACKAGE_DEPENDS "yacas")
     set (CPACK_PACKAGE_FILE_NAME "yagy_${YAGY_VERSION}-1_${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
+elseif (WIN32)
+    set (CPACK_GENERATOR NSIS)
+    set (CPACK_NSIS_MODIFY_PATH "ON")
+    set (CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL "ON")
+    set (CPACK_NSIS_HELP_LINK "http://yagy.sourceforge.net/")
+    set (CPACK_NSIS_URL_INFO_ABOUT "http://yagy.sourceforge.net/")
+    set (CPACK_NSIS_MUI_ICON "${PROJECT_SOURCE_DIR}/winres/yagy.ico")
+    set (CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\yagy.exe")
+    set (CPACK_CREATE_DESKTOP_LINKS "yagy.exe" "yagy")
 endif ()
 
 set (CPACK_PACKAGE_NAME "yagy")
@@ -81,21 +117,8 @@ set (CPACK_PACKAGE_CONTACT "yagy-devel@lists.sourceforge.net")
 set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "YAGY is (Yet Another) Graphical interface to YACAS, a Yet Another Computer Algebra System")
 set (CPACK_PACKAGE_DESCRIPTION_FILE "${PROJECT_SOURCE_DIR}/README")
 
-if(APPLE)
-  configure_file(
-    "${PROJECT_SOURCE_DIR}/COPYING"
-    "${PROJECT_BINARY_DIR}/COPYING.txt"
-    @ONLY)
-  configure_file(
-    "${PROJECT_SOURCE_DIR}/README"
-    "${PROJECT_BINARY_DIR}/README.txt"
-    @ONLY)
-  set (CPACK_RESOURCE_FILE_LICENSE "${PROJECT_BINARY_DIR}/COPYING.txt")
-  set (CPACK_RESOURCE_FILE_README "${PROJECT_BINARY_DIR}/README.txt")
-else()
-  set (CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/COPYING")
-  set (CPACK_RESOURCE_FILE_README "${PROJECT_SOURCE_DIR}/README")
-endif()
+set (CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/COPYING")
+set (CPACK_RESOURCE_FILE_README "${PROJECT_SOURCE_DIR}/README")
 
 set (CPACK_PACKAGE_VERSION ${YAGY_VERSION})
 set (CPACK_PACKAGE_VERSION_MAJOR ${YAGY_VERSION_MAJOR})
