@@ -2,11 +2,12 @@
 
 #include <QMutexLocker>
 
-#ifdef __APPLE__
+#if defined(__APPLE__)
 #include <CoreFoundation/CoreFoundation.h>
-#endif
-
-#ifndef __APPLE__
+#elif defined(_WIN32)
+#include <shlwapi.h>
+#undef ERROR
+#else
 #include "config.h"
 #endif
 
@@ -18,7 +19,7 @@ YacasEngine::YacasEngine(YacasRequestQueue& requests, QObject* parent):
     _yacas(new CYacas(new StringOutput(_side_effects))),
     _idx(1)
 {
-#ifdef __APPLE__
+#if defined(__APPLE__)
     CFBundleRef mainBundle = CFBundleGetMainBundle();
     CFURLRef frameworkURL = CFBundleCopySharedFrameworksURL (mainBundle);
     char path[PATH_MAX];
@@ -28,9 +29,18 @@ YacasEngine::YacasEngine(YacasRequestQueue& requests, QObject* parent):
     }
 
     _yacas->Evaluate((std::string("DefaultDirectory(\"") + std::string(path) + std::string("/yacas.framework/Versions/Current/Resources/scripts/\");")).c_str());
+#elif defined(_WIN32)
+    char root_dir_buf[MAX_PATH];
+    SHRegGetPathA(HKEY_LOCAL_MACHINE, "SOFTWARE\\yagy\\yagy", 0, root_dir_buf, 0);
+    std::strcat(root_dir_buf, "\\share\\yagy\\scripts\\");
+    for (char* p = root_dir_buf; *p; ++p)
+        if (*p == '\\')
+            *p = '/';
+    _yacas->Evaluate((std::string("DefaultDirectory(\"") + std::string(root_dir_buf) + std::string("\");")).c_str());
 #else
     _yacas->Evaluate((std::string("DefaultDirectory(\"") + std::string(YACAS_PREFIX) + std::string("/share/yacas/scripts/\");")).c_str());
 #endif
+
     _yacas->Evaluate("Load(\"yacasinit.ys\");");
 
     _yacas->Evaluate("Plot2D'outputs();");
