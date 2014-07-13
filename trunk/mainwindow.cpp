@@ -21,13 +21,12 @@
 
 #include "yacas/yacas_version.h"
 
-#ifndef __APPLE__
-#include "config.h"
-#endif
-
-
-#ifdef __APPLE__
+#if defined(__APPLE__)
 #include <CoreFoundation/CoreFoundation.h>
+#elif defined(_WIN32)
+#include <shlwapi.h>
+#else
+#include "config.h"
 #endif
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -42,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _inspector(nullptr)
 #endif
 {
-#ifdef __APPLE__
+#if defined(__APPLE__)
 
     QApplication::instance()->setAttribute(Qt::AA_DontShowIconsInMenus);
 
@@ -55,6 +54,14 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     _yacas2tex.Evaluate((std::string("DefaultDirectory(\"") + std::string(path) + std::string("/yacas.framework/Versions/Current/Resources/scripts/\");")).c_str());
+#elif defined(_WIN32)
+    char root_dir_buf[MAX_PATH];
+    SHRegGetPathA(HKEY_LOCAL_MACHINE, "SOFTWARE\\yagy\\yagy", 0, root_dir_buf, 0);
+    std::strcat(root_dir_buf, "\\share\\yagy\\scripts\\");
+    for (char* p = root_dir_buf; *p; ++p)
+        if (*p == '\\')
+            *p = '/';
+    _yacas2tex.Evaluate((std::string("DefaultDirectory(\"") + std::string(root_dir_buf) + std::string("\");")).c_str());
 #else
     _yacas2tex.Evaluate((std::string("DefaultDirectory(\"") + std::string(YACAS_PREFIX) + std::string("/share/yacas/scripts/\");")).c_str());
 #endif
