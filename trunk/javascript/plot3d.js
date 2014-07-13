@@ -234,12 +234,10 @@ function Plot3D(series, w, h) {
     }
 
     if (Detector.webgl)
-        renderer = new THREE.WebGLRenderer( {antialias:true} );
+        self.renderer = new THREE.WebGLRenderer( {antialias:true} );
     else
-        renderer = new THREE.CanvasRenderer();
+        self.renderer = new THREE.CanvasRenderer();
 
-    //self.renderer = new THREE.CanvasRenderer();
-    self.renderer = renderer;
     self.renderer.setClearColor(0xffffff, 1);
     self.renderer.setSize(w, h);
 }
