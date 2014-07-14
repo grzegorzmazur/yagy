@@ -3,8 +3,7 @@ function load(){
     $( "#inputExpression" ).autosize();
     
     $( window ).on( 'blur', function(){ if ( bluredEditable != null ) $( bluredEditable ).click(); } );
-    $("#inputExpression").on('focus', function(){ bluredEditable = null});
-    
+    $( document ).on( 'click', function(){ bluredEditable = null});
     $( window ).on( 'resize', function(){
         MathJax.Hub.Queue(["Rerender", MathJax.Hub]);
         w = $(".resizable").first().parent().width();
