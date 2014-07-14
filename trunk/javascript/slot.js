@@ -2,6 +2,9 @@ function load(){
     //$("#inputExpression").focus();
     $( "#inputExpression" ).autosize();
     
+    $( window ).on( 'blur', function(){ if ( bluredEditable != null ) $( bluredEditable ).click(); } );
+    $("#inputExpression").on('focus', function(){ bluredEditable = null});
+    
     $( window ).on( 'resize', function(){
         MathJax.Hub.Queue(["Rerender", MathJax.Hub]);
         w = $(".resizable").first().parent().width();
@@ -21,6 +24,7 @@ function load(){
 
 var currentExpression = 1;
 var numberOfLines = 1;
+var bluredEditable = null;
 
 function updateInputNumber( updatedNumber) {
     $( "#inputCounter" ).html( "in " + updatedNumber + ":" );
@@ -57,9 +61,10 @@ function editableReset( element ){
 }
 
 function editableBlur( element ){
+    bluredEditable = element;
     $(element).parents("tbody").addClass("NotToCalculate");
     $(element).children().submit();
-}
+} 
 
 var EmptyEditableText = "Click to edit...";
 
