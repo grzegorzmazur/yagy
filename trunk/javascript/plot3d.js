@@ -7,7 +7,15 @@
  *   http://www.opensource.org/licenses/mit-license.php
  */
 
-
+function shadeColor2(color, percent) {
+    var f=color,
+        t=percent<0?0:255,
+        p=percent<0?percent*-1:percent,
+        R=f>>16,
+        G=f>>8&0x00FF,
+        B=f&0x0000FF;
+    return (0x1000000+(Math.round((t-R)*p)+R)*0x10000+(Math.round((t-G)*p)+G)*0x100+(Math.round((t-B)*p)+B));
+}
 
 function Plot3D(series, w, h) {
     var self = this;
@@ -109,24 +117,29 @@ function Plot3D(series, w, h) {
         }
 
         var no_colors = self.colors.length;
+        
+        colorFront = self.colors[s % no_colors];
+        colorBack = shadeColor2( colorFront,-0.3);
+        colorWireFrame = shadeColor2( colorFront,-0.6);
 
         var mf = new THREE.MeshBasicMaterial({
-            color: self.colors[s % no_colors][0],
+            color: colorBack,
             side: THREE.FrontSide
         });
   
         var mb = new THREE.MeshBasicMaterial({
-            color: self.colors[s % no_colors][1],
+            color: colorFront,
             side: THREE.BackSide
         });
-        var wfb = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true, transparent: true,side: THREE.BackSide } );
-        var wff = new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true, transparent: true,side: THREE.FrontSide } );
         
-        var mesh = THREE.SceneUtils.createMultiMaterialObject(geometry, [mf, mb, wfb, wff]);
+        var wf = new THREE.MeshBasicMaterial( { color: colorWireFrame, wireframe: true, transparent: true} );
+        
+        
+        var mesh = THREE.SceneUtils.createMultiMaterialObject(geometry, [mf, mb, wf]);
         
         self.scene.add(mesh);
         
-        var l = self.label(series[s]["label"], self.colors[s][1]);
+        var l = self.label(series[s]["label"], colorBack);
         l.position.set(self.size / 2, -self.size / 2, self.zsize / 1.6 - s * 24);
         self.scene.add(l);
     }
@@ -242,14 +255,9 @@ function Plot3D(series, w, h) {
     self.renderer.setSize(w, h);
 }
 
-Plot3D.prototype.colors = [
-    [0xff0000, 0x00ff00],
-    [0xff8000, 0x00ff80],
-    [0xffff00, 0x00ffff],
-    [0x80ff00, 0x0080ff],
-    [0x00ff00, 0x0000ff], 
-    [0x00ff80, 0x8000ff]
-];
+
+
+Plot3D.prototype.colors = [ 0xedc240,0xafd8f8,0xcb4b4b,0x4da74d,0x9440ed];
 
 Plot3D.prototype.g2w = function (x, y, z) {
    return new THREE.Vector3((x - this.xmin) * this.xscale + this.xoffset,  (y - this.ymin) * this.yscale + this.yoffset, (z - this.zmin) * this.zscale + this.zoffset);
