@@ -75,7 +75,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _update_title();
 
     loadYacasPage();
-
+    ui->webView->setAttribute(Qt::WA_AcceptTouchEvents, false);
     ui->webView->addAction(ui->actionInsert_Before);
     ui->webView->addAction(ui->actionInsert_After);
     
