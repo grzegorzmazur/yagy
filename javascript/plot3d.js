@@ -8,18 +8,18 @@
  */
 
 function shadeColor2(color, percent) {
-    var f=color,
+    var f=f=parseInt(color.slice(1),16),
         t=percent<0?0:255,
         p=percent<0?percent*-1:percent,
         R=f>>16,
         G=f>>8&0x00FF,
         B=f&0x0000FF;
-    return (0x1000000+(Math.round((t-R)*p)+R)*0x10000+(Math.round((t-G)*p)+G)*0x100+(Math.round((t-B)*p)+B));
+    return "#"+(0x1000000+(Math.round((t-R)*p)+R)*0x10000+(Math.round((t-G)*p)+G)*0x100+(Math.round((t-B)*p)+B)).toString(16).slice(1);
 }
 
 function Plot3D(series, w, h) {
     var self = this;
-    
+    self.labels = [];
     var data = [];
     
     for (var s = 0; s < series.length; ++s)
@@ -138,10 +138,7 @@ function Plot3D(series, w, h) {
         var mesh = THREE.SceneUtils.createMultiMaterialObject(geometry, [mf, mb, wf]);
         
         self.scene.add(mesh);
-        
-        var l = self.label(series[s]["label"], colorBack);
-        l.position.set(self.size / 2, -self.size / 2, self.zsize / 1.6 - s * 24);
-        self.scene.add(l);
+        self.labels.push( series[s]["label"] );
     }
     
     material = new THREE.LineBasicMaterial({color: 0x000000});
@@ -251,17 +248,36 @@ function Plot3D(series, w, h) {
     else
         self.renderer = new THREE.CanvasRenderer();
 
-    self.renderer = new THREE.CanvasRenderer();
+   // self.renderer = new THREE.CanvasRenderer();
     self.renderer.setClearColor(0xffffff, 1);
     self.renderer.setSize(w, h);
+   
 }
 
 
 
-Plot3D.prototype.colors = [ 0xedc240,0xafd8f8,0xcb4b4b,0x4da74d,0x9440ed];
+Plot3D.prototype.colors = [ "#edc240","#afd8f8","#cb4b4b","#4da74d","#9440ed"];
 
 Plot3D.prototype.g2w = function (x, y, z) {
    return new THREE.Vector3((x - this.xmin) * this.xscale + this.xoffset,  (y - this.ymin) * this.yscale + this.yoffset, (z - this.zmin) * this.zscale + this.zoffset);
+}
+
+Plot3D.prototype.addLegend = function(placeholder){
+    legendDiv = $("<div class='legend'></div>").appendTo( placeholder );
+    table = $("<table style='position:absolute;top:13px;right:13px;;font-size:smaller;color:#545454'></table>").appendTo( legendDiv );
+    
+    for ( i = 0; i < this.labels.length; i++){
+        row  = $("<tr></tr>");
+        colorBoxTd = $("<td class='legendColorBox'><div style='border:1px solid #ccc;padding:1px'><div style='width:4px;height:0;border:5px solid " + this.colors[i % this.colors.length] + ";overflow:hidden'></div></div></td>");
+        labelTd = $("<td class='legendLabel'>" + this.labels[i] + "</td></tr>");
+        
+        $(row).append( colorBoxTd );
+        $(row).append( labelTd );
+        $(row).appendTo(table);
+    }
+    
+    var div = legendDiv.children();
+    $("<div style='position:absolute;width:" + div.width() + "px;height:" + div.height() + "px; top: 13px; right: 13px; background-color: rgb(255, 255, 255); opacity: 0.85;'> </div>").prependTo(legendDiv);
 }
 
 
