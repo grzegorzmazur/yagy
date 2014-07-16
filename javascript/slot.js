@@ -18,7 +18,6 @@ function load(){
                     }
                 }
             });
-    
 }
 
 var currentExpression = 1;
@@ -169,6 +168,7 @@ function printResults( result ){
         
         $("#" + outputID).append(plot3d.renderer.domElement);
         $("#" + outputID)[0].plot3D = plot3d;
+        plot3d.addLegend("#" + outputID);
 
         var controls = new THREE.TrackballControls(plot3d.camera, plot3d.renderer.domElement);
 
