@@ -57,7 +57,7 @@ void CellProxy::on_request_state_changed(YacasRequest::State state)
 
                 QRegExp dict_entry_rx("(\"[^\"]+\"),(.+)");
                 QRegExp number_list_rx("\\{([^,\\}]+)(?:,([^,\\}]+))*\\}");
-                QRegExp string_list_rx("\\{(?:\"([^\"]+)\")(?:,\"([^\"]+)\")*\\}");
+                QRegExp split_string_list_rx("\",(?=(?:[^\\\"\"]*\\\"\"[^\\\"\"]*\\\"\")*(?![^\\\"\"]*\\\"\"))\"");
 
                 QStringList labels;
 
@@ -70,9 +70,10 @@ void CellProxy::on_request_state_changed(YacasRequest::State state)
                     }
 
                     if (dict_entry_rx.cap(1) == "\"yname\"") {
-                        string_list_rx.exactMatch(dict_entry_rx.cap(2));
-                        for (int i = 1; i <= string_list_rx.captureCount(); ++i)
-                            labels.append(string_list_rx.cap(i));
+                        QString s = dict_entry_rx.cap(2);
+                        s.remove(0, 2);
+                        s.chop(2);
+                        labels = s.split(split_string_list_rx);
                     }
                 }
 
@@ -115,7 +116,7 @@ void CellProxy::on_request_state_changed(YacasRequest::State state)
 
                 QRegExp dict_entry_rx("(\"[^\"]+\"),(.+)");
                 QRegExp number_list_rx("\\{([^,\\}]+)(?:,([^,\\}]+))*\\}");
-                QRegExp string_list_rx("\\{(?:\"([^\"]+)\")(?:,\"([^\"]+)\")*\\}");
+                QRegExp split_string_list_rx("\",(?=(?:[^\\\"\"]*\\\"\"[^\\\"\"]*\\\"\")*(?![^\\\"\"]*\\\"\"))\"");
 
                 QStringList labels;
 
@@ -123,9 +124,10 @@ void CellProxy::on_request_state_changed(YacasRequest::State state)
                     dict_entry_rx.exactMatch(os);
 
                     if (dict_entry_rx.cap(1) == "\"zname\"") {
-                        string_list_rx.exactMatch(dict_entry_rx.cap(2));
-                        for (int i = 1; i <= string_list_rx.captureCount(); ++i)
-                            labels.append(string_list_rx.cap(i));
+                        QString s = dict_entry_rx.cap(2);
+                        s.remove(0, 2);
+                        s.chop(2);
+                        labels = s.split(split_string_list_rx);
                     }
                 }
 
