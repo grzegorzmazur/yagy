@@ -172,9 +172,11 @@ function printResults( result ){
 
         var controls = new THREE.TrackballControls(plot3d.camera, plot3d.renderer.domElement);
 
+        controls.addEventListener( 'change', ControlsChanged);
+        plot3d.renderer.render(plot3d.scene, plot3d.camera);
+
         function render() {
             requestAnimationFrame(render);
-            plot3d.renderer.render(plot3d.scene, plot3d.camera);
             controls.update();
         }
 
@@ -187,10 +189,16 @@ function printResults( result ){
     }
 }
 
+function ControlsChanged( element, event){
+    plot3d = element.target.domElement.parentElement.plot3D;
+    plot3d.renderer.render(plot3d.scene, plot3d.camera);
+}
+
 function Plot3dResized( output ){
     var height = $(output).height();
     var width = $(output).width();
     output.plot3D.resizePlot( width, height);
+    output.plot3D.renderer.render(plot3d.scene, plot3d.camera);
 }
 
 function renderOutput( outputID ){
