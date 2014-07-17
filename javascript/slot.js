@@ -197,8 +197,9 @@ function ControlsChanged( element, event){
 function Plot3dResized( output ){
     var height = $(output).height();
     var width = $(output).width();
-    output.plot3D.resizePlot( width, height);
-    output.plot3D.renderer.render(plot3d.scene, plot3d.camera);
+    plot3d = output.plot3D;
+    plot3d.resizePlot( width, height);
+    plot3d.renderer.render(plot3d.scene, plot3d.camera);
 }
 
 function renderOutput( outputID ){
@@ -361,7 +362,7 @@ function insertElement( whetherAfterOrBefore ){
 }
 
 function insertAfterCurrent(){
-    insertElement( "after");
+    insertElement( "after" );
 }
 
 function insertBeforeCurrent(){
