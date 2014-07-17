@@ -77,45 +77,21 @@ function Plot3D(series, w, h) {
     
     for (var s = 0; s < series.length; ++s) {
         var geometry = new THREE.Geometry();
-
-        for (var i = 0; i < data[s].length - 2; ++i) {
-            var p0 = data[s][i];
-            var p1 = data[s][i + 1];
-
-            if (p0[0] !== p1[0])
-                continue;
-
-            var p2 = null;
-            var p3 = null;
-
-            for (var j = i + 2; j < data[s].length; ++j) {
-                if (p2 === null && data[s][j][1] == p0[1])
-                    p2 = data[s][j];
-
-                if (p3 === null && data[s][j][1] == p1[1])
-                    p3 = data[s][j];
-
-                if (p2 !== null && p3 !== null)
-                    break;
-            }
-
-            if (p2 === null)
-                continue;
-
+        
+        var triangles = Delaunay.triangulate(data[s]);
+        
+        for ( var i = 0; i < triangles.length; i = i+3 ){
+            var p0 = data[s][triangles[i]];
+            var p1 = data[s][triangles[i+1]];
+            var p2 = data[s][triangles[i+2]];
+            
             geometry.vertices.push(self.g2w(p0[0], p0[1], p0[2]));
             geometry.vertices.push(self.g2w(p1[0], p1[1], p1[2]));
             geometry.vertices.push(self.g2w(p2[0], p2[1], p2[2]));
-
+         
             geometry.faces.push(new THREE.Face3(geometry.vertices.length - 3, geometry.vertices.length - 2, geometry.vertices.length - 1));
-
-            if (p3 === null)
-                continue;
-
-            geometry.vertices.push(self.g2w(p3[0], p3[1], p3[2]));
-
-            geometry.faces.push(new THREE.Face3(geometry.vertices.length - 1, geometry.vertices.length - 2, geometry.vertices.length - 3));
         }
-
+        
         var no_colors = self.colors.length;
         
         colorFront = self.colors[s % no_colors];
@@ -133,8 +109,7 @@ function Plot3D(series, w, h) {
         });
         
         var wf = new THREE.MeshBasicMaterial( { color: colorWireFrame, wireframe: true, transparent: true, side: THREE.DoubleSide} );
-        
-        
+
         var mesh = THREE.SceneUtils.createMultiMaterialObject(geometry, [mf, mb, wf]);
         
         self.scene.add(mesh);
