@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="img.qrc">
-    <normaloff>:/img/icon.png</normaloff>:/img/icon.png</iconset>
+    <normaloff>:/resources/img/icon.png</normaloff>:/resources/img/icon.png</iconset>
   </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonFollowStyle</enum>
@@ -158,7 +158,7 @@
   <action name="action_New">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/img/document-new.svg</normaloff>:/img/document-new.svg</iconset>
+     <normaloff>:/resources/img/document-new.svg</normaloff>:/resources/img/document-new.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;New</string>
@@ -170,7 +170,7 @@
   <action name="action_Open">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/img/document-open.svg</normaloff>:/img/document-open.svg</iconset>
+     <normaloff>:/resources/img/document-open.svg</normaloff>:/resources/img/document-open.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Open...</string>
@@ -179,7 +179,7 @@
   <action name="action_Save">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/img/document-save.svg</normaloff>:/img/document-save.svg</iconset>
+     <normaloff>:/resources/img/document-save.svg</normaloff>:/resources/img/document-save.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Save</string>
@@ -191,7 +191,7 @@
   <action name="action_Save_As">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/img/document-save-as.svg</normaloff>:/img/document-save-as.svg</iconset>
+     <normaloff>:/resources/img/document-save-as.svg</normaloff>:/resources/img/document-save-as.svg</iconset>
    </property>
    <property name="text">
     <string>Save &amp;As...</string>
@@ -200,7 +200,7 @@
   <action name="action_About">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/img/help-about.svg</normaloff>:/img/help-about.svg</iconset>
+     <normaloff>:/resources/img/help-about.svg</normaloff>:/resources/img/help-about.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;About</string>
@@ -209,7 +209,7 @@
   <action name="action_Quit">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/img/application-exit.svg</normaloff>:/img/application-exit.svg</iconset>
+     <normaloff>:/resources/img/application-exit.svg</normaloff>:/resources/img/application-exit.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Quit</string>
@@ -221,7 +221,7 @@
   <action name="action_Print">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/img/document-print.svg</normaloff>:/img/document-print.svg</iconset>
+     <normaloff>:/resources/img/document-print.svg</normaloff>:/resources/img/document-print.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Print...</string>
@@ -233,7 +233,7 @@
   <action name="actionYacas_Manual">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/img/icon.png</normaloff>:/img/icon.png</iconset>
+     <normaloff>:/resources/img/icon.png</normaloff>:/resources/img/icon.png</iconset>
    </property>
    <property name="text">
     <string>Yacas &amp;Manual</string>
@@ -242,7 +242,7 @@
   <action name="action_Copy">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/img/edit-copy.svg</normaloff>:/img/edit-copy.svg</iconset>
+     <normaloff>:/resources/img/edit-copy.svg</normaloff>:/resources/img/edit-copy.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Copy</string>
@@ -251,7 +251,7 @@
   <action name="action_Paste">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/img/edit-paste.svg</normaloff>:/img/edit-paste.svg</iconset>
+     <normaloff>:/resources/img/edit-paste.svg</normaloff>:/resources/img/edit-paste.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Paste</string>
@@ -270,7 +270,7 @@
   <action name="action_Import">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/img/document-import.svg</normaloff>:/img/document-import.svg</iconset>
+     <normaloff>:/resources/img/document-import.svg</normaloff>:/resources/img/document-import.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Import</string>
@@ -284,7 +284,7 @@
   <action name="action_Interrupt">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/img/process-stop.svg</normaloff>:/img/process-stop.svg</iconset>
+     <normaloff>:/resources/img/process-stop.svg</normaloff>:/resources/img/process-stop.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Interrupt</string>
@@ -301,7 +301,7 @@
   <action name="actionEvaluate_All">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/img/view-refresh.svg</normaloff>:/img/view-refresh.svg</iconset>
+     <normaloff>:/resources/img/view-refresh.svg</normaloff>:/resources/img/view-refresh.svg</iconset>
    </property>
    <property name="text">
     <string>Evaluate &amp;All</string>
@@ -310,7 +310,7 @@
   <action name="action_Export">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/img/document-export.svg</normaloff>:/img/document-export.svg</iconset>
+     <normaloff>:/resources/img/document-export.svg</normaloff>:/resources/img/document-export.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Export</string>
@@ -319,7 +319,7 @@
   <action name="action_Close">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/img/window-close.svg</normaloff>:/img/window-close.svg</iconset>
+     <normaloff>:/resources/img/window-close.svg</normaloff>:/resources/img/window-close.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Close</string>
