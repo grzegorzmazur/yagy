@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RCC version="1.0">
     <qresource>
-        <file>img/icon.png</file>
-        <file>img/splash.png</file>
-        <file>img/document-new.svg</file>
-        <file>img/document-print.svg</file>
-        <file>img/document-open.svg</file>
-        <file>img/document-save.svg</file>
-        <file>img/document-save-as.svg</file>
-        <file>img/window-close.svg</file>
-        <file>img/application-exit.svg</file>
-        <file>img/edit-copy.svg</file>
-        <file>img/edit-paste.svg</file>
-        <file>img/document-import.svg</file>
-        <file>img/document-export.svg</file>
-        <file>img/view-refresh.svg</file>
-        <file>img/process-stop.svg</file>
-        <file>img/help-about.svg</file>
-        <file>img/progressbar.indicator.gif</file>
+        <file>resources/img/icon.png</file>
+        <file>resources/img/splash.png</file>
+        <file>resources/img/document-new.svg</file>
+        <file>resources/img/document-print.svg</file>
+        <file>resources/img/document-open.svg</file>
+        <file>resources/img/document-save.svg</file>
+        <file>resources/img/document-save-as.svg</file>
+        <file>resources/img/window-close.svg</file>
+        <file>resources/img/application-exit.svg</file>
+        <file>resources/img/edit-copy.svg</file>
+        <file>resources/img/edit-paste.svg</file>
+        <file>resources/img/document-import.svg</file>
+        <file>resources/img/document-export.svg</file>
+        <file>resources/img/view-refresh.svg</file>
+        <file>resources/img/process-stop.svg</file>
+        <file>resources/img/help-about.svg</file>
+        <file>resources/img/progressbar.indicator.gif</file>
     </qresource>
 </RCC>

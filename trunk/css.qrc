@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RCC version="1.0">
     <qresource>
-        <file>css/jquery-ui-1.10.4.custom.min.css</file>
-        <file>css/images/ui-icons_222222_256x240.png</file>
-        <file>css/view.css</file>
+        <file>resources/css/jquery-ui-1.10.4.custom.min.css</file>
+        <file>resources/css/images/ui-icons_222222_256x240.png</file>
+        <file>resources/css/yagy_ui.css</file>
     </qresource>
 </RCC>
