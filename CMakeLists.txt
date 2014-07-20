@@ -41,20 +41,16 @@ include_directories (
 
 qt5_wrap_ui (ui_mainwindow.h mainwindow.ui)
 
-qt5_add_resources (qrc_resources.cpp resources.qrc)
+qt5_add_resources (qrc_html.cpp html.qrc)
 qt5_add_resources (qrc_img.cpp img.qrc)
 
-set (YAGY_QRESOURCES qrc_resources.cpp qrc_img.cpp)
+set (YAGY_QRESOURCES qrc_html.cpp qrc_img.cpp)
 
 if (NOT APPLE)
     qt5_add_resources (qrc_css.cpp css.qrc)
-    qt5_add_resources (qrc_flot.cpp flot.qrc)
-    qt5_add_resources (qrc_jquery.cpp jquery.qrc)
-    qt5_add_resources (qrc_mathjax.cpp mathjax.qrc -compress 9)
-    qt5_add_resources (qrc_three.cpp three.qrc)
-    qt5_add_resources (qrc_slot.cpp slot.qrc)
+    qt5_add_resources (qrc_javascript.cpp javascript.qrc)
 
-    set (YAGY_QRESOURCES ${YAGY_QRESOURCES} qrc_css.cpp qrc_flot.cpp qrc_jquery.cpp qrc_mathjax.cpp qrc_three.cpp qrc_slot.cpp)
+    set (YAGY_QRESOURCES ${YAGY_QRESOURCES} qrc_css.cpp qrc_javascript.cpp)
 endif ()
 
 set (YAGY_SOURCES main.cpp mainwindow.cpp cellproxy.cpp yacasrequest.cpp yacasengine.cpp yacasserver.cpp ui_mainwindow.h)
