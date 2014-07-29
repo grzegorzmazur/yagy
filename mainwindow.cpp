@@ -120,12 +120,13 @@ void MainWindow::loadYacasPage()
     {
         qDebug() << "Error finding Resources URL";
     }
-    const QUrl resource_url = QUrl(QString("file:///resources/") + QString(path) + QString("/"));
+    const QUrl resource_url = QUrl(QString("file:///") + QString(path) + QString("/"));
+    QFile mFile(QString( QString(path) + "/html/yagy_ui.html" ));
+
 #else
     const QUrl resource_url = QUrl("qrc:///resources/");
-#endif
-
     QFile mFile(":/resources/html/yagy_ui.html");
+#endif
 
     if(!mFile.open(QFile::ReadOnly | QFile::Text)){
         qDebug() << "could not open file for read (yagy_ui.html)";
