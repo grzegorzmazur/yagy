@@ -7,16 +7,6 @@
  *   http://www.opensource.org/licenses/mit-license.php
  */
 
-function shadeColor2(color, percent) {
-    var f = f = parseInt(color.slice(1), 16),
-            t = percent < 0 ? 0 : 255,
-            p = percent < 0 ? percent * -1 : percent,
-            R = f >> 16,
-            G = f >> 8 & 0x00FF,
-            B = f & 0x0000FF;
-    return "#" + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 + (Math.round((t - B) * p) + B)).toString(16).slice(1);
-}
-
 function Plot3D(series, w, h) {
     var self = this;
     self.labels = [];
@@ -95,8 +85,8 @@ function Plot3D(series, w, h) {
         var no_colors = self.colors.length;
 
         colorFront = self.colors[s % no_colors];
-        colorBack = shadeColor2(colorFront, -0.3);
-        colorWireFrame = shadeColor2(colorFront, -0.6);
+        colorBack = self.shadeColor2(colorFront, -0.3);
+        colorWireFrame = self.shadeColor2(colorFront, -0.6);
 
         var mf = new THREE.MeshBasicMaterial({
             color: colorBack,
@@ -307,4 +297,14 @@ Plot3D.prototype.resizePlot = function (width, height) {
 
     this.renderer.setSize(width, height);
 
+};
+
+Plot3D.prototype.shadeColor2 = function (color, percent) {
+    var f = f = parseInt(color.slice(1), 16),
+            t = percent < 0 ? 0 : 255,
+            p = percent < 0 ? percent * -1 : percent,
+            R = f >> 16,
+            G = f >> 8 & 0x00FF,
+            B = f & 0x0000FF;
+    return "#" + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 + (Math.round((t - B) * p) + B)).toString(16).slice(1);
 };
