@@ -233,13 +233,11 @@ function Plot3D(series, w, h) {
 
 }
 
-
-
 Plot3D.prototype.colors = ["#edc240", "#afd8f8", "#cb4b4b", "#4da74d", "#9440ed"];
 
 Plot3D.prototype.g2w = function (x, y, z) {
     return new THREE.Vector3((x - this.xmin) * this.xscale + this.xoffset, (y - this.ymin) * this.yscale + this.yoffset, (z - this.zmin) * this.zscale + this.zoffset);
-}
+};
 
 Plot3D.prototype.addLegend = function (placeholder) {
     legendDiv = $("<div class='legend'></div>").appendTo(placeholder);
@@ -257,7 +255,7 @@ Plot3D.prototype.addLegend = function (placeholder) {
 
     var div = legendDiv.children();
     $("<div style='position:absolute;width:" + div.width() + "px;height:" + div.height() + "px; top: 13px; right: 13px; background-color: rgb(255, 255, 255); opacity: 0.85;'> </div>").prependTo(legendDiv);
-}
+};
 
 
 Plot3D.prototype.axis_params = function (min, max, no_ticks) {
@@ -269,7 +267,7 @@ Plot3D.prototype.axis_params = function (min, max, no_ticks) {
     var d = Math.floor((e - b) / (no_ticks * scale)) * scale;
 
     return {b: b, e: e, d: d};
-}
+};
 
 Plot3D.prototype.label = function (text, color) {
     var canvas = document.createElement('canvas');
@@ -300,7 +298,7 @@ Plot3D.prototype.label = function (text, color) {
     sprite.scale.set(text_width / text_height * font_size, font_size, 1);
 
     return sprite;
-}
+};
 
 Plot3D.prototype.resizePlot = function (width, height) {
 
@@ -309,4 +307,4 @@ Plot3D.prototype.resizePlot = function (width, height) {
 
     this.renderer.setSize(width, height);
 
-}
+};
