@@ -8,20 +8,20 @@
  */
 
 function shadeColor2(color, percent) {
-    var f=f=parseInt(color.slice(1),16),
-        t=percent<0?0:255,
-        p=percent<0?percent*-1:percent,
-        R=f>>16,
-        G=f>>8&0x00FF,
-        B=f&0x0000FF;
-    return "#"+(0x1000000+(Math.round((t-R)*p)+R)*0x10000+(Math.round((t-G)*p)+G)*0x100+(Math.round((t-B)*p)+B)).toString(16).slice(1);
+    var f = f = parseInt(color.slice(1), 16),
+            t = percent < 0 ? 0 : 255,
+            p = percent < 0 ? percent * -1 : percent,
+            R = f >> 16,
+            G = f >> 8 & 0x00FF,
+            B = f & 0x0000FF;
+    return "#" + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 + (Math.round((t - B) * p) + B)).toString(16).slice(1);
 }
 
 function Plot3D(series, w, h) {
     var self = this;
     self.labels = [];
     var data = [];
-    
+
     for (var s = 0; s < series.length; ++s)
         data.push(series[s]["data"]);
 
@@ -71,51 +71,55 @@ function Plot3D(series, w, h) {
 
     self.camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 2000);
 
-    self.camera.up.set( 0, 0, 1 );
-    self.camera.position.set( 155,-772,1);
+    self.camera.up.set(0, 0, 1);
+    self.camera.position.set(155, -772, 1);
     self.camera.lookAt(self.scene.position);
-    
+
     for (var s = 0; s < series.length; ++s) {
         var geometry = new THREE.Geometry();
-        
+
         var triangles = Delaunay.triangulate(data[s]);
-        
-        for ( var i = 0; i < triangles.length; i = i+3 ){
+
+        for (var i = 0; i < triangles.length; i = i + 3) {
             var p0 = data[s][triangles[i]];
-            var p1 = data[s][triangles[i+1]];
-            var p2 = data[s][triangles[i+2]];
-            
+            var p1 = data[s][triangles[i + 1]];
+            var p2 = data[s][triangles[i + 2]];
+
             geometry.vertices.push(self.g2w(p0[0], p0[1], p0[2]));
             geometry.vertices.push(self.g2w(p1[0], p1[1], p1[2]));
             geometry.vertices.push(self.g2w(p2[0], p2[1], p2[2]));
-         
+
             geometry.faces.push(new THREE.Face3(geometry.vertices.length - 3, geometry.vertices.length - 2, geometry.vertices.length - 1));
         }
-        
+
         var no_colors = self.colors.length;
-        
+
         colorFront = self.colors[s % no_colors];
-        colorBack = shadeColor2( colorFront,-0.3);
-        colorWireFrame = shadeColor2( colorFront,-0.6);
+        colorBack = shadeColor2(colorFront, -0.3);
+        colorWireFrame = shadeColor2(colorFront, -0.6);
 
         var mf = new THREE.MeshBasicMaterial({
             color: colorBack,
             side: THREE.FrontSide
         });
-  
+
         var mb = new THREE.MeshBasicMaterial({
             color: colorFront,
             side: THREE.BackSide
         });
-        
-        var wf = new THREE.MeshBasicMaterial( { color: colorWireFrame, wireframe: true, transparent: true, side: THREE.DoubleSide} );
+
+        var wf = new THREE.MeshBasicMaterial({
+            color: colorWireFrame,
+            wireframe: true,
+            transparent: true,
+            side: THREE.DoubleSide});
 
         var mesh = THREE.SceneUtils.createMultiMaterialObject(geometry, [mf, mb, wf]);
-        
+
         self.scene.add(mesh);
-        self.labels.push( series[s]["label"] );
+        self.labels.push(series[s]["label"]);
     }
-    
+
     material = new THREE.LineBasicMaterial({color: 0x000000});
     geometry = new THREE.Geometry();
 
@@ -219,38 +223,38 @@ function Plot3D(series, w, h) {
     }
 
     if (Detector.webgl)
-        self.renderer = new THREE.WebGLRenderer( {antialias:true} );
+        self.renderer = new THREE.WebGLRenderer({antialias: true});
     else
         self.renderer = new THREE.CanvasRenderer();
 
-   // self.renderer = new THREE.CanvasRenderer();
+    // self.renderer = new THREE.CanvasRenderer();
     self.renderer.setClearColor(0xffffff, 1);
     self.renderer.setSize(w, h);
-   
+
 }
 
 
 
-Plot3D.prototype.colors = [ "#edc240","#afd8f8","#cb4b4b","#4da74d","#9440ed"];
+Plot3D.prototype.colors = ["#edc240", "#afd8f8", "#cb4b4b", "#4da74d", "#9440ed"];
 
 Plot3D.prototype.g2w = function (x, y, z) {
-   return new THREE.Vector3((x - this.xmin) * this.xscale + this.xoffset,  (y - this.ymin) * this.yscale + this.yoffset, (z - this.zmin) * this.zscale + this.zoffset);
+    return new THREE.Vector3((x - this.xmin) * this.xscale + this.xoffset, (y - this.ymin) * this.yscale + this.yoffset, (z - this.zmin) * this.zscale + this.zoffset);
 }
 
-Plot3D.prototype.addLegend = function(placeholder){
-    legendDiv = $("<div class='legend'></div>").appendTo( placeholder );
-    table = $("<table style='position:absolute;top:13px;right:13px;;font-size:smaller;color:#545454'></table>").appendTo( legendDiv );
-    
-    for ( i = 0; i < this.labels.length; i++){
-        row  = $("<tr></tr>");
+Plot3D.prototype.addLegend = function (placeholder) {
+    legendDiv = $("<div class='legend'></div>").appendTo(placeholder);
+    table = $("<table style='position:absolute;top:13px;right:13px;;font-size:smaller;color:#545454'></table>").appendTo(legendDiv);
+
+    for (i = 0; i < this.labels.length; i++) {
+        row = $("<tr></tr>");
         colorBoxTd = $("<td class='legendColorBox'><div style='border:1px solid #ccc;padding:1px'><div style='width:4px;height:0;border:5px solid " + this.colors[i % this.colors.length] + ";overflow:hidden'></div></div></td>");
         labelTd = $("<td class='legendLabel'>" + this.labels[i] + "</td></tr>");
-        
-        $(row).append( colorBoxTd );
-        $(row).append( labelTd );
+
+        $(row).append(colorBoxTd);
+        $(row).append(labelTd);
         $(row).appendTo(table);
     }
-    
+
     var div = legendDiv.children();
     $("<div style='position:absolute;width:" + div.width() + "px;height:" + div.height() + "px; top: 13px; right: 13px; background-color: rgb(255, 255, 255); opacity: 0.85;'> </div>").prependTo(legendDiv);
 }
@@ -264,7 +268,7 @@ Plot3D.prototype.axis_params = function (min, max, no_ticks) {
     var e = Math.ceil(max / scale) * scale;
     var d = Math.floor((e - b) / (no_ticks * scale)) * scale;
 
-    return { b: b, e: e, d: d };
+    return {b: b, e: e, d: d};
 }
 
 Plot3D.prototype.label = function (text, color) {
@@ -303,6 +307,6 @@ Plot3D.prototype.resizePlot = function (width, height) {
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
 
-    this.renderer.setSize( width, height);
+    this.renderer.setSize(width, height);
 
 }
