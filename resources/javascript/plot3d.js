@@ -41,7 +41,7 @@ function Plot3D(series, w, h) {
         }
     }
 
-    if (self.zmin == self.zmax) {
+    if (self.zmin === self.zmax) {
         self.zmin -= 1;
         self.zmax += 1;
     }
@@ -180,7 +180,7 @@ function Plot3D(series, w, h) {
         var line = new THREE.Line(geometry, material);
         self.scene.add(line);
 
-        if (t != y_params.b) {
+        if (t !== y_params.b) {
             var tn = new Number(t);
             var l = self.label(tn.toFixed(2), 0);
             l.position.set(-self.size / 2, tb.y, -self.zsize / 2);
