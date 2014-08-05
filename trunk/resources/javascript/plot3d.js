@@ -75,16 +75,16 @@ function Plot3D(series, w, h) {
             var p1 = data[s][triangles[i + 1]];
             var p2 = data[s][triangles[i + 2]];
 
-            geometry.vertices.push(self.g2w(p0[0], p0[1], p0[2]));
-            geometry.vertices.push(self.g2w(p1[0], p1[1], p1[2]));
-            geometry.vertices.push(self.g2w(p2[0], p2[1], p2[2]));
+            geometry.vertices.push(self.graphToWorld(p0[0], p0[1], p0[2]));
+            geometry.vertices.push(self.graphToWorld(p1[0], p1[1], p1[2]));
+            geometry.vertices.push(self.graphToWorld(p2[0], p2[1], p2[2]));
 
             geometry.faces.push(new THREE.Face3(geometry.vertices.length - 3, geometry.vertices.length - 2, geometry.vertices.length - 1));
         }
 
-        var no_colors = self.colors.length;
+        var noColors = self.colors.length;
 
-        colorFront = self.colors[s % no_colors];
+        colorFront = self.colors[s % noColors];
         colorBack = self.shadeColor2(colorFront, -0.3);
         colorWireFrame = self.shadeColor2(colorFront, -0.6);
 
@@ -138,10 +138,10 @@ function Plot3D(series, w, h) {
 
     self.scene.add(line);
 
-    var x_params = self.axis_params(self.xmin, self.xmax, 10);
+    var xParams = self.axisParams(self.xmin, self.xmax, 10);
 
-    for (var t = x_params.b; t <= x_params.e; t += x_params.d) {
-        var tb = self.g2w(t, self.ymin, self.zmin);
+    for (var t = xParams.b; t <= xParams.e; t += xParams.d) {
+        var tb = self.graphToWorld(t, self.ymin, self.zmin);
         tb.y = -self.size / 2;
         tb.z = -self.zsize / 2;
         var te = tb.clone();
@@ -162,10 +162,10 @@ function Plot3D(series, w, h) {
         self.scene.add(l);
     }
 
-    var y_params = self.axis_params(self.ymin, self.ymax, 10);
+    var yParams = self.axisParams(self.ymin, self.ymax, 10);
 
-    for (var t = y_params.b; t <= y_params.e; t += y_params.d) {
-        var tb = self.g2w(self.xmin, t, self.zmin);
+    for (var t = yParams.b; t <= yParams.e; t += yParams.d) {
+        var tb = self.graphToWorld(self.xmin, t, self.zmin);
         tb.x = -self.size / 2;
         tb.z = -self.zsize / 2;
         var te = tb.clone();
@@ -180,7 +180,7 @@ function Plot3D(series, w, h) {
         var line = new THREE.Line(geometry, material);
         self.scene.add(line);
 
-        if (t !== y_params.b) {
+        if (t !== yParams.b) {
             var tn = new Number(t);
             var l = self.label(tn.toFixed(2), 0);
             l.position.set(-self.size / 2, tb.y, -self.zsize / 2);
@@ -188,10 +188,10 @@ function Plot3D(series, w, h) {
         }
     }
 
-    var z_params = self.axis_params(self.zmin, self.zmax, 5);
+    var zParams = self.axisParams(self.zmin, self.zmax, 5);
 
-    for (var t = z_params.b; t <= z_params.e; t += z_params.d) {
-        var tb = self.g2w(self.xmin, self.ymin, t);
+    for (var t = zParams.b; t <= zParams.e; t += zParams.d) {
+        var tb = self.graphToWorld(self.xmin, self.ymin, t);
         tb.x = -self.size / 2;
         tb.y = -self.size / 2;
         var te = tb.clone();
@@ -225,7 +225,7 @@ function Plot3D(series, w, h) {
 
 Plot3D.prototype.colors = ["#edc240", "#afd8f8", "#cb4b4b", "#4da74d", "#9440ed"];
 
-Plot3D.prototype.g2w = function (x, y, z) {
+Plot3D.prototype.graphToWorld = function (x, y, z) {
     return new THREE.Vector3((x - this.xmin) * this.xscale + this.xoffset, (y - this.ymin) * this.yscale + this.yoffset, (z - this.zmin) * this.zscale + this.zoffset);
 };
 
@@ -248,13 +248,13 @@ Plot3D.prototype.addLegend = function (placeholder) {
 };
 
 
-Plot3D.prototype.axis_params = function (min, max, no_ticks) {
+Plot3D.prototype.axisParams = function (min, max, noTicks) {
     var delta = max - min;
 
     var scale = Math.pow(10, Math.floor((Math.round(Math.log(delta) / Math.LN10 * 1e6) / 1e6) - 1));
     var b = Math.floor(min / scale) * scale;
     var e = Math.ceil(max / scale) * scale;
-    var d = Math.floor((e - b) / (no_ticks * scale)) * scale;
+    var d = Math.floor((e - b) / (noTicks * scale)) * scale;
 
     return {b: b, e: e, d: d};
 };
@@ -262,18 +262,18 @@ Plot3D.prototype.axis_params = function (min, max, no_ticks) {
 Plot3D.prototype.label = function (text, color) {
     var canvas = document.createElement('canvas');
     var context = canvas.getContext('2d');
-    var font_size = 256;
-    context.font = "normal " + font_size + "px Arial";
+    var fontSize = 256;
+    context.font = "normal " + fontSize + "px Arial";
 
-    var text_width = context.measureText(text).width;
-    var text_height = 200;
+    var textWidth = context.measureText(text).width;
+    var textHeight = 200;
 
-    canvas.width = text_width;
+    canvas.width = textWidth;
 
     context.textAlign = "center";
     context.textBaseline = "middle";
     context.fillStyle = "#" + Number(0x1000000 + color).toString(16).substring(1);
-    context.fillText(text, text_width / 2, text_height / 2);
+    context.fillText(text, textWidth / 2, textHeight / 2);
 
     var texture = new THREE.Texture(canvas);
     texture.needsUpdate = true;
@@ -285,7 +285,7 @@ Plot3D.prototype.label = function (text, color) {
     });
 
     var sprite = new THREE.Sprite(material);
-    sprite.scale.set(text_width / text_height * font_size, font_size, 1);
+    sprite.scale.set(textWidth / textHeight * fontSize, fontSize, 1);
 
     return sprite;
 };
