@@ -381,7 +381,8 @@ function deleteCurrent(){
     if ( $(focused)[0].id == "expression_0"){
         return;
     }
-    
+    number = $(focused)[0].id.split("_")[1];
+    goDown( number );
     $(focused).remove();
 
 }
