@@ -11,9 +11,16 @@
         <file>resources/img/window-close.svg</file>
         <file>resources/img/application-exit.svg</file>
         <file>resources/img/edit-copy.svg</file>
+        <file>resources/img/edit-delete.svg</file>
         <file>resources/img/edit-paste.svg</file>
         <file>resources/img/document-import.svg</file>
         <file>resources/img/document-export.svg</file>
+        <file>resources/img/go-bottom.svg</file>
+        <file>resources/img/go-down.svg</file>
+        <file>resources/img/go-top.svg</file>
+        <file>resources/img/go-up.svg</file>
+        <file>resources/img/list-remove.svg</file>
+        <file>resources/img/media-playback-start.svg</file>
         <file>resources/img/view-refresh.svg</file>
         <file>resources/img/process-stop.svg</file>
         <file>resources/img/help-about.svg</file>
