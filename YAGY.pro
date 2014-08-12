@@ -2,9 +2,9 @@ TARGET = YAGY
 TEMPLATE = app
 QMAKE_CXXFLAGS += -std=c++11
 SOURCES += main.cpp mainwindow.cpp cellproxy.cpp yacasrequest.cpp yacasengine.cpp yacasserver.cpp
-HEADERS += mainwindow.h config.h cellproxy.h yacasrequest.h yacasserver.h yacasengine.h
+HEADERS += mainwindow.h cellproxy.h yacasrequest.h yacasserver.h yacasengine.h
 FORMS += mainwindow.ui
-RESOURCES += resources.qrc img.qrc
+RESOURCES += img.qrc
 QT += webkit widgets webkitwidgets
 CONFIG += c++11
 ICON = icon.icns
@@ -21,10 +21,11 @@ macx{
     FRAMEWORK.files = $${YACAS_PREFIX}/yacas.framework
     FRAMEWORK.path = Contents/SharedFrameworks
     
-    JAVASCRIPT.files = javascript
-    CSS.files = css
-    IMG.files = img
-    QMAKE_BUNDLE_DATA += CSS JAVASCRIPT FRAMEWORK IMG
+    JAVASCRIPT.files = resources/javascript
+    CSS.files = resources/css
+    IMG.files = resources/img
+    HTML.files = resources/html
+    QMAKE_BUNDLE_DATA += CSS JAVASCRIPT FRAMEWORK IMG HTML
     
     CONFIG += lib_bundle
 } else {
