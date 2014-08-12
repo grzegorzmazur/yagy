@@ -93,7 +93,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -292,6 +292,10 @@
    </property>
   </action>
   <action name="actionEvaluate_Current">
+   <property name="icon">
+    <iconset resource="img.qrc">
+     <normaloff>:/resources/img/media-playback-start.svg</normaloff>:/resources/img/media-playback-start.svg</iconset>
+   </property>
    <property name="text">
     <string>Evaluate &amp;Current</string>
    </property>
@@ -330,6 +334,10 @@
    </property>
   </action>
   <action name="actionInsert_Before">
+   <property name="icon">
+    <iconset resource="img.qrc">
+     <normaloff>:/resources/img/go-bottom.svg</normaloff>:/resources/img/go-bottom.svg</iconset>
+   </property>
    <property name="text">
     <string>Insert &amp;Before</string>
    </property>
@@ -338,6 +346,10 @@
    </property>
   </action>
   <action name="actionInsert_After">
+   <property name="icon">
+    <iconset resource="img.qrc">
+     <normaloff>:/resources/img/go-top.svg</normaloff>:/resources/img/go-top.svg</iconset>
+   </property>
    <property name="text">
     <string>Insert &amp;After</string>
    </property>
@@ -346,6 +358,10 @@
    </property>
   </action>
   <action name="actionDelete_Current">
+   <property name="icon">
+    <iconset resource="img.qrc">
+     <normaloff>:/resources/img/list-remove.svg</normaloff>:/resources/img/list-remove.svg</iconset>
+   </property>
    <property name="text">
     <string>Delete Current</string>
    </property>
@@ -363,7 +379,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="img.qrc"/>
   <include location="img.qrc"/>
  </resources>
  <connections/>
