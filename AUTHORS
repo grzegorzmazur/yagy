@@ -2,3 +2,14 @@ YAGY, the Yet Another Gui for Yacas, is brought to you by:
 
 * Marta Noga <marta.noga@gmail.com>
 * Grzegorz Mazur <teoretyk@gmail.com>
+
+Apart from our code, YAGY makes use of several libraries:
+ * delaunay.js: https://github.com/ironwallaby/delaunay
+ * Flot: http://www.flotcharts.org/
+ * jQuery: http://jquery.com/
+ * MathJax: http://www.mathjax.org/
+ * QT: http://qt-project.org/
+ * three.js: http://threejs.org/
+ * yacas: http://yacas.sourceforge.net/
+
+Additionally, YAGY contains selected Humanity icons.
