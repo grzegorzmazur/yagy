@@ -14,6 +14,10 @@
  *
  */
 
+/*
+ * (!) Changed for Yagy. Search for YAGY CHANGE text.
+ */
+
 /**
   * Version 1.7.1
   *
@@ -174,7 +178,8 @@
                 }
                                 
                 self.editing    = true;
-                self.revert     = $(self).html();
+                //YAGY CHANGE: chaned from $(self).html() to $(self).text() to not have html entites encoded
+                self.revert     = $(self).text();
                 $(self).html('');
 
                 /* create the form object */
