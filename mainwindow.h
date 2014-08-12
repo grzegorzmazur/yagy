@@ -56,6 +56,7 @@ private slots:
 
     void on_actionInsert_Before_triggered();
     void on_actionInsert_After_triggered();
+    void on_actionDelete_Current_triggered();
     
     void on_action_Use_triggered();
     void on_action_Load_triggered();

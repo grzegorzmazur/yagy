@@ -340,6 +340,7 @@ function insertElement( whetherAfterOrBefore ){
     var value = "";
     var clickNew = true;
     
+    //Special case when inserting after last input (expression_0)
     if ( whetherAfterOrBefore == "after" && $(focused)[0].id == "expression_0"){
         whetherAfterOrBefore = "before";
         value = $("#inputExpression").val();
@@ -367,4 +368,20 @@ function insertAfterCurrent(){
 
 function insertBeforeCurrent(){
     insertElement( "before" );
+}
+
+function deleteCurrent(){
+    var focused = $(':focus').parents("tbody");
+    
+    if (focused.length == 0 ){
+        return;
+    }
+    
+    //Cannot delete last input (expression_0)
+    if ( $(focused)[0].id == "expression_0"){
+        return;
+    }
+    
+    $(focused).remove();
+
 }
