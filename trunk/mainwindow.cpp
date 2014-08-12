@@ -262,6 +262,11 @@ void MainWindow::on_actionInsert_After_triggered()
     ui->webView->page()->currentFrame()->evaluateJavaScript("insertAfterCurrent();");
 }
 
+void MainWindow::on_actionDelete_Current_triggered()
+{
+    ui->webView->page()->currentFrame()->evaluateJavaScript("deleteCurrent();");
+}
+
 void MainWindow::on_action_Use_triggered()
 {
     QString fname =
