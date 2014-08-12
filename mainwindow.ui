@@ -93,7 +93,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -147,6 +147,7 @@
     </property>
     <addaction name="actionInsert_Before"/>
     <addaction name="actionInsert_After"/>
+    <addaction name="actionDelete_Current"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
@@ -342,6 +343,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+Down</string>
+   </property>
+  </action>
+  <action name="actionDelete_Current">
+   <property name="text">
+    <string>Delete Current</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
    </property>
   </action>
  </widget>
