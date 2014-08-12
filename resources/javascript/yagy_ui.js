@@ -2,18 +2,18 @@ function load(){
     //$("#inputExpression").focus();
     $( "#inputExpression" ).autosize();
     
-    $( window ).on( 'blur', function(){ if ( bluredEditable != null ) $( bluredEditable ).click(); } );
-    $( document ).on( 'click', function(){ bluredEditable = null});
+    $( window ).on( 'blur', function(){ if ( bluredEditable !== null ) $( bluredEditable ).click(); } );
+    $( document ).on( 'click', function(){ bluredEditable = null; });
     $( window ).on( 'resize', function(){
         MathJax.Hub.Queue(["Rerender", MathJax.Hub]);
         w = $(".resizable").first().parent().width();
         $( ".resizable" ).resizable( "option", "maxWidth", w );
-        $( ".resizable" ).each( function(){ if ($(this).width() > w ) $(this).width(w); })
+        $( ".resizable" ).each( function(){ if ($(this).width() > w ) $(this).width(w); });
     });
     
     MathJax.Hub.Config({ "HTML-CSS": {  styles: {
                        ".MathJax_Display": {
-                            margin: "4px 0px",
+                            margin: "4px 0px"
                        }
                     }
                 }
@@ -34,15 +34,15 @@ function clearInput(){
 
 
 function submitenter( input, event ){
-    if( event.which == 13 && event.shiftKey ){
+    if( event.which === 13 && event.shiftKey ){
         calculate( input.value );
         return false;
     }
-    if( event.which == 104 && event.ctrlKey ){
+    if( event.which === 104 && event.ctrlKey ){
         yacas.help(input.value, input.selectionStart);
         return false;
     }
-    if( event.which == 38 && event.shiftKey ){
+    if( event.which === 38 && event.shiftKey ){
         if( !goUp( 0 ))
             return true;
     }
@@ -53,7 +53,7 @@ function submitenter( input, event ){
 function editableReset( element ){
     original = $(element).parents("span")[0].calculatedExpression;
     revert = $(element).parents("span")[0].revert;
-    if ( original == revert ){
+    if ( original === revert ){
         $(element).parents("tbody").removeClass("Modified");
     }
 }
@@ -140,12 +140,12 @@ function printResults( result ){
 
     output.text("");
     
-    if( result["type"] == "Expression" ){
+    if( result["type"] === "Expression" ){
         output.append( "$$" + result["tex_code"] + "$$" );
         renderOutput( outputID );
-    }else if( result["type"] == "Error" ){
+    }else if( result["type"] === "Error" ){
         output.append( result["error_message"] );
-    }else if( result["type"] == "Plot2D" ){
+    }else if( result["type"] === "Plot2D" ){
         $.plot(output, result["plot2d_data"] );
 
         var width = $("#" + outputID).parent().width();
@@ -156,7 +156,7 @@ function printResults( result ){
     
         output.addClass( "resizable");
         
-    }else if( result["type"] == "Plot3D" ){
+    }else if( result["type"] === "Plot3D" ){
 
         var width = $("#" + outputID).parent().width();
         var height = 300;
@@ -250,7 +250,7 @@ function processChange( value, number, object ){
 
 function evaluateCurrent(){
     var active = document.activeElement;
-    if ( active.id == "inputExpression" && active.value != ""){
+    if ( active.id === "inputExpression" && active.value != ""){
         calculate( active.value );
     }else{
         $(document.activeElement).parent().trigger("submit");
@@ -259,72 +259,72 @@ function evaluateCurrent(){
 
 function evaluateAll(){
     $(".editable").each( function() {
-                              value = $(this).text()
+                              value = $(this).text();
                               
-                              if ( value == "" ){
+                              if ( value === "" ){
                                 $(this).find("form:first").trigger("submit");
                               }else{
                               
-                                if ( value == EmptyEditableText ) value = "";
+                                if ( value === EmptyEditableText ) value = "";
                         
                                 number = $(this).parents("tbody")[0].id.split("_")[1];
                                 processChange( value, number, this );
                               }
                            });
     inputVal = $( "#inputExpression" ).val();
-    if ( inputVal != "" ) calculate( inputVal );
+    if ( inputVal !== "" ) calculate( inputVal );
     $("#inputExpression").focus();
 }
 
 function getAllInputs(){
     var inputs = [];
     $(".editable").each( function() {
-                              value = $(this).text()
+                              value = $(this).text();
                               
-                              if ( value == "" ){
+                              if ( value === "" ){
                                 inputs.push( $(this).find("textarea:first").val() );
                               }else{
                               
-                                if ( value == EmptyEditableText ) value = "";
+                                if ( value === EmptyEditableText ) value = "";
                                 inputs.push( value );
                               }
                               });
     inputVal = $( "#inputExpression" ).val();
-    if ( inputVal != "" ) inputs.push( inputVal );
+    if ( inputVal !== "" ) inputs.push( inputVal );
     
     return inputs;
 }
 
 function findPreviousExpression( number ){
     var previous = $("#expression_"+ number).prev("tbody");
-    if ( previous.length == 0 ) return null; //First row
+    if ( previous.length === 0 ) return null; //First row
     return previous[0].id.split("_")[1];
     
 }
 
 function findNextExpression( number ){
     var next = $("#expression_"+ number).next("tbody");
-    if ( next.length == 0 ) return null; //First row
+    if ( next.length === 0 ) return null; //First row
     return next[0].id.split("_")[1];
     
 }
 
 function goUp( number ){
     prev = findPreviousExpression( number );
-    if ( prev == null ) return false;
+    if ( prev === null ) return false;
     goto ( prev );
     return true;    
 }
 
 function goDown( number ){
     next = findNextExpression( number );
-    if ( next == null ) return false;
+    if ( next === null ) return false;
     goto ( next );
     return true;
 }
 
 function goto( number ){
-    if ( number == 0 ) $("#inputExpression").focus();
+    if ( number === 0 ) $("#inputExpression").focus();
     else $("#expression_"+number).find(".editable").click();
     
 }
@@ -332,7 +332,7 @@ function goto( number ){
 function insertElement( whetherAfterOrBefore ){
     var focused = $(':focus').parents("tbody");
     
-    if (focused.length == 0 ){
+    if (focused.length === 0 ){
         return;
     }
     
@@ -341,14 +341,14 @@ function insertElement( whetherAfterOrBefore ){
     var clickNew = true;
     
     //Special case when inserting after last input (expression_0)
-    if ( whetherAfterOrBefore == "after" && $(focused)[0].id == "expression_0"){
+    if ( whetherAfterOrBefore === "after" && $(focused)[0].id === "expression_0"){
         whetherAfterOrBefore = "before";
         value = $("#inputExpression").val();
         clearInput();
         clickNew = false;
     }
     
-    if( whetherAfterOrBefore == "before"){
+    if( whetherAfterOrBefore === "before"){
         element.insertBefore( focused );
     }else{
         element.insertAfter( focused );
@@ -373,12 +373,12 @@ function insertBeforeCurrent(){
 function deleteCurrent(){
     var focused = $(':focus').parents("tbody");
     
-    if (focused.length == 0 ){
+    if (focused.length === 0 ){
         return;
     }
     
     //Cannot delete last input (expression_0)
-    if ( $(focused)[0].id == "expression_0"){
+    if ( $(focused)[0].id === "expression_0"){
         return;
     }
     number = $(focused)[0].id.split("_")[1];
