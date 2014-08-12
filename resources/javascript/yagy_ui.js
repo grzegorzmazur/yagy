@@ -324,7 +324,7 @@ function goDown( number ){
 }
 
 function goto( number ){
-    if ( number === 0 ) $("#inputExpression").focus();
+    if ( number === '0' ) $("#inputExpression").focus();
     else $("#expression_"+number).find(".editable").click();
     
 }
