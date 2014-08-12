@@ -76,8 +76,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     loadYacasPage();
     ui->webView->setAttribute(Qt::WA_AcceptTouchEvents, false);
+    
     ui->webView->addAction(ui->actionInsert_Before);
     ui->webView->addAction(ui->actionInsert_After);
+    ui->webView->addAction(ui->actionDelete_Current);
     
     _windows.append(this);
 }
