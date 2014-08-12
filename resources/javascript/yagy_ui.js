@@ -230,16 +230,16 @@ function calculate( value ){
 }
 
 function processChange( value, number, object ){
-    
+   var decodedValue = $("<div/>").html( value ).text();
     
     if ( $("#expression_"+number).hasClass("NotToCalculate")){
         $("#expression_"+number).removeClass("NotToCalculate");
         return;
     }
     
-    addExpressionCells( numberOfLines, currentExpression, value, "#expression_" + number);
+    addExpressionCells( numberOfLines, currentExpression, decodedValue, "#expression_" + number);
     
-    yacas.eval( numberOfLines, value );
+    yacas.eval( numberOfLines, decodedValue );
     
     currentExpression++;
     numberOfLines++;
