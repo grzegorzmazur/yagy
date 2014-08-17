@@ -275,6 +275,28 @@
         <file>resources/javascript/mathjax/localization/en/MathMenu.js</file>
     </qresource>
     <qresource>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_AMS-Regular.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_Caligraphic-Bold.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_Caligraphic-Regular.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_Fraktur-Bold.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_Fraktur-Regular.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_Main-Bold.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_Main-Italic.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_Main-Regular.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_Math-BoldItalic.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_Math-Italic.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_Math-Regular.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_SansSerif-Bold.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_SansSerif-Italic.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_SansSerif-Regular.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_Script-Regular.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_Size1-Regular.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_Size2-Regular.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_Size3-Regular.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_Size4-Regular.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_Typewriter-Regular.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_WinChrome-Regular.otf</file>
+        <file>resources/javascript/fonts/HTML-CSS/TeX/otf/MathJax_WinIE6-Regular.otf</file>
         <file>resources/javascript/fonts/HTML-CSS/TeX/woff/MathJax_AMS-Regular.woff</file>
         <file>resources/javascript/fonts/HTML-CSS/TeX/woff/MathJax_Caligraphic-Bold.woff</file>
         <file>resources/javascript/fonts/HTML-CSS/TeX/woff/MathJax_Caligraphic-Regular.woff</file>
