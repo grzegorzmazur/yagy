@@ -80,6 +80,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->webView->addAction(ui->actionInsert_Before);
     ui->webView->addAction(ui->actionInsert_After);
     ui->webView->addAction(ui->actionDelete_Current);
+    ui->webView->addAction(ui->actionCurrent_Symbol_Help);
     
     _windows.append(this);
 }
@@ -432,6 +433,11 @@ void MainWindow::on_action_Restart_triggered()
 void MainWindow::on_actionYacas_Manual_triggered()
 {
     QDesktopServices::openUrl(QUrl("http://yacas.sourceforge.net/refmanual.html"));
+}
+
+void MainWindow::on_actionCurrent_Symbol_Help_triggered()
+{
+    ui->webView->page()->currentFrame()->evaluateJavaScript("contextHelp()");
 }
 
 void MainWindow::on_action_About_triggered()
