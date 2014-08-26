@@ -38,10 +38,6 @@ function submitenter( input, event ){
         calculate( input.value );
         return false;
     }
-    if( event.which === 72 && event.ctrlKey ){
-        yacas.help(input.value, input.selectionStart);
-        return false;
-    }
     if( event.which === 38 && event.shiftKey ){
         if( !goUp( 0 ))
             return true;
@@ -385,4 +381,9 @@ function deleteCurrent(){
     goDown( number );
     $(focused).remove();
 
+}
+
+function contextHelp() {
+    var e = document.activeElement;
+    yacas.help(e.value, e.selectionStart);
 }
