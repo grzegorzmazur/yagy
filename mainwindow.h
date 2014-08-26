@@ -69,6 +69,7 @@ private slots:
     void on_action_Restart_triggered();
 
     void on_actionYacas_Manual_triggered();
+    void on_actionCurrent_Symbol_Help_triggered();
     void on_action_About_triggered();
 
 private:

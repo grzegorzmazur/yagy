@@ -113,6 +113,7 @@
      <string>&amp;Help</string>
     </property>
     <addaction name="actionYacas_Manual"/>
+    <addaction name="actionCurrent_Symbol_Help"/>
     <addaction name="action_About"/>
    </widget>
    <widget class="QMenu" name="menu_Edit">
@@ -367,6 +368,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionCurrent_Symbol_Help">
+   <property name="text">
+    <string>Current &amp;Symbol Help</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+H</string>
    </property>
   </action>
  </widget>
