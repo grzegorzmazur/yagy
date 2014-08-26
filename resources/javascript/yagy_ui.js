@@ -38,7 +38,7 @@ function submitenter( input, event ){
         calculate( input.value );
         return false;
     }
-    if( event.which === 104 && event.ctrlKey ){
+    if( event.which === 72 && event.ctrlKey ){
         yacas.help(input.value, input.selectionStart);
         return false;
     }
