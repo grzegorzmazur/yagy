@@ -33,7 +33,7 @@ public slots:
 private:
     YacasRequestQueue& _requests;
     CYacas* _yacas;
-    LispString _side_effects;
+    std::ostringstream _side_effects;
     unsigned _idx;
 };
 

@@ -78,6 +78,14 @@ private:
     
     Ui::MainWindow* ui;
 
+    class NullBuffer: public std::streambuf {
+    public:
+        int overflow(int c) { return c; }
+    };
+
+    NullBuffer _null_buffer;
+    std::ostream _null_stream;
+    
     YacasServer* _yacas_server;
     CYacas _yacas2tex;
 
