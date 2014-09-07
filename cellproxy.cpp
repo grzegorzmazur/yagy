@@ -36,7 +36,7 @@ void CellProxy::on_request_state_changed(YacasRequest::State state)
                 const QString result = _request->result().trimmed();
                 const QString texform_expr = QString("TeXForm(Hold(") + result + "));";
                 _yacas2tex.Evaluate(texform_expr.toStdString().c_str());
-                const QString texform_result = _yacas2tex.Result();
+                const QString texform_result = QString::fromStdString(_yacas2tex.Result());
                 const QString tex_code =
                     texform_result.trimmed().mid(2, texform_result.length() - 5);
                 evaluation_result["type"] = "Expression";

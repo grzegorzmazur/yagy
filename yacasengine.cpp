@@ -16,7 +16,7 @@
 YacasEngine::YacasEngine(YacasRequestQueue& requests, QObject* parent):
     QObject(parent),
     _requests(requests),
-    _yacas(new CYacas(new StringOutput(_side_effects))),
+    _yacas(new CYacas(_side_effects)),
     _idx(1)
 {
 #if defined(__APPLE__)
@@ -87,11 +87,12 @@ void YacasEngine::on_start_processing()
 
             const QString expr = request->take();
             
-            _side_effects = "";
+            _side_effects.clear();
+            _side_effects.str("");
             _yacas->Evaluate((expr + ";").toStdString().c_str());
 
             if (!_yacas->IsError()) {
-                QString result = _yacas->Result();
+                QString result = QString::fromStdString(_yacas->Result());
                 result = result.left(result.length() - 1).trimmed();
                 
                 YacasRequest::ResultType result_type = YacasRequest::EXPRESSION;
@@ -104,10 +105,10 @@ void YacasEngine::on_start_processing()
                     result = result.remove("Yagy'Plot3DS'Data(");
                     result.truncate(result.length() - 1);
                 }
-                request->answer(_idx++, result_type, result, QString(_side_effects.c_str()));
+                request->answer(_idx++, result_type, result, QString::fromStdString(_side_effects.str()));
             } else {
-                QString msg = _yacas->Error();
-                request->answer(_idx++, YacasRequest::ERROR, msg.trimmed(), QString(_side_effects.c_str()));
+                QString msg = QString::fromStdString(_yacas->Error());
+                request->answer(_idx++, YacasRequest::ERROR, msg.trimmed(), QString::fromStdString(_side_effects.str()));
             }
 
             _requests.mtx.lock();

@@ -32,7 +32,9 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
+    _null_stream(&_null_buffer),
     _yacas_server(new YacasServer),
+    _yacas2tex(_null_stream),
     _has_file(false),
     _modified(false),
     _fname(QString("Untitled Notebook ") + QString::number(_cntr++))
