@@ -3,12 +3,12 @@
 #include <QDebug>
 #include <QMutexLocker>
 
-YacasServer::YacasServer(QObject *parent) :
+YacasServer::YacasServer(const QString& scripts_path, QObject *parent) :
     QObject(parent)
 {
     _requests.shutdown = false;
 
-    _engine = new YacasEngine(_requests);
+    _engine = new YacasEngine(scripts_path, _requests);
     _engine->moveToThread(&_engine_thread);
     _engine_thread.start();
     connect(&_engine_thread, SIGNAL(finished()), _engine, SLOT(deleteLater()));

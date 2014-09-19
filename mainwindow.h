@@ -85,6 +85,8 @@ private:
 
     NullBuffer _null_buffer;
     std::ostream _null_stream;
+
+    QString _scripts_path;
     
     YacasServer* _yacas_server;
     CYacas _yacas2tex;
