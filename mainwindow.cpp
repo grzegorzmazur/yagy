@@ -23,17 +23,20 @@
 
 #if defined(__APPLE__)
 #include <CoreFoundation/CoreFoundation.h>
+#elif defined (__linux__)
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <libgen.h>
 #elif defined(_WIN32)
 #include <shlwapi.h>
-#else
-#include "config.h"
 #endif
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     _null_stream(&_null_buffer),
-    _yacas_server(new YacasServer),
+    _yacas_server(nullptr),
     _yacas2tex(_null_stream),
     _has_file(false),
     _modified(false),
@@ -52,10 +55,40 @@ MainWindow::MainWindow(QWidget *parent) :
     char path[PATH_MAX];
     if (!CFURLGetFileSystemRepresentation(frameworkURL, TRUE, (UInt8 *)path, PATH_MAX))
     {
-        qDebug() << "Error finding Resources URL";
+        QMessageBox::critical(this, "Yacas Error", "Failed to find resources, bailing out.");
+        close();
     }
 
-    _yacas2tex.Evaluate((std::string("DefaultDirectory(\"") + std::string(path) + std::string("/yacas.framework/Versions/Current/Resources/scripts/\");")).c_str());
+    _scripts_path = path;
+    _scripts_path.append("/yacas.framework/Versions/Current/Resources/scripts/");
+    
+    _yacas2tex.Evaluate((std::string("DefaultDirectory(\"") + scripts_path + "\");")).c_str());
+#elif defined(__linux__)
+    
+    struct stat sb;
+    if (stat("/proc/self/exe", &sb) == -1) {
+        QMessageBox::critical(this, "Yagy Error", "Failed to stat /proc/self/exe, bailing out.");
+        close();
+    }
+
+    std::vector<char> buf(sb.st_size + 1);
+
+    const ssize_t r = readlink("/proc/self/exe", buf.data(), sb.st_size + 1);
+
+    if (r == -1) {
+        QMessageBox::critical(this, "Yagy Error", "Failed to read /proc/self/exe, bailing out.");
+        close();
+    }
+
+    if (r > sb.st_size) {
+        QMessageBox::critical(this, "Yagy Error", "/proc/self/exe changed between stat and readlink, bailing out.");
+        close();
+    }
+
+    buf[r] = '\0';
+
+    _scripts_path = dirname(dirname(buf.data()));
+    _scripts_path.append("/share/yagy/scripts/");
 #elif defined(_WIN32)
     char root_dir_buf[MAX_PATH];
     SHRegGetPathA(HKEY_LOCAL_MACHINE, "SOFTWARE\\yagy\\yagy", 0, root_dir_buf, 0);
@@ -63,11 +96,15 @@ MainWindow::MainWindow(QWidget *parent) :
     for (char* p = root_dir_buf; *p; ++p)
         if (*p == '\\')
             *p = '/';
-    _yacas2tex.Evaluate((std::string("DefaultDirectory(\"") + std::string(root_dir_buf) + std::string("\");")).c_str());
+    
+    _scripts_path = root_dir_buf;
 #else
-    _yacas2tex.Evaluate((std::string("DefaultDirectory(\"") + std::string(YACAS_PREFIX) + std::string("/share/yacas/scripts/\");")).c_str());
+#error "Yagy not yet ported to this platform, please contact developers"
 #endif
 
+    _yacas_server = new YacasServer(_scripts_path);
+    
+    _yacas2tex.Evaluate(((std::string("DefaultDirectory(\"") + _scripts_path.toStdString() + "\");")).c_str());
     _yacas2tex.Evaluate("Load(\"yacasinit.ys\");");
 
     ui->setupUi(this);
@@ -428,7 +465,7 @@ void MainWindow::on_action_Restart_triggered()
 
     if (reply == QMessageBox::Yes) {
         delete _yacas_server;
-        _yacas_server = new YacasServer;
+        _yacas_server = new YacasServer(_scripts_path);
     }
 }
 
