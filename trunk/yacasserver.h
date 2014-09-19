@@ -10,7 +10,7 @@ class YacasServer: public QObject
 {
     Q_OBJECT
 public:
-    explicit YacasServer(QObject* parent = 0);
+    explicit YacasServer(const QString& scripts_path, QObject* parent = 0);
     ~YacasServer();
 
     void submit(YacasRequest*);

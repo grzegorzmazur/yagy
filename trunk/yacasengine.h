@@ -7,6 +7,8 @@
 #include <QQueue>
 #include <QWaitCondition>
 
+#include <sstream>
+
 #include "yacasrequest.h"
 
 #include "yacas/yacas.h"
@@ -22,7 +24,7 @@ class YacasEngine: public QObject
 {
     Q_OBJECT
 public:
-    explicit YacasEngine(YacasRequestQueue& requests, QObject* = 0);
+    explicit YacasEngine(const QString& scripts_path, YacasRequestQueue& requests, QObject* = 0);
     ~YacasEngine();
 
     void cancel();
