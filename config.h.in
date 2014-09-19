@@ -1,6 +1,0 @@
-#ifndef CONFIG_H
-#define CONFIG_H
-
-#define YACAS_PREFIX "@YACAS_PREFIX@"
-
-#endif // CONFIG_H

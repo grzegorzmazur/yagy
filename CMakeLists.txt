@@ -21,12 +21,6 @@ configure_file (
   "version.h"
   )
 
-configure_file (
-  "config.h.in"
-  "config.h"
-  )
-
-
 set (CMAKE_INCLUDE_CURRENT_DIR ON)
 set (CMAKE_AUTOMOC ON)
 
