@@ -62,7 +62,6 @@ MainWindow::MainWindow(QWidget *parent) :
     _scripts_path = path;
     _scripts_path.append("/yacas.framework/Versions/Current/Resources/scripts/");
     
-    _yacas2tex.Evaluate((std::string("DefaultDirectory(\"") + scripts_path + "\");")).c_str());
 #elif defined(__linux__)
     
     struct stat sb;
