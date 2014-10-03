@@ -12,6 +12,10 @@
     background-color: #66CD00;
     color: white;
 }
+.Expression>tr.Out>td{
+    font-size: 16px;
+}
+
 
 .Plot2D>tr>td:first-child{
     background-color: #66CD00;
