@@ -16,6 +16,8 @@ int main(int argc, char *argv[]){
         PlatObSetThreadSafe(true);
     
 	QApplication app(argc, argv);
+
+        app.setAttribute(Qt::AA_DontShowIconsInMenus);
         
         qRegisterMetaType<YacasRequest::State>("YacasRequest::State");
     
