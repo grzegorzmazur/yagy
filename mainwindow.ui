@@ -86,6 +86,24 @@
    <addaction name="action_New"/>
    <addaction name="action_Open"/>
    <addaction name="action_Save"/>
+   <addaction name="action_Save_As"/>
+   <addaction name="action_Print"/>
+   <addaction name="action_Close"/>
+   <addaction name="action_Quit"/>
+   <addaction name="separator"/>
+   <addaction name="actionInsert_Before"/>
+   <addaction name="actionInsert_After"/>
+   <addaction name="actionDelete_Current"/>
+   <addaction name="action_Copy"/>
+   <addaction name="action_Paste"/>
+   <addaction name="action_Import"/>
+   <addaction name="action_Export"/>
+   <addaction name="actionEvaluate_Current"/>
+   <addaction name="actionEvaluate_All"/>
+   <addaction name="action_Interrupt"/>
+   <addaction name="actionCurrent_Symbol_Help"/>
+   <addaction name="actionYacas_Manual"/>
+   <addaction name="action_About"/>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -93,7 +111,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -122,6 +140,10 @@
     </property>
     <addaction name="action_Copy"/>
     <addaction name="action_Paste"/>
+    <addaction name="separator"/>
+    <addaction name="actionInsert_Before"/>
+    <addaction name="actionInsert_After"/>
+    <addaction name="actionDelete_Current"/>
    </widget>
    <widget class="QMenu" name="menuScript">
     <property name="title">
@@ -160,7 +182,7 @@
   <action name="action_New">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/resources/img/document-new.svg</normaloff>:/resources/img/document-new.svg</iconset>
+     <normaloff>:/resources/img/new_document.svg</normaloff>:/resources/img/new_document.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;New</string>
@@ -172,7 +194,7 @@
   <action name="action_Open">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/resources/img/document-open.svg</normaloff>:/resources/img/document-open.svg</iconset>
+     <normaloff>:/resources/img/open_document_dark.svg</normaloff>:/resources/img/open_document_dark.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Open...</string>
@@ -181,7 +203,7 @@
   <action name="action_Save">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/resources/img/document-save.svg</normaloff>:/resources/img/document-save.svg</iconset>
+     <normaloff>:/resources/img/save_document.svg</normaloff>:/resources/img/save_document.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Save</string>
@@ -193,7 +215,7 @@
   <action name="action_Save_As">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/resources/img/document-save-as.svg</normaloff>:/resources/img/document-save-as.svg</iconset>
+     <normaloff>:/resources/img/save_as.svg</normaloff>:/resources/img/save_as.svg</iconset>
    </property>
    <property name="text">
     <string>Save &amp;As...</string>
@@ -202,7 +224,7 @@
   <action name="action_About">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/resources/img/help-about.svg</normaloff>:/resources/img/help-about.svg</iconset>
+     <normaloff>:/resources/img/info.svg</normaloff>:/resources/img/info.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;About</string>
@@ -211,7 +233,7 @@
   <action name="action_Quit">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/resources/img/application-exit.svg</normaloff>:/resources/img/application-exit.svg</iconset>
+     <normaloff>:/resources/img/exit.svg</normaloff>:/resources/img/exit.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Quit</string>
@@ -223,7 +245,7 @@
   <action name="action_Print">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/resources/img/document-print.svg</normaloff>:/resources/img/document-print.svg</iconset>
+     <normaloff>:/resources/img/print.svg</normaloff>:/resources/img/print.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Print...</string>
@@ -235,7 +257,7 @@
   <action name="actionYacas_Manual">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/resources/img/icon.png</normaloff>:/resources/img/icon.png</iconset>
+     <normaloff>:/resources/img/help_2.svg</normaloff>:/resources/img/help_2.svg</iconset>
    </property>
    <property name="text">
     <string>Yacas &amp;Manual</string>
@@ -244,7 +266,7 @@
   <action name="action_Copy">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/resources/img/edit-copy.svg</normaloff>:/resources/img/edit-copy.svg</iconset>
+     <normaloff>:/resources/img/copy.svg</normaloff>:/resources/img/copy.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Copy</string>
@@ -253,7 +275,7 @@
   <action name="action_Paste">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/resources/img/edit-paste.svg</normaloff>:/resources/img/edit-paste.svg</iconset>
+     <normaloff>:/resources/img/paste.svg</normaloff>:/resources/img/paste.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Paste</string>
@@ -272,7 +294,7 @@
   <action name="action_Import">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/resources/img/document-import.svg</normaloff>:/resources/img/document-import.svg</iconset>
+     <normaloff>:/resources/img/import.svg</normaloff>:/resources/img/import.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Import</string>
@@ -286,7 +308,7 @@
   <action name="action_Interrupt">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/resources/img/process-stop.svg</normaloff>:/resources/img/process-stop.svg</iconset>
+     <normaloff>:/resources/img/interupt.svg</normaloff>:/resources/img/interupt.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Interrupt</string>
@@ -295,7 +317,7 @@
   <action name="actionEvaluate_Current">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/resources/img/media-playback-start.svg</normaloff>:/resources/img/media-playback-start.svg</iconset>
+     <normaloff>:/resources/img/evaluate.svg</normaloff>:/resources/img/evaluate.svg</iconset>
    </property>
    <property name="text">
     <string>Evaluate &amp;Current</string>
@@ -307,7 +329,7 @@
   <action name="actionEvaluate_All">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/resources/img/view-refresh.svg</normaloff>:/resources/img/view-refresh.svg</iconset>
+     <normaloff>:/resources/img/reevaluate_2.svg</normaloff>:/resources/img/reevaluate_2.svg</iconset>
    </property>
    <property name="text">
     <string>Evaluate &amp;All</string>
@@ -316,7 +338,7 @@
   <action name="action_Export">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/resources/img/document-export.svg</normaloff>:/resources/img/document-export.svg</iconset>
+     <normaloff>:/resources/img/export.svg</normaloff>:/resources/img/export.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Export</string>
@@ -325,7 +347,7 @@
   <action name="action_Close">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/resources/img/window-close.svg</normaloff>:/resources/img/window-close.svg</iconset>
+     <normaloff>:/resources/img/close_document.svg</normaloff>:/resources/img/close_document.svg</iconset>
    </property>
    <property name="text">
     <string>&amp;Close</string>
@@ -337,7 +359,7 @@
   <action name="actionInsert_Before">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/resources/img/go-bottom.svg</normaloff>:/resources/img/go-bottom.svg</iconset>
+     <normaloff>:/resources/img/add_above.svg</normaloff>:/resources/img/add_above.svg</iconset>
    </property>
    <property name="text">
     <string>Insert &amp;Before</string>
@@ -349,7 +371,7 @@
   <action name="actionInsert_After">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/resources/img/go-top.svg</normaloff>:/resources/img/go-top.svg</iconset>
+     <normaloff>:/resources/img/add_below.svg</normaloff>:/resources/img/add_below.svg</iconset>
    </property>
    <property name="text">
     <string>Insert &amp;After</string>
@@ -361,7 +383,7 @@
   <action name="actionDelete_Current">
    <property name="icon">
     <iconset resource="img.qrc">
-     <normaloff>:/resources/img/list-remove.svg</normaloff>:/resources/img/list-remove.svg</iconset>
+     <normaloff>:/resources/img/delete_current.svg</normaloff>:/resources/img/delete_current.svg</iconset>
    </property>
    <property name="text">
     <string>Delete Current</string>
@@ -371,6 +393,10 @@
    </property>
   </action>
   <action name="actionCurrent_Symbol_Help">
+   <property name="icon">
+    <iconset resource="img.qrc">
+     <normaloff>:/resources/img/help.svg</normaloff>:/resources/img/help.svg</iconset>
+   </property>
    <property name="text">
     <string>Current &amp;Symbol Help</string>
    </property>
