@@ -228,7 +228,7 @@ void MainWindow::on_action_Open_triggered()
     loadYacasPage();
 
     foreach (const QJsonValue& v, QJsonDocument::fromJson(data).array())
-        ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculate('") + v.toObject()["input"].toString() + "');");
+        ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculate(\"") + v.toObject()["input"].toString() + "\");");
 
     _fname = fname;
     _modified = false;
