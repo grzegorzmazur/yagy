@@ -36,13 +36,13 @@
         <file>resources/img/help_2.svg</file>
         <file>resources/img/help.svg</file>
         <file>resources/img/info.svg</file>
-        <file>resources/img/reevaluate_2.svg</file>
         <file>resources/img/export.svg</file>
         <file>resources/img/import.svg</file>
+        <file>resources/img/paste.svg</file>
+        <file>resources/img/copy.svg</file>
         <file>resources/img/delete_current.svg</file>
         <file>resources/img/add_below.svg</file>
         <file>resources/img/add_above.svg</file>
-        <file>resources/img/paste.svg</file>
-        <file>resources/img/copy.svg</file>
+        <file>resources/img/reevaluate_2.svg</file>
     </qresource>
 </RCC>
