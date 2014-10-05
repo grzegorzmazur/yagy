@@ -1,11 +1,13 @@
 
 
 #Elements>tbody>tr>td:first-child{
-    width: 40px;
+    white-space: nowrap;
     font-size: x-small;
-    min-width: 40px;
-    max-width: 50px;
     overflow: hidden;
+}
+
+#Elements>tbody>tr>td:last-child{
+    width: 99%
 }
 
 .Expression>tr>td:first-child{
@@ -55,7 +57,7 @@ body{
 #Elements{
     border-collapse:collapse;
     width:100%;
-    table-layout: fixed;
+    
 }
 
 textarea{
