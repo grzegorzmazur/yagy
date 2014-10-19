@@ -59,13 +59,12 @@ private slots:
     void on_actionDelete_Current_triggered();
     
     void on_action_Use_triggered();
-    void on_action_Load_triggered();
     void on_action_Import_triggered();
     void on_action_Export_triggered();
 
     void on_actionEvaluate_Current_triggered();
     void on_actionEvaluate_All_triggered();
-    void on_action_Interrupt_triggered();
+    void on_action_Stop_triggered();
     void on_action_Restart_triggered();
 
     void on_actionYacas_Manual_triggered();
