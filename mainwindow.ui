@@ -100,7 +100,7 @@
    <addaction name="action_Export"/>
    <addaction name="actionEvaluate_Current"/>
    <addaction name="actionEvaluate_All"/>
-   <addaction name="action_Interrupt"/>
+   <addaction name="action_Stop"/>
    <addaction name="actionCurrent_Symbol_Help"/>
    <addaction name="actionYacas_Manual"/>
    <addaction name="action_About"/>
@@ -154,28 +154,21 @@
     <addaction name="action_Import"/>
     <addaction name="action_Export"/>
    </widget>
-   <widget class="QMenu" name="menu_Yacas">
+   <widget class="QMenu" name="menu_Evaluate">
     <property name="title">
-     <string>&amp;Yacas</string>
+     <string>E&amp;valuate</string>
     </property>
     <addaction name="actionEvaluate_Current"/>
     <addaction name="actionEvaluate_All"/>
-    <addaction name="action_Interrupt"/>
+    <addaction name="separator"/>
+    <addaction name="action_Stop"/>
+    <addaction name="separator"/>
     <addaction name="action_Restart"/>
-   </widget>
-   <widget class="QMenu" name="menu_Cell">
-    <property name="title">
-     <string>&amp;Cell</string>
-    </property>
-    <addaction name="actionInsert_Before"/>
-    <addaction name="actionInsert_After"/>
-    <addaction name="actionDelete_Current"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
-   <addaction name="menu_Cell"/>
+   <addaction name="menu_Evaluate"/>
    <addaction name="menuScript"/>
-   <addaction name="menu_Yacas"/>
    <addaction name="menu_Help"/>
   </widget>
   <action name="action_New">
@@ -304,16 +297,16 @@
      <normaloff>:/resources/img/restart_yacas.svg</normaloff>:/resources/img/restart_yacas.svg</iconset>
    </property>
    <property name="text">
-    <string>&amp;Restart</string>
+    <string> &amp;Restart Yacas</string>
    </property>
   </action>
-  <action name="action_Interrupt">
+  <action name="action_Stop">
    <property name="icon">
     <iconset resource="img.qrc">
      <normaloff>:/resources/img/interupt.svg</normaloff>:/resources/img/interupt.svg</iconset>
    </property>
    <property name="text">
-    <string>&amp;Interrupt</string>
+    <string>&amp;Stop</string>
    </property>
   </action>
   <action name="actionEvaluate_Current">
@@ -322,7 +315,7 @@
      <normaloff>:/resources/img/evaluate.svg</normaloff>:/resources/img/evaluate.svg</iconset>
    </property>
    <property name="text">
-    <string>Evaluate &amp;Current</string>
+    <string>&amp;Current</string>
    </property>
    <property name="shortcut">
     <string>Shift+Return</string>
@@ -334,7 +327,7 @@
      <normaloff>:/resources/img/reevaluate_2.svg</normaloff>:/resources/img/reevaluate_2.svg</iconset>
    </property>
    <property name="text">
-    <string>Evaluate &amp;All</string>
+    <string>&amp;All</string>
    </property>
   </action>
   <action name="action_Export">
