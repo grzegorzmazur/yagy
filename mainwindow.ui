@@ -87,23 +87,19 @@
    <addaction name="action_Open"/>
    <addaction name="action_Save"/>
    <addaction name="action_Save_As"/>
+   <addaction name="separator"/>
    <addaction name="action_Print"/>
-   <addaction name="action_Close"/>
-   <addaction name="action_Quit"/>
    <addaction name="separator"/>
    <addaction name="actionInsert_Before"/>
    <addaction name="actionInsert_After"/>
    <addaction name="actionDelete_Current"/>
-   <addaction name="action_Copy"/>
-   <addaction name="action_Paste"/>
-   <addaction name="action_Import"/>
-   <addaction name="action_Export"/>
+   <addaction name="separator"/>
    <addaction name="actionEvaluate_Current"/>
    <addaction name="actionEvaluate_All"/>
    <addaction name="action_Stop"/>
+   <addaction name="separator"/>
    <addaction name="actionCurrent_Symbol_Help"/>
    <addaction name="actionYacas_Manual"/>
-   <addaction name="action_About"/>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
