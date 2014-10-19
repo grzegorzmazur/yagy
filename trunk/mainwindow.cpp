@@ -324,24 +324,6 @@ void MainWindow::on_action_Use_triggered()
     ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculate('Use(\"") + fname + "\")');");
 }
 
-void MainWindow::on_action_Load_triggered()
-{
-    QString fname =
-            QFileDialog::getOpenFileName(this, "Open", "", "Yacas scripts (*.ys);;All files (*)");
-
-    if (fname.length() == 0)
-        return;
-
-    QFile f(fname);
-
-    if (!f.open(QIODevice::ReadOnly)) {
-        qWarning("Couldn't open file for loading.");
-        return;
-    }
-
-    ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculate('Load(\"") + fname + "\")');");
-}
-
 void MainWindow::on_action_Import_triggered()
 {
     QString fname =
@@ -449,7 +431,7 @@ void MainWindow::on_actionEvaluate_All_triggered()
 
 }
 
-void MainWindow::on_action_Interrupt_triggered()
+void MainWindow::on_action_Stop_triggered()
 {
     _yacas_server->cancel();
 }
