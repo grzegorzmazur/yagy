@@ -150,7 +150,6 @@
      <string>&amp;Script</string>
     </property>
     <addaction name="action_Use"/>
-    <addaction name="action_Load"/>
     <addaction name="separator"/>
     <addaction name="action_Import"/>
     <addaction name="action_Export"/>
@@ -281,12 +280,11 @@
     <string>&amp;Paste</string>
    </property>
   </action>
-  <action name="action_Load">
-   <property name="text">
-    <string>&amp;Load</string>
-   </property>
-  </action>
   <action name="action_Use">
+   <property name="icon">
+    <iconset resource="img.qrc">
+     <normaloff>:/resources/img/use_script.svg</normaloff>:/resources/img/use_script.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;Use</string>
    </property>
