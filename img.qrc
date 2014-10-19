@@ -44,5 +44,6 @@
         <file>resources/img/add_below.svg</file>
         <file>resources/img/add_above.svg</file>
         <file>resources/img/reevaluate_2.svg</file>
+        <file>resources/img/restart_yacas.svg</file>
     </qresource>
 </RCC>
