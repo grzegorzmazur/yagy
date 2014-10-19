@@ -111,7 +111,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>22</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -301,6 +301,10 @@
    </property>
   </action>
   <action name="action_Restart">
+   <property name="icon">
+    <iconset resource="img.qrc">
+     <normaloff>:/resources/img/restart_yacas.svg</normaloff>:/resources/img/restart_yacas.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;Restart</string>
    </property>
