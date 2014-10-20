@@ -133,10 +133,6 @@
     </property>
     <addaction name="action_Copy"/>
     <addaction name="action_Paste"/>
-    <addaction name="separator"/>
-    <addaction name="actionInsert_Before"/>
-    <addaction name="actionInsert_After"/>
-    <addaction name="actionDelete_Current"/>
    </widget>
    <widget class="QMenu" name="menuScript">
     <property name="title">
@@ -158,8 +154,17 @@
     <addaction name="separator"/>
     <addaction name="action_Restart"/>
    </widget>
+   <widget class="QMenu" name="menu_Cell">
+    <property name="title">
+     <string>&amp;Cell</string>
+    </property>
+    <addaction name="actionInsert_Before"/>
+    <addaction name="actionInsert_After"/>
+    <addaction name="actionDelete_Current"/>
+   </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
+   <addaction name="menu_Cell"/>
    <addaction name="menu_Evaluate"/>
    <addaction name="menuScript"/>
    <addaction name="menu_Help"/>
