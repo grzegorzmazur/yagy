@@ -86,9 +86,6 @@
    <addaction name="action_New"/>
    <addaction name="action_Open"/>
    <addaction name="action_Save"/>
-   <addaction name="action_Save_As"/>
-   <addaction name="separator"/>
-   <addaction name="action_Print"/>
    <addaction name="separator"/>
    <addaction name="actionInsert_Before"/>
    <addaction name="actionInsert_After"/>
