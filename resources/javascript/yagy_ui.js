@@ -305,6 +305,28 @@ function findNextExpression( number ){
     
 }
 
+function previousCell() {
+    var focused = $(':focus').parents("tbody");
+    
+    if (focused.length === 0 ){
+        return;
+    }
+    
+    var number = $(focused)[0].id.split("_")[1];
+    goUp( number );
+}
+
+function nextCell() {
+    var focused = $(':focus').parents("tbody");
+    
+    if (focused.length === 0 ){
+        return;
+    }
+    
+    var number = $(focused)[0].id.split("_")[1];
+    goDown( number );
+}
+
 function goUp( number ){
     prev = findPreviousExpression( number );
     if ( prev === null ) return false;

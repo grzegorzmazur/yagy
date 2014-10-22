@@ -87,6 +87,9 @@
    <addaction name="action_Open"/>
    <addaction name="action_Save"/>
    <addaction name="separator"/>
+   <addaction name="action_Previous"/>
+   <addaction name="action_Next"/>
+   <addaction name="separator"/>
    <addaction name="actionInsert_Before"/>
    <addaction name="actionInsert_After"/>
    <addaction name="actionDelete_Current"/>
@@ -158,6 +161,9 @@
     <property name="title">
      <string>&amp;Cell</string>
     </property>
+    <addaction name="action_Previous"/>
+    <addaction name="action_Next"/>
+    <addaction name="separator"/>
     <addaction name="actionInsert_Before"/>
     <addaction name="actionInsert_After"/>
     <addaction name="actionDelete_Current"/>
@@ -395,6 +401,30 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+H</string>
+   </property>
+  </action>
+  <action name="action_Next">
+   <property name="icon">
+    <iconset resource="img.qrc">
+     <normaloff>:/resources/img/cell_next.svg</normaloff>:/resources/img/cell_next.svg</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Next</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+Down</string>
+   </property>
+  </action>
+  <action name="action_Previous">
+   <property name="icon">
+    <iconset resource="img.qrc">
+     <normaloff>:/resources/img/cell_previous.svg</normaloff>:/resources/img/cell_previous.svg</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Previous</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+Up</string>
    </property>
   </action>
  </widget>
