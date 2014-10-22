@@ -296,6 +296,16 @@ void MainWindow::on_actionInsert_Before_triggered()
     ui->webView->page()->currentFrame()->evaluateJavaScript("insertBeforeCurrent();");
 }
 
+void MainWindow::on_action_Previous_triggered()
+{
+    ui->webView->page()->currentFrame()->evaluateJavaScript("previousCell();");
+}
+
+void MainWindow::on_action_Next_triggered()
+{
+    ui->webView->page()->currentFrame()->evaluateJavaScript("nextCell();");
+}
+
 void MainWindow::on_actionInsert_After_triggered()
 {
     ui->webView->page()->currentFrame()->evaluateJavaScript("insertAfterCurrent();");
