@@ -8,9 +8,11 @@ if(NOT EXISTS ${YACAS_PREFIX}/include/yacas/yacas.h)
   message(SEND_ERROR "Can't find yacas.h in ${YACAS_PREFIX}/include/yacas")
 endif()
 
-if (CMAKE_COMPILER_IS_GNUCXX)
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pedantic -Wall")
-endif()
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -std=c++11")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+    add_definitions(-DYACAS_NO_CONSTEXPR)
+endif ()
 
 add_definitions(-DYAGY_ENABLE_INSPECTOR)
 
