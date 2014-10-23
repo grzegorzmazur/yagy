@@ -42,12 +42,16 @@ void YacasEngine::on_start_processing()
         if (_requests.shutdown)
             return;
 
+        busy(false);
+        
         _requests.cnd.wait(&_requests.mtx);
 
         if (_requests.shutdown)
             return;
 
         _yacas->getDefEnv().getEnv().stop_evaluation = false;
+        
+        busy(true);
         
         while (!_requests.waiting.empty()) {
             YacasRequest* request = _requests.waiting.dequeue();

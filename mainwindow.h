@@ -73,6 +73,8 @@ private slots:
     void on_actionCurrent_Symbol_Help_triggered();
     void on_action_About_triggered();
 
+    void handle_engine_busy(bool);
+        
 private:
     void _save();
     void _update_title();

@@ -101,6 +101,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     _yacas_server = new YacasServer(_scripts_path);
     
+    connect(_yacas_server, SIGNAL(busy(bool)), this, SLOT(handle_engine_busy(bool)));
+    
     _yacas2tex.Evaluate(((std::string("DefaultDirectory(\"") + _scripts_path.toStdString() + "\");")).c_str());
     _yacas2tex.Evaluate("Load(\"yacasinit.ys\");");
 
@@ -478,6 +480,11 @@ void MainWindow::on_action_About_triggered()
 
 
     QMessageBox::about(this, "About Yagy", about.arg(YACAS_VERSION));
+}
+
+void MainWindow::handle_engine_busy(bool busy)
+{
+    ui->action_Stop->setEnabled(busy);
 }
 
 void MainWindow::eval(int idx, QString expr)

@@ -32,6 +32,9 @@ public:
 public slots:
     void on_start_processing();
 
+signals:
+    void busy(bool);
+    
 private:
     YacasRequestQueue& _requests;
     CYacas* _yacas;
