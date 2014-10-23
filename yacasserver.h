@@ -19,9 +19,11 @@ public:
 signals:
     void start_processing();
     void interrupt();
+    void busy(bool);
 
 public slots:
-
+    void on_engine_busy(bool);
+    
 private:
     YacasRequestQueue _requests;
     YacasEngine* _engine;

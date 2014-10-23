@@ -13,7 +13,8 @@ YacasServer::YacasServer(const QString& scripts_path, QObject *parent) :
     _engine_thread.start();
     connect(&_engine_thread, SIGNAL(finished()), _engine, SLOT(deleteLater()));
     connect(this, SIGNAL(start_processing()), _engine, SLOT(on_start_processing()));
-
+    connect(_engine, SIGNAL(busy(bool)), this, SLOT(on_engine_busy(bool)));
+    
     emit start_processing();
 }
 
@@ -36,4 +37,9 @@ void YacasServer::submit(YacasRequest* request)
 void YacasServer::cancel()
 {
     _engine->cancel();
+}
+
+void YacasServer::on_engine_busy(bool b)
+{
+    busy(b);
 }
