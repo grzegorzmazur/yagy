@@ -53,7 +53,8 @@ private slots:
 
     void on_action_Copy_triggered();
     void on_action_Paste_triggered();
-
+    void on_actionPreferences_triggered();
+    
     void on_action_Next_triggered();
     void on_action_Previous_triggered();
     void on_actionInsert_Before_triggered();
