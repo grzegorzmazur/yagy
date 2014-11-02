@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "preferences_dialog.h"
 #include "cellproxy.h"
 
 #include <QtCore/QDebug>
@@ -291,6 +292,16 @@ void MainWindow::on_action_Copy_triggered()
 
 void MainWindow::on_action_Paste_triggered()
 {
+}
+
+void MainWindow::on_actionPreferences_triggered()
+{
+    PreferencesDialog pd(this);
+    pd.exec();
+//    QDialog* preferences_dialog = new QDialog(this);
+//    Ui::Preferences preferences_ui;
+//    preferences_ui.setupUi(preferences_dialog);
+//    preferences_dialog->exec();
 }
 
 void MainWindow::on_actionInsert_Before_triggered()
