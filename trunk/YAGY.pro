@@ -1,9 +1,9 @@
 TARGET = YAGY
 TEMPLATE = app
 QMAKE_CXXFLAGS += -std=c++11
-SOURCES += main.cpp mainwindow.cpp cellproxy.cpp yacasrequest.cpp yacasengine.cpp yacasserver.cpp
-HEADERS += mainwindow.h cellproxy.h yacasrequest.h yacasserver.h yacasengine.h
-FORMS += mainwindow.ui
+SOURCES += main.cpp mainwindow.cpp cellproxy.cpp yacasrequest.cpp yacasengine.cpp yacasserver.cpp preferences_dialog.cpp
+HEADERS += mainwindow.h cellproxy.h yacasrequest.h yacasserver.h yacasengine.h preferences_dialog.h	
+FORMS += mainwindow.ui preferences.ui
 RESOURCES += img.qrc
 QT += webkit widgets webkitwidgets
 CONFIG += c++11
