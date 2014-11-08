@@ -11,13 +11,27 @@ function load(){
         $( ".resizable" ).each( function(){ if ($(this).width() > w ) $(this).width(w); });
     });
     
-    MathJax.Hub.Config({ "HTML-CSS": {  styles: {
-                       ".MathJax_Display": {
-                            margin: "4px 0px"
-                       }
-                    }
-                }
-            });
+    
+}
+
+function changeMathJax(){
+    changeMathJaxFont( "TeX" );
+}
+
+function changeMathJaxScale( newScale ){
+    MathJax.Hub.Config({ "HTML-CSS": {
+                            scale: newScale }
+                       });
+    MathJax.Hub.Queue(["Rerender", MathJax.Hub]);
+
+}
+
+function changeMathJaxFont( newFont ){
+    MathJax.Hub.Config({ "HTML-CSS": {
+                           preferredFont: newFont }
+                       });
+    MathJax.Hub.Queue(["Rerender", MathJax.Hub]);
+
 }
 
 var currentExpression = 1;
@@ -160,7 +174,11 @@ function printResults( result ){
 
         output.resize( function(){ Plot3dResized( this );});
         
+        rendererSetting = yacas.getWebGLSetting();
+        console.log(renderer);
+        
         var plot3d = new Plot3D(result["plot3d_data"], width, height);
+        plot3d.setRenderer( rendererSetting );
         
         $("#" + outputID).append(plot3d.renderer.domElement);
         $("#" + outputID)[0].plot3D = plot3d;
