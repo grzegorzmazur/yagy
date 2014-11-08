@@ -218,9 +218,9 @@ function Plot3D(series, w, h ) {
 
 };
 
-Plot3D.prototype.setRenderer = function( forcedRenderer ){
+Plot3D.prototype.setRenderer = function( webGLSetting ){
     
-    if (( forcedRenderer == "Default" && Detector.webgl ) || forcedRenderer == "WebGL" )
+    if (( webGLSetting == "Enabled" && Detector.webgl ))
         this.renderer = new THREE.WebGLRenderer({antialias: true});
     else this.renderer = new THREE.CanvasRenderer();
     
@@ -315,3 +315,10 @@ Plot3D.prototype.shadeColor2 = function (color, percent) {
             B = f & 0x0000FF;
     return "#" + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 + (Math.round((t - B) * p) + B)).toString(16).slice(1);
 };
+
+function isWebGLSupported(){
+    if ( Detector.webgl == false )
+        return false;
+    return true;
+}
+

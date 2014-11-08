@@ -10,7 +10,7 @@
 
 #include <QtPrintSupport/QPrinter>
 
-#define YAGY_ENABLE_INSPECTOR
+//#define YAGY_ENABLE_INSPECTOR
 #ifdef YAGY_ENABLE_INSPECTOR
 #include <QtWebKitWidgets/QWebInspector>
 #endif
@@ -81,6 +81,7 @@ private slots:
 private:
     void _save();
     void _update_title();
+    bool isWebGLSupported();
     
     Ui::MainWindow* ui;
 
