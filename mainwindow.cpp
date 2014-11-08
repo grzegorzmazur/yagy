@@ -542,6 +542,10 @@ void MainWindow::on_contentsChanged()
     }
 }
 
+QString MainWindow::getWebGLSetting(){
+    return "noWebGL";
+}
+
 void MainWindow::_save()
 {
     QFile f(_fname);

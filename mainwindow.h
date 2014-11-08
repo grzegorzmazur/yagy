@@ -10,6 +10,7 @@
 
 #include <QtPrintSupport/QPrinter>
 
+#define YAGY_ENABLE_INSPECTOR
 #ifdef YAGY_ENABLE_INSPECTOR
 #include <QtWebKitWidgets/QWebInspector>
 #endif
@@ -30,6 +31,7 @@ public:
 public slots:
     void eval(int idx, QString expr);
     void help(QString, int);
+    QString getWebGLSetting();
     
     void on_contentsChanged();
 
