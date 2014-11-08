@@ -7,8 +7,12 @@
  *   http://www.opensource.org/licenses/mit-license.php
  */
 
-function Plot3D(series, w, h) {
+function Plot3D(series, w, h ) {
     var self = this;
+    
+    self.width = w;
+    self.height = h;
+    
     self.labels = [];
     var data = [];
 
@@ -212,16 +216,19 @@ function Plot3D(series, w, h) {
         self.scene.add(l);
     }
 
-    if (Detector.webgl)
-        self.renderer = new THREE.WebGLRenderer({antialias: true});
-    else
-        self.renderer = new THREE.CanvasRenderer();
+};
 
-    // self.renderer = new THREE.CanvasRenderer();
-    self.renderer.setClearColor(0xffffff, 1);
-    self.renderer.setSize(w, h);
+Plot3D.prototype.setRenderer = function( forcedRenderer ){
+    
+    if (( forcedRenderer == "Default" && Detector.webgl ) || forcedRenderer == "WebGL" )
+        this.renderer = new THREE.WebGLRenderer({antialias: true});
+    else this.renderer = new THREE.CanvasRenderer();
+    
+    this.renderer.setClearColor(0xffffff, 1);
+    this.renderer.setSize(this.width , this.height);
+    
+};
 
-}
 
 Plot3D.prototype.colors = ["#edc240", "#afd8f8", "#cb4b4b", "#4da74d", "#9440ed"];
 
