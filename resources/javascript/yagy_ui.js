@@ -174,11 +174,10 @@ function printResults( result ){
 
         output.resize( function(){ Plot3dResized( this );});
         
-        rendererSetting = yacas.getWebGLSetting();
-        console.log(renderer);
+        webGLSetting = yacas.getWebGLSetting();
         
         var plot3d = new Plot3D(result["plot3d_data"], width, height);
-        plot3d.setRenderer( rendererSetting );
+        plot3d.setRenderer( webGLSetting );
         
         $("#" + outputID).append(plot3d.renderer.domElement);
         $("#" + outputID)[0].plot3D = plot3d;

@@ -207,7 +207,6 @@ void MainWindow::print(QPrinter* printer)
 void MainWindow::on_action_New_triggered()
 {
     MainWindow* w = new MainWindow();
-
     w->show();
 }
 
@@ -543,7 +542,11 @@ void MainWindow::on_contentsChanged()
 }
 
 QString MainWindow::getWebGLSetting(){
-    return "noWebGL";
+    return "disabled";
+}
+
+bool MainWindow::isWebGLSupported(){
+    return ui->webView->page()->currentFrame()->evaluateJavaScript("isWebGLSupported()").toBool();
 }
 
 void MainWindow::_save()
