@@ -44,7 +44,7 @@ include_directories (
   )
 
 qt5_wrap_ui (ui_mainwindow.h mainwindow.ui)
-qt5_wrap_ui (ui_preferences.h preferences.ui)
+qt5_wrap_ui (ui_preferences_dialog.h preferences_dialog.ui)
 
 qt5_add_resources (qrc_html.cpp html.qrc)
 qt5_add_resources (qrc_img.cpp img.qrc)
@@ -58,7 +58,7 @@ if (NOT APPLE)
     set (YAGY_QRESOURCES ${YAGY_QRESOURCES} qrc_css.cpp qrc_javascript.cpp)
 endif ()
 
-set (YAGY_SOURCES main.cpp mainwindow.cpp cellproxy.cpp yacasrequest.cpp yacasengine.cpp yacasserver.cpp preferences_dialog.cpp ui_mainwindow.h ui_preferences.h)
+set (YAGY_SOURCES main.cpp mainwindow.cpp cellproxy.cpp yacasrequest.cpp yacasengine.cpp yacasserver.cpp preferences_dialog.cpp preferences.cpp ui_mainwindow.h ui_preferences_dialog.h)
 
 if (WIN32)
     set (YAGY_SOURCES ${YAGY_SOURCES} winres/yagy.rc)
