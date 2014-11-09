@@ -33,12 +33,14 @@
 #include <shlwapi.h>
 #endif
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(Preferences& prefs, QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow),
+    _prefs(prefs),
+    _ui(new Ui::MainWindow),
     _null_stream(&_null_buffer),
+    _scripts_path(prefs.get_scripts_path()),
     _yacas_server(nullptr),
-    _yacas2tex(_null_stream),
+    _yacas2tex(new CYacas(_null_stream)),
     _has_file(false),
     _modified(false),
     _fname(QString("Untitled Notebook ") + QString::number(_cntr++))
@@ -47,81 +49,31 @@ MainWindow::MainWindow(QWidget *parent) :
     _inspector(nullptr)
 #endif
 {
-#if defined(__APPLE__)
-
-    CFBundleRef mainBundle = CFBundleGetMainBundle();
-    CFURLRef frameworkURL = CFBundleCopySharedFrameworksURL (mainBundle);
-    char path[PATH_MAX];
-    if (!CFURLGetFileSystemRepresentation(frameworkURL, TRUE, (UInt8 *)path, PATH_MAX))
-    {
-        QMessageBox::critical(this, "Yacas Error", "Failed to find resources, bailing out.");
-        close();
-    }
-
-    _scripts_path = path;
-    _scripts_path.append("/yacas.framework/Versions/Current/Resources/scripts/");
-    
-#elif defined(__linux__)
-    
-    struct stat sb;
-    if (stat("/proc/self/exe", &sb) == -1) {
-        QMessageBox::critical(this, "Yagy Error", "Failed to stat /proc/self/exe, bailing out.");
-        close();
-    }
-
-    std::vector<char> buf(sb.st_size + 1);
-
-    const ssize_t r = readlink("/proc/self/exe", buf.data(), sb.st_size + 1);
-
-    if (r == -1) {
-        QMessageBox::critical(this, "Yagy Error", "Failed to read /proc/self/exe, bailing out.");
-        close();
-    }
-
-    if (r > sb.st_size) {
-        QMessageBox::critical(this, "Yagy Error", "/proc/self/exe changed between stat and readlink, bailing out.");
-        close();
-    }
-
-    buf[r] = '\0';
-
-    _scripts_path = dirname(dirname(buf.data()));
-    _scripts_path.append("/share/yagy/scripts/");
-#elif defined(_WIN32)
-    char root_dir_buf[MAX_PATH];
-    SHRegGetPathA(HKEY_LOCAL_MACHINE, "SOFTWARE\\yagy\\yagy", 0, root_dir_buf, 0);
-    std::strcat(root_dir_buf, "\\share\\yagy\\scripts\\");
-    for (char* p = root_dir_buf; *p; ++p)
-        if (*p == '\\')
-            *p = '/';
-    
-    _scripts_path = root_dir_buf;
-#else
-#error "Yagy not yet ported to this platform, please contact developers"
-#endif
-
+    qDebug() << _scripts_path;
     _yacas_server = new YacasServer(_scripts_path);
     
     connect(_yacas_server, SIGNAL(busy(bool)), this, SLOT(handle_engine_busy(bool)));
     
-    _yacas2tex.Evaluate(((std::string("DefaultDirectory(\"") + _scripts_path.toStdString() + "\");")).c_str());
-    _yacas2tex.Evaluate("Load(\"yacasinit.ys\");");
+    _yacas2tex->Evaluate(((std::string("DefaultDirectory(\"") + _scripts_path.toStdString() + "\");")).c_str());
+    _yacas2tex->Evaluate("Load(\"yacasinit.ys\");");
 
-    ui->setupUi(this);
+    _ui->setupUi(this);
 
-    ui->toolBar->setIconSize(QSize(20, 20));
+    _ui->toolBar->setIconSize(QSize(20, 20));
 
     _update_title();
 
     loadYacasPage();
-    ui->webView->setAttribute(Qt::WA_AcceptTouchEvents, false);
+    _ui->webView->setAttribute(Qt::WA_AcceptTouchEvents, false);
     
-    ui->webView->addAction(ui->actionInsert_Before);
-    ui->webView->addAction(ui->actionInsert_After);
-    ui->webView->addAction(ui->actionDelete_Current);
-    ui->webView->addAction(ui->actionCurrent_Symbol_Help);
+    _ui->webView->addAction(_ui->actionInsert_Before);
+    _ui->webView->addAction(_ui->actionInsert_After);
+    _ui->webView->addAction(_ui->actionDelete_Current);
+    _ui->webView->addAction(_ui->actionCurrent_Symbol_Help);
     
     _windows.append(this);
+    
+    connect(&_prefs, SIGNAL(changed()), this, SLOT(handle_prefs_changed()));
 }
 
 MainWindow::~MainWindow()
@@ -129,7 +81,8 @@ MainWindow::~MainWindow()
     _windows.removeOne(this);
 
     delete _yacas_server;
-    delete ui;
+    delete _yacas2tex;
+    delete _ui;
 }
 
 void MainWindow::closeEvent(QCloseEvent* event)
@@ -179,34 +132,35 @@ void MainWindow::loadYacasPage()
     QString mText = in.readAll();
     mFile.close();
 
-    connect(ui->webView->page()->currentFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(initObjectMapping()));
-    connect(ui->webView->page(), SIGNAL(contentsChanged()), this, SLOT(on_contentsChanged()));
-    ui->webView->setHtml( mText, resource_url) ;
-    ui->webView->page()->currentFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOn);
+    connect(_ui->webView->page()->currentFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(initObjectMapping()));
+    connect(_ui->webView->page()->currentFrame(), SIGNAL(loadFinished(bool)), this, SLOT(handle_prefs_changed()));
+    connect(_ui->webView->page(), SIGNAL(contentsChanged()), this, SLOT(on_contentsChanged()));
+    _ui->webView->setHtml( mText, resource_url) ;
+    _ui->webView->page()->currentFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOn);
 
 #ifdef YAGY_ENABLE_INSPECTOR
-    ui->webView->page()->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+    _ui->webView->page()->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 
     _inspector = new QWebInspector();
-    _inspector->setPage(ui->webView->page());
+    _inspector->setPage(_ui->webView->page());
     //_inspector->setVisible(true);
 #endif
 }
 
 void MainWindow::initObjectMapping()
 {
-    ui->webView->page()->currentFrame()->addToJavaScriptWindowObject("yacas", this);
+    _ui->webView->page()->currentFrame()->addToJavaScriptWindowObject("yacas", this);
 }
 
 void MainWindow::print(QPrinter* printer)
 {
-    ui->webView->print(printer);
+    _ui->webView->print(printer);
 }
 
 
 void MainWindow::on_action_New_triggered()
 {
-    MainWindow* w = new MainWindow();
+    MainWindow* w = new MainWindow(_prefs);
     w->show();
 }
 
@@ -230,7 +184,7 @@ void MainWindow::on_action_Open_triggered()
     loadYacasPage();
 
     foreach (const QJsonValue& v, QJsonDocument::fromJson(data).array())
-        ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculate(\"") + v.toObject()["input"].toString().replace("\"", "\\\"") + QString("\");"));
+        _ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculate(\"") + v.toObject()["input"].toString().replace("\"", "\\\"") + QString("\");"));
 
     _fname = fname;
     _modified = false;
@@ -295,37 +249,32 @@ void MainWindow::on_action_Paste_triggered()
 
 void MainWindow::on_actionPreferences_triggered()
 {
-    PreferencesDialog pd(this);
-    pd.exec();
-//    QDialog* preferences_dialog = new QDialog(this);
-//    Ui::Preferences preferences_ui;
-//    preferences_ui.setupUi(preferences_dialog);
-//    preferences_dialog->exec();
+    PreferencesDialog(_prefs, this).exec();
 }
 
 void MainWindow::on_actionInsert_Before_triggered()
 {
-    ui->webView->page()->currentFrame()->evaluateJavaScript("insertBeforeCurrent();");
+    _ui->webView->page()->currentFrame()->evaluateJavaScript("insertBeforeCurrent();");
 }
 
 void MainWindow::on_action_Previous_triggered()
 {
-    ui->webView->page()->currentFrame()->evaluateJavaScript("previousCell();");
+    _ui->webView->page()->currentFrame()->evaluateJavaScript("previousCell();");
 }
 
 void MainWindow::on_action_Next_triggered()
 {
-    ui->webView->page()->currentFrame()->evaluateJavaScript("nextCell();");
+    _ui->webView->page()->currentFrame()->evaluateJavaScript("nextCell();");
 }
 
 void MainWindow::on_actionInsert_After_triggered()
 {
-    ui->webView->page()->currentFrame()->evaluateJavaScript("insertAfterCurrent();");
+    _ui->webView->page()->currentFrame()->evaluateJavaScript("insertAfterCurrent();");
 }
 
 void MainWindow::on_actionDelete_Current_triggered()
 {
-    ui->webView->page()->currentFrame()->evaluateJavaScript("deleteCurrent();");
+    _ui->webView->page()->currentFrame()->evaluateJavaScript("deleteCurrent();");
 }
 
 void MainWindow::on_action_Use_triggered()
@@ -343,7 +292,7 @@ void MainWindow::on_action_Use_triggered()
         return;
     }
 
-    ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculate('Use(\"") + fname + "\")');");
+    _ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculate('Use(\"") + fname + "\")');");
 }
 
 void MainWindow::on_action_Import_triggered()
@@ -413,7 +362,7 @@ void MainWindow::on_action_Import_triggered()
     }
 
     foreach (const QString& s, l)
-        ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculate('") + s + "');");
+        _ui->webView->page()->currentFrame()->evaluateJavaScript(QString("calculate('") + s + "');");
 }
 
 void MainWindow::on_action_Export_triggered()
@@ -431,7 +380,7 @@ void MainWindow::on_action_Export_triggered()
         return;
     }
 
-    const QWebElementCollection c = ui->webView->page()->currentFrame()->findAllElements(".editable");
+    const QWebElementCollection c = _ui->webView->page()->currentFrame()->findAllElements(".editable");
 
     foreach (const QWebElement& e, c) {
         const QString s = e.toPlainText().trimmed();
@@ -444,12 +393,12 @@ void MainWindow::on_action_Export_triggered()
 
 void MainWindow::on_actionEvaluate_Current_triggered()
 {
-    ui->webView->page()->currentFrame()->evaluateJavaScript(QString("evaluateCurrent()"));
+    _ui->webView->page()->currentFrame()->evaluateJavaScript(QString("evaluateCurrent()"));
 }
 
 void MainWindow::on_actionEvaluate_All_triggered()
 {
-    ui->webView->page()->currentFrame()->evaluateJavaScript(QString("evaluateAll()"));
+    _ui->webView->page()->currentFrame()->evaluateJavaScript(QString("evaluateAll()"));
 
 }
 
@@ -477,7 +426,7 @@ void MainWindow::on_actionYacas_Manual_triggered()
 
 void MainWindow::on_actionCurrent_Symbol_Help_triggered()
 {
-    ui->webView->page()->currentFrame()->evaluateJavaScript("contextHelp()");
+    _ui->webView->page()->currentFrame()->evaluateJavaScript("contextHelp()");
 }
 
 void MainWindow::on_action_About_triggered()
@@ -494,12 +443,30 @@ void MainWindow::on_action_About_triggered()
 
 void MainWindow::handle_engine_busy(bool busy)
 {
-    ui->action_Stop->setEnabled(busy);
+    _ui->action_Stop->setEnabled(busy);
+}
+
+void MainWindow::handle_prefs_changed()
+{
+    _ui->toolBar->setVisible(_prefs.get_enable_toolbar());
+    _ui->webView->page()->currentFrame()->evaluateJavaScript(QString("changeMathJaxScale(%1)").arg(_prefs.get_math_font_scale()));
+    QString font = _prefs.get_math_font();
+    if (font == "Default")
+        font = "TeX";
+    _ui->webView->page()->currentFrame()->evaluateJavaScript(QString("changeMathJaxFont(\"%1\")").arg(font));
+    
+    if (_scripts_path != _prefs.get_scripts_path()) {
+        _scripts_path = _prefs.get_scripts_path();
+        delete _yacas_server;
+        _yacas_server = new YacasServer(_scripts_path);
+        _yacas2tex->Evaluate(((std::string("DefaultDirectory(\"") + _scripts_path.toStdString() + "\");")).c_str());
+        _yacas2tex->Evaluate("Load(\"yacasinit.ys\");");
+    }
 }
 
 void MainWindow::eval(int idx, QString expr)
 {
-    new CellProxy(ui->webView->page()->currentFrame(), idx, expr, *_yacas_server, _yacas2tex);
+    new CellProxy(_ui->webView->page()->currentFrame(), idx, expr, *_yacas_server, *_yacas2tex);
 
     if (!_modified) {
         _modified = true;
@@ -546,7 +513,7 @@ QString MainWindow::getWebGLSetting(){
 }
 
 bool MainWindow::isWebGLSupported(){
-    return ui->webView->page()->currentFrame()->evaluateJavaScript("isWebGLSupported()").toBool();
+    return _ui->webView->page()->currentFrame()->evaluateJavaScript("isWebGLSupported()").toBool();
 }
 
 void MainWindow::_save()
@@ -558,7 +525,7 @@ void MainWindow::_save()
         return;
     }
 
-    QVariant v = ui->webView->page()->currentFrame()->evaluateJavaScript("getAllInputs()");
+    QVariant v = _ui->webView->page()->currentFrame()->evaluateJavaScript("getAllInputs()");
 
     QJsonArray j;
     foreach (const QVariant e, v.toList()) {
@@ -587,7 +554,7 @@ void MainWindow::_update_title()
 
     setWindowTitle(title);
 
-    ui->action_Save->setEnabled(_modified);
+    _ui->action_Save->setEnabled(_modified);
 }
 
 QList<MainWindow*> MainWindow::_windows;
