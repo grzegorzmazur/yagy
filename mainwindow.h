@@ -10,13 +10,14 @@
 
 #include <QtPrintSupport/QPrinter>
 
-//#define YAGY_ENABLE_INSPECTOR
 #ifdef YAGY_ENABLE_INSPECTOR
 #include <QtWebKitWidgets/QWebInspector>
 #endif
 
 #include "yacasserver.h"
 #include "yacas/yacas.h"
+
+#include "preferences.h"
 
 namespace Ui {
     class MainWindow;
@@ -25,7 +26,7 @@ namespace Ui {
 class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
-    MainWindow(QWidget* parent = 0);
+    explicit MainWindow(Preferences& prefs, QWidget* parent = 0);
     ~MainWindow();
 
 public slots:
@@ -77,13 +78,16 @@ private slots:
     void on_action_About_triggered();
 
     void handle_engine_busy(bool);
+    void handle_prefs_changed();
         
 private:
     void _save();
     void _update_title();
     bool isWebGLSupported();
     
-    Ui::MainWindow* ui;
+    Preferences& _prefs;
+    
+    Ui::MainWindow* _ui;
 
     class NullBuffer: public std::streambuf {
     public:
@@ -96,7 +100,7 @@ private:
     QString _scripts_path;
     
     YacasServer* _yacas_server;
-    CYacas _yacas2tex;
+    CYacas* _yacas2tex;
 
     QScopedPointer<QPrinter> _printer;
 
