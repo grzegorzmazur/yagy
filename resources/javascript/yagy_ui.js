@@ -6,7 +6,7 @@ function load(){
     $( document ).on( 'click', function(){ bluredEditable = null; });
     $( window ).on( 'resize', function(){
         MathJax.Hub.Queue(["Rerender", MathJax.Hub]);
-        w = $(".resizable").first().parent().width();
+        w = $("body").innerWidth() - $("#Elements>tbody>tr>td:first-child").width() - 20; //Magic 20 is for some margins, TODO: make it right
         $( ".resizable" ).resizable( "option", "maxWidth", w );
         $( ".resizable" ).each( function(){ if ($(this).width() > w ) $(this).width(w); });
     });
@@ -14,9 +14,6 @@ function load(){
     
 }
 
-function changeMathJax(){
-    changeMathJaxFont( "TeX" );
-}
 
 function changeMathJaxScale( newScale ){
     MathJax.Hub.Config({ "HTML-CSS": {
@@ -164,16 +161,13 @@ function printResults( result ){
         $("#" + outputID).resizable({ minWidth: 200 } );
         $("#" + outputID).resizable({ minHeight: 200 } );
     
-        output.addClass( "resizable");
+        output.addClass( "resizable" );
         
     }else if( result["type"] === "Plot3D" ){
 
         var width = $("#" + outputID).parent().width();
         var height = 300;
 
-
-        output.resize( function(){ Plot3dResized( this );});
-        
         webGLSetting = yacas.getWebGLSetting();
         
         var plot3d = new Plot3D(result["plot3d_data"], width, height);
@@ -185,24 +179,29 @@ function printResults( result ){
 
         var controls = new THREE.TrackballControls(plot3d.camera, plot3d.renderer.domElement);
 
-        controls.addEventListener( 'change', ControlsChanged);
+        controls.addEventListener( 'change', ControlsChanged );
         plot3d.renderer.render(plot3d.scene, plot3d.camera);
 
         function render() {
             requestAnimationFrame(render);
             controls.update();
         }
+        
+        render();
 
         $("#" + outputID).resizable({ maxWidth: width });
         $("#" + outputID).resizable({ minWidth: 200 });
         $("#" + outputID).resizable({ minHeight: 200 });
         output.addClass( "resizable");
         
-        render();
+        output.resize( function(){ Plot3dResized( this );});
+
+        
+        
     }
 }
 
-function ControlsChanged( element, event){
+function ControlsChanged( element, event ){
     plot3d = element.target.domElement.parentElement.plot3D;
     plot3d.renderer.render(plot3d.scene, plot3d.camera);
 }
