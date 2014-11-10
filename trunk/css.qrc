@@ -2,6 +2,7 @@
 <RCC version="1.0">
     <qresource>
         <file>resources/css/jquery-ui-1.10.4.custom.min.css</file>
+        <file>resources/css/jquery-ui-1.11.2.min.css</file>
         <file>resources/css/images/ui-icons_222222_256x240.png</file>
         <file>resources/css/yagy_ui.css</file>
     </qresource>
