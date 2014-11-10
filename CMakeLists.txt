@@ -78,6 +78,11 @@ endif()
 install (TARGETS yagy RUNTIME DESTINATION bin)
 install (DIRECTORY ${YACAS_PREFIX}/share/yacas/scripts DESTINATION share/yagy)
 
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    install (PROGRAMS yagy.desktop DESTINATION share/applications)
+    install (FILES resources/img/yagy.png DESTINATION share/yagy)
+endif ()
+
 if (WIN32)
     # FIXME: this is plain ugly, there must be a better way
     # install all the dlls we use
