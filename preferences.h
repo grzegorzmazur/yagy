@@ -13,6 +13,9 @@ public:
     bool get_enable_toolbar() const;
     void set_enable_toolbar(bool);
 
+    bool get_enable_WebGL() const;
+    void set_enable_WebGL(bool);
+    
     unsigned get_math_font_scale() const;
     void set_math_font_scale(unsigned);
     
@@ -26,6 +29,7 @@ public:
     
     QString get_custom_scripts_path() const;
     void set_custom_scripts_path(const QString&);
+
     
     QString get_scripts_path() const;
 

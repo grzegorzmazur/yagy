@@ -510,8 +510,8 @@ void MainWindow::on_contentsChanged()
     }
 }
 
-QString MainWindow::getWebGLSetting(){
-    return "disabled";
+bool MainWindow::isWebGLEnabled(){
+    return _prefs.get_enable_WebGL();
 }
 
 bool MainWindow::isWebGLSupported(){
