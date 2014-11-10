@@ -52,8 +52,8 @@ void PreferencesDialog::accept()
     _prefs.set_enable_toolbar(enableToolbarCheckBox->checkState());
     _prefs.set_math_font_scale(mathFontScaleSpinBox->value());
     _prefs.set_math_font(mathFontComboBox->currentText());
-    _prefs.set_scripts_path_default(defaultPathButton->isChecked());
     _prefs.set_custom_scripts_path(pathEdit->text());
+    _prefs.set_scripts_path_default(defaultPathButton->isChecked());
     
     QDialog::accept();
 }
