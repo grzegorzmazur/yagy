@@ -12,7 +12,7 @@ YacasEngine::YacasEngine(const QString& scripts_path, YacasRequestQueue& request
     _idx(1)
 {
     if (!QFile(scripts_path + "yacasinit.ys").exists())
-        throw std::runtime_error("Invalid yacas scripts path.");
+        throw std::runtime_error(QString("Invalid yacas scripts path: %1").arg(scripts_path).toStdString());
 
     _yacas->Evaluate((std::string("DefaultDirectory(\"") + scripts_path.toStdString() + std::string("\");")).c_str());
     _yacas->Evaluate("Load(\"yacasinit.ys\");");
