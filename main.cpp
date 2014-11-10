@@ -15,12 +15,12 @@ void addSplashScreen( MainWindow* widget );
 
 int main(int argc, char *argv[])
 {
+    QApplication app(argc, argv);
+    
     try {
         // switch yacas memory manager to thread-safe mode
         PlatObSetThreadSafe(true);
     
-	QApplication app(argc, argv);
-
         app.setAttribute(Qt::AA_DontShowIconsInMenus);
         
         qRegisterMetaType<YacasRequest::State>("YacasRequest::State");
