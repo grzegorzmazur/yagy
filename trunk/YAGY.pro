@@ -1,16 +1,27 @@
 TARGET = YAGY
 TEMPLATE = app
-QMAKE_CXXFLAGS += -std=c++11
-SOURCES += main.cpp mainwindow.cpp cellproxy.cpp yacasrequest.cpp yacasengine.cpp yacasserver.cpp preferences_dialog.cpp
-HEADERS += mainwindow.h cellproxy.h yacasrequest.h yacasserver.h yacasengine.h preferences_dialog.h	
+
+SOURCES += main.cpp mainwindow.cpp cellproxy.cpp yacasrequest.cpp yacasengine.cpp yacasserver.cpp preferences_dialog.cpp preferences.cpp
+HEADERS += mainwindow.h cellproxy.h yacasrequest.h yacasserver.h yacasengine.h preferences_dialog.h	preferences.h
 FORMS += mainwindow.ui preferences_dialog.ui
 RESOURCES += img.qrc
 QT += webkit widgets webkitwidgets
 CONFIG += c++11
+QMAKE_CXXFLAGS += -std=c++11
+
+CONFIG += debug
+CONFIG += release
+
 ICON = icon.icns
 
 macx{
-    YACAS_PREFIX = ../../yacas/code/Debug
+
+    CONFIG(debug, debug|release) {
+        YACAS_PREFIX = ../../yacas/code/Debug
+    } else {
+        YACAS_PREFIX = ../../yacas/code/Release
+        DEFINES += QT_NO_DEBUG_OUTPUT
+    }
 
     LIBS += -framework CoreFoundation
     LIBS += -F$${YACAS_PREFIX} -framework yacas
@@ -28,7 +39,10 @@ macx{
     QMAKE_BUNDLE_DATA += CSS JAVASCRIPT FRAMEWORK IMG HTML
     
     CONFIG += lib_bundle
+
 } else {
+    error(ERROR: Use QMake on MacOS platform only. For other platform please use CMake - look for CMakeLists.txt )
+
     YACAS_PREFIX = $$PWD/../../yacas/trunk-root
     RESOURCES += css.qrc flot.qrc jquery.qrc mathjax.qrc three.qrc slot.qrc
 

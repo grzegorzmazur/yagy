@@ -10,6 +10,7 @@ PreferencesDialog::PreferencesDialog(Preferences& prefs, QWidget* parent):
     setupUi(this);
     
     enableToolbarCheckBox->setChecked(_prefs.get_enable_toolbar());
+    enableWebGLCheckBox->setChecked(_prefs.get_enable_WebGL());
     mathFontScaleSpinBox->setValue(_prefs.get_math_font_scale());
     mathFontComboBox->setCurrentIndex(mathFontComboBox->findText(_prefs.get_math_font()));
     pathEdit->setText(_prefs.get_custom_scripts_path());
@@ -54,6 +55,7 @@ void PreferencesDialog::accept()
     _prefs.set_math_font(mathFontComboBox->currentText());
     _prefs.set_custom_scripts_path(pathEdit->text());
     _prefs.set_scripts_path_default(defaultPathButton->isChecked());
+    _prefs.set_enable_WebGL(enableWebGLCheckBox->checkState());
     
     QDialog::accept();
 }
