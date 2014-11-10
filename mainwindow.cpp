@@ -459,6 +459,8 @@ void MainWindow::handle_prefs_changed()
         _scripts_path = _prefs.get_scripts_path();
         delete _yacas_server;
         _yacas_server = new YacasServer(_scripts_path);
+        delete _yacas2tex;
+        _yacas2tex = new CYacas(_null_stream);
         _yacas2tex->Evaluate(((std::string("DefaultDirectory(\"") + _scripts_path.toStdString() + "\");")).c_str());
         _yacas2tex->Evaluate("Load(\"yacasinit.ys\");");
     }
