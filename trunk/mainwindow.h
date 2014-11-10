@@ -19,6 +19,7 @@
 #include "yacas/yacas.h"
 
 #include "preferences.h"
+#include <QClipboard>
 
 namespace Ui {
     class MainWindow;
@@ -34,6 +35,7 @@ public slots:
     void eval(int idx, QString expr);
     void help(QString, int);
     bool isWebGLEnabled();
+    void copyToClipboard( QString newText );
     
     void on_contentsChanged();
 

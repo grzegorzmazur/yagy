@@ -559,5 +559,11 @@ void MainWindow::_update_title()
     _ui->action_Save->setEnabled(_modified);
 }
 
+void MainWindow::copyToClipboard( QString newText )
+{
+    QClipboard *clipboard = QApplication::clipboard();
+    clipboard->setText( newText );
+}
+
 QList<MainWindow*> MainWindow::_windows;
 unsigned MainWindow::_cntr = 1;
