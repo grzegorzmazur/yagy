@@ -11,6 +11,17 @@ function load(){
         $( ".resizable" ).each( function(){ if ($(this).width() > w ) $(this).width(w); });
     });
     
+    $(document).contextmenu({
+                            delegate: ".Expression",
+                            menu: [
+                                   {title: "Copyt TeX", cmd: "copyTeX"},
+                                   ],
+                            select: function(event, ui) {
+                                parents = ui.target.parents(".Expression");
+                                TeX = $(parents[0]).children('script')[0].textContent;
+                                yacas.copyToClipboard( TeX );
+                            }
+                        });
     
 }
 
