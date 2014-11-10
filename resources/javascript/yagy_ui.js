@@ -168,10 +168,10 @@ function printResults( result ){
         var width = $("#" + outputID).parent().width();
         var height = 300;
 
-        webGLSetting = yacas.getWebGLSetting();
+        webGLEnabled = yacas.isWebGLEnabled();
         
         var plot3d = new Plot3D(result["plot3d_data"], width, height);
-        plot3d.setRenderer( webGLSetting );
+        plot3d.setRenderer( webGLEnabled );
         
         $("#" + outputID).append(plot3d.renderer.domElement);
         $("#" + outputID)[0].plot3D = plot3d;

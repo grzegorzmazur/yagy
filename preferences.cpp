@@ -139,3 +139,18 @@ QString Preferences::get_scripts_path() const
     
     return get_custom_scripts_path();
 }
+
+bool Preferences::get_enable_WebGL() const
+{
+    return _settings.value("View/enable_WebGL", true).toBool();
+}
+void Preferences::set_enable_WebGL(bool state)
+{
+ 
+    if (_settings.value("View/enable_WebGL", true).toBool() != state) {
+        _settings.setValue("View/enable_WebGL", state);
+        emit changed();
+    }
+
+}
+
