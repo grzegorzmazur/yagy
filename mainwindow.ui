@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>600</height>
+    <width>740</width>
+    <height>682</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -98,6 +98,7 @@
    <addaction name="actionEvaluate_All"/>
    <addaction name="action_Stop"/>
    <addaction name="separator"/>
+   <addaction name="actionPreferences"/>
    <addaction name="actionCurrent_Symbol_Help"/>
    <addaction name="actionYacas_Manual"/>
   </widget>
@@ -106,8 +107,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>600</width>
-     <height>25</height>
+     <width>740</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -437,6 +438,10 @@
    </property>
   </action>
   <action name="actionPreferences">
+   <property name="icon">
+    <iconset resource="img.qrc">
+     <normaloff>:/resources/img/preferences.svg</normaloff>:/resources/img/preferences.svg</iconset>
+   </property>
    <property name="text">
     <string>Preferences...</string>
    </property>
