@@ -240,12 +240,19 @@ void MainWindow::on_action_Quit_triggered()
         w->close();
 }
 
+void MainWindow::on_actionCu_t_triggered()
+{
+    _ui->webView->triggerPageAction(QWebPage::Cut);
+}
+
 void MainWindow::on_action_Copy_triggered()
 {
+    _ui->webView->triggerPageAction(QWebPage::Copy);
 }
 
 void MainWindow::on_action_Paste_triggered()
 {
+    _ui->webView->triggerPageAction(QWebPage::Paste);
 }
 
 void MainWindow::on_actionPreferences_triggered()

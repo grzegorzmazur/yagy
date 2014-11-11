@@ -57,6 +57,7 @@ private slots:
     void on_action_Close_triggered();
     void on_action_Quit_triggered();
 
+    void on_actionCu_t_triggered();
     void on_action_Copy_triggered();
     void on_action_Paste_triggered();
     void on_actionPreferences_triggered();
