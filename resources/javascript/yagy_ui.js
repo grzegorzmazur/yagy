@@ -14,14 +14,22 @@ function load(){
     $(document).contextmenu({
                             delegate: ".Expression",
                             menu: [
-                                   {title: "Copyt TeX", cmd: "copyTeX"},
+                                   {title: "Copy TeX", cmd: "copyTeX"},
+                                   {title: "Copy Yacas Expression", cmd: "copyYacasExpression"}
                                    ],
                             select: function(event, ui) {
                                 parents = ui.target.parents(".Expression");
-                                TeX = $(parents[0]).children('script')[0].textContent;
-                                yacas.copyToClipboard( TeX );
+                            
+                                if ( ui.cmd == "copyTeX"){
+                                    result = $(parents[0]).children('script')[0].textContent;
+                            
+                                }else if ( ui.cmd == "copyYacasExpression"){
+                                    result = $(parents)[0].yacasExpression;
+                                }
+                                yacas.copyToClipboard( result );
                             }
-                        });
+                            });
+                            
     
 }
 
@@ -152,26 +160,28 @@ function printResults( result ){
     
     output.addClass( result["type"] );
     
-
     ExpressionElement.addClass( result["type"]);
     ExpressionElement.removeClass("Modified");
 
     output.text("");
     
     if( result["type"] === "Expression" ){
+
         output.append( "$$" + result["tex_code"] + "$$" );
         renderOutput( outputID );
+        output[0].yacasExpression = result["expression"];
+
     }else if( result["type"] === "Error" ){
+
         output.append( result["error_message"] );
+
     }else if( result["type"] === "Plot2D" ){
+
         $.plot(output, result["plot2d_data"] );
 
         var width = $("#" + outputID).parent().width();
         
-        $("#" + outputID).resizable({ maxWidth: width} );
-        $("#" + outputID).resizable({ minWidth: 200 } );
-        $("#" + outputID).resizable({ minHeight: 200 } );
-    
+        output.resizable({ maxWidth: width, minWidth: 200, minHeight: 200} );
         output.addClass( "resizable" );
         
     }else if( result["type"] === "Plot3D" ){
@@ -182,15 +192,16 @@ function printResults( result ){
         webGLEnabled = yacas.isWebGLEnabled();
         
         var plot3d = new Plot3D(result["plot3d_data"], width, height);
-        plot3d.setRenderer( webGLEnabled );
         
-        $("#" + outputID).append(plot3d.renderer.domElement);
-        $("#" + outputID)[0].plot3D = plot3d;
+        plot3d.setRenderer( webGLEnabled );
         plot3d.addLegend("#" + outputID);
+        
+        output.append(plot3d.renderer.domElement);
+        output[0].plot3D = plot3d;
 
         var controls = new THREE.TrackballControls(plot3d.camera, plot3d.renderer.domElement);
-
         controls.addEventListener( 'change', ControlsChanged );
+
         plot3d.renderer.render(plot3d.scene, plot3d.camera);
 
         function render() {
@@ -200,14 +211,9 @@ function printResults( result ){
         
         render();
 
-        $("#" + outputID).resizable({ maxWidth: width });
-        $("#" + outputID).resizable({ minWidth: 200 });
-        $("#" + outputID).resizable({ minHeight: 200 });
-        output.addClass( "resizable");
-        
+        output.resizable({ maxWidth: width, minWidth: 200, minHeight: 200} );
+        output.addClass( "resizable" );
         output.resize( function(){ Plot3dResized( this );});
-
-        
         
     }
 }
