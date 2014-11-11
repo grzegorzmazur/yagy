@@ -143,7 +143,8 @@ void MainWindow::loadYacasPage()
 
     _inspector = new QWebInspector();
     _inspector->setPage(_ui->webView->page());
-    //_inspector->setVisible(true);
+    _inspector->showMaximized();
+    _inspector->setVisible(true);
 #endif
 }
 
