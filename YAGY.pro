@@ -5,7 +5,7 @@ SOURCES += main.cpp mainwindow.cpp cellproxy.cpp yacasrequest.cpp yacasengine.cp
 HEADERS += mainwindow.h cellproxy.h yacasrequest.h yacasserver.h yacasengine.h preferences_dialog.h	preferences.h
 FORMS += mainwindow.ui preferences_dialog.ui
 RESOURCES += img.qrc
-QT += webkit widgets webkitwidgets
+QT += webkit widgets webkitwidgets svg
 CONFIG += c++11
 QMAKE_CXXFLAGS += -std=c++11
 
