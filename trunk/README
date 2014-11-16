@@ -1,3 +1,29 @@
 Yagy, Yet Another GUI for Yacas, Yet Another Computer Algebra System
 
 
+Compilation instructions
+
+On Mac OS X:
+
+Prerequisites:
+* yacas framework:
+	- to download from here: TBD
+	- or compiled from sources from here: http://sourceforge.net/p/yacas/code/HEAD/tree/trunk/
+* Qt (tested on version 5.3.2)
+	- http://qt-project.org/downloads
+
+Compilation:
+* in the YAGY.pro file set the YACAS_PREFIX variable to point a folder with the yacas framework
+* create an XCode project:
+	- in Terminal go to the folder containing YAGY.pro and run the command:
+	  $$PATH_TO_QT_BIN_FOLDER$$/qmake -spec macx-xcode
+	- in the same folder YAGY.xcodeproj is created
+* open YAGY.xcodeproj and update icons:
+	- display YAGY target properties (click on YAGY in the Project Navigator)
+	- go to the App Icons section and click on Use Asset Catalog and then confirm migration.
+* Run the YAGY target to compile and run app from the build folder (./Debug by default)
+	- default configuration is Debug. To change to Release edit the YAGY scheme.
+
+To create a distributable application with Qt frameworks included in the bundle as private frameworks run the following command:
+	$$PATH_TO_QT_BIN_FOLDER$$/macdeployqt $$PATH_YAGY_BUILD_FOLDER$$/YAGY.app 
+Option -dmg can be added to create a dmg image.
