@@ -6,8 +6,7 @@ function load(){
     $( document ).on( 'click', function(){ bluredEditable = null; });
     $( window ).on( 'resize', function( event ){
         
-        w = $("body").width() - $("#Elements>tbody>tr>td:first-child").width() - 30; //Magic 20 is for some margins, TODO: make it right
-        
+        w = $("body").width() - $("#Elements>tbody>tr>td:first-child").innerWidth() - 10; //10 is for padding in the td.Out element
         $( ".resizable" ).each( function(){
                                maxwidth = $(this).resizable( "option", "maxWidth");
                                if ($(this).width() > w || $(this).width() == maxwidth ) $(this).width(w);
@@ -31,7 +30,8 @@ function load(){
                                     result = $(parents)[0].yacasExpression;
                                 }
                                 yacas.copyToClipboard( result );
-                            }
+                            },
+                            preventContextMenuForPopup: true
                             });
                             
     
@@ -219,7 +219,7 @@ function printResults( result ){
         }
         
         render();
-
+        
         output.resizable({ maxWidth: width, minWidth: 200, minHeight: 200} );
         output.addClass( "resizable" );
         output.resize( function(){ Plot3dResized( this );});
