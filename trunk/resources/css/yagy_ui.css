@@ -49,8 +49,6 @@ td{
     font-family: monospace;
     font-size: small;
     padding: 5px;
-    padding-right: 10px;
-
 }
 
 body{
@@ -93,5 +91,6 @@ textarea{
 }
 
 .Plot3DActive{
+    -webkit-box-sizing:border-box;
     border:2px solid #41403b;
 }
