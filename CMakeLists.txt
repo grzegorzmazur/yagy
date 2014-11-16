@@ -56,7 +56,13 @@ if (NOT APPLE)
     set (YAGY_QRESOURCES ${YAGY_QRESOURCES} qrc_css.cpp qrc_javascript.cpp)
 endif ()
 
-set (YAGY_SOURCES main.cpp mainwindow.cpp cellproxy.cpp yacasrequest.cpp yacasengine.cpp yacasserver.cpp preferences_dialog.cpp preferences.cpp ui_mainwindow.h ui_preferences_dialog.h)
+set (YAGY_SOURCES
+    main.cpp mainwindow.cpp cellproxy.cpp yacasrequest.cpp yacasengine.cpp
+    yacasserver.cpp preferences_dialog.cpp preferences.cpp
+    cellproxy.h preferences_dialog.h yacasengine.h yacasserver.h
+    mainwindow.h preferences.h yacasrequest.h    
+    ui_mainwindow.h ui_preferences_dialog.h
+)
 
 if (WIN32)
     set (YAGY_SOURCES ${YAGY_SOURCES} winres/yagy.rc)
@@ -77,12 +83,20 @@ set_property (TARGET yagy APPEND PROPERTY
     COMPILE_DEFINITIONS $<$<CONFIG:Debug>:YAGY_ENABLE_INSPECTOR>
 )
 
-install (TARGETS yagy RUNTIME DESTINATION bin)
+install (TARGETS yagy DESTINATION bin)
 install (DIRECTORY ${YACAS_PREFIX}/share/yacas/scripts DESTINATION share/yagy)
 
+install (FILES resources/img/yagy.png DESTINATION share/yagy)
+
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-    install (PROGRAMS yagy.desktop DESTINATION share/applications)
-    install (FILES resources/img/yagy.png DESTINATION share/yagy)
+    install (FILES debian/copyright DESTINATION share/doc/yagy)
+
+    find_package (UnixCommands REQUIRED)
+    add_custom_target(compress_changelog ALL COMMAND ${GZIP} -9 -c ${PROJECT_SOURCE_DIR}/debian/changelog > changelog.gz)
+
+    install (FILES ${PROJECT_BINARY_DIR}/changelog.gz DESTINATION share/doc/yagy)
+
+    install (PROGRAMS yagy.desktop PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ DESTINATION share/applications)
 endif ()
 
 if (WIN32)
@@ -106,8 +120,12 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     set (CPACK_GENERATOR DEB)
     execute_process (COMMAND dpkg --print-architecture OUTPUT_VARIABLE CPACK_DEBIAN_PACKAGE_ARCHITECTURE)
     string (REGEX REPLACE "(\r?\n)+$" "" CPACK_DEBIAN_PACKAGE_ARCHITECTURE "${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
-    set (CPACK_DEBIAN_PACKAGE_DEPENDS "yacas")
     set (CPACK_PACKAGE_FILE_NAME "yagy_${YAGY_VERSION}-1_${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
+    set (CPACK_DEBIAN_PACKAGE_ENHANCES "yacas")
+    set (CPACK_DEBIAN_PACKAGE_DESCRIPTION "Yet Another GUI for Yacas
+ Yagy is a graphical user interface for Yacas, a small and highly flexible computer algebra system.")
+    set (CPACK_DEBIAN_PACKAGE_SECTION "math")
+    set (CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 elseif (WIN32)
     set (CPACK_GENERATOR NSIS)
     set (CPACK_NSIS_MODIFY_PATH "ON")
@@ -120,9 +138,9 @@ elseif (WIN32)
 endif ()
 
 set (CPACK_PACKAGE_NAME "yagy")
-set (CPACK_PACKAGE_VENDOR "yagy")
-set (CPACK_PACKAGE_CONTACT "yagy-devel@lists.sourceforge.net")
-set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "YAGY is (Yet Another) Graphical interface to YACAS, a Yet Another Computer Algebra System")
+set (CPACK_PACKAGE_VENDOR "Yagy Team")
+set (CPACK_PACKAGE_CONTACT "Yagy Team <yagy-devel@lists.sourceforge.net>")
+set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "Yet Another GUI for Yacas")
 set (CPACK_PACKAGE_DESCRIPTION_FILE "${PROJECT_SOURCE_DIR}/README")
 
 set (CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/COPYING")
@@ -134,5 +152,6 @@ set (CPACK_PACKAGE_VERSION_MINOR ${YAGY_VERSION_MINOR})
 set (CPACK_PACKAGE_VERSION_PATCH ${YAGY_VERSION_MICRO})
 set (CPACK_PACKAGE_INSTALL_DIRECTORY "yagy")
 set (CPACK_PACKAGE_EXECUTABLES yagy;Yagy)
+set (CPACK_STRIP_FILES TRUE)
 
 include (CPack)
