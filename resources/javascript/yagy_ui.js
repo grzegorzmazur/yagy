@@ -237,11 +237,13 @@ function Plot3dResized( output ){
 function Plot3dMouseOut( output, event ){
     controls = output.controls;
     controls.enabled = false;
+    $(output).removeClass( "Plot3DActive");
 }
 
 function Plot3dClicked( output, event ){
     controls = output.controls;
     controls.enabled = true;
+    $(output).addClass( "Plot3DActive");
 }
 
 function renderOutput( outputID ){
