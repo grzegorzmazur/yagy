@@ -450,6 +450,10 @@
    </property>
   </action>
   <action name="actionCu_t">
+   <property name="icon">
+    <iconset resource="img.qrc">
+     <normaloff>:/resources/img/cut.svg</normaloff>:/resources/img/cut.svg</iconset>
+   </property>
    <property name="text">
     <string>Cu&amp;t</string>
    </property>

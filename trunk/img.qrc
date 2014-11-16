@@ -28,5 +28,6 @@
         <file>resources/img/cell_next.svg</file>
         <file>resources/img/cell_previous.svg</file>
         <file>resources/img/preferences.svg</file>
+        <file>resources/img/cut.svg</file>
     </qresource>
 </RCC>
