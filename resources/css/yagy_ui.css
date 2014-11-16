@@ -43,10 +43,13 @@
 }
 
 
+
+
 td{
     font-family: monospace;
     font-size: small;
     padding: 5px;
+    padding-right: 10px;
 
 }
 
@@ -87,4 +90,8 @@ textarea{
 
 .Plot3D{
     height:300px;
+}
+
+.Plot3DActive{
+    border:3px solid #41403b;
 }
