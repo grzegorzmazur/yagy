@@ -199,6 +199,9 @@
    <property name="text">
     <string>&amp;Open...</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="action_Save">
    <property name="icon">
@@ -220,6 +223,9 @@
    <property name="text">
     <string>Save &amp;As...</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
   </action>
   <action name="action_About">
    <property name="icon">
@@ -236,7 +242,7 @@
      <normaloff>:/resources/img/exit.svg</normaloff>:/resources/img/exit.svg</iconset>
    </property>
    <property name="text">
-    <string>&amp;Quit</string>
+    <string>Quit</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
@@ -311,7 +317,7 @@
      <normaloff>:/resources/img/restart_yacas.svg</normaloff>:/resources/img/restart_yacas.svg</iconset>
    </property>
    <property name="text">
-    <string> &amp;Restart Yacas</string>
+    <string>&amp;Restart Yacas</string>
    </property>
   </action>
   <action name="action_Stop">
@@ -368,7 +374,7 @@
      <normaloff>:/resources/img/close_document.svg</normaloff>:/resources/img/close_document.svg</iconset>
    </property>
    <property name="text">
-    <string>&amp;Close</string>
+    <string>&amp;Close Window</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+W</string>
