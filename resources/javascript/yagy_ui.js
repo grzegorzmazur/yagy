@@ -7,8 +7,12 @@ function load(){
     $( window ).on( 'resize', function( event ){
         
         w = $("body").width() - $("#Elements>tbody>tr>td:first-child").width() - 30; //Magic 20 is for some margins, TODO: make it right
+        
+        $( ".resizable" ).each( function(){
+                               maxwidth = $(this).resizable( "option", "maxWidth");
+                               if ($(this).width() > w || $(this).width() == maxwidth ) $(this).width(w);
+                               });
         $( ".resizable" ).resizable( "option", "maxWidth", w );
-        $( ".resizable" ).each( function(){ if ($(this).width() > w ) $(this).width(w); });
     });
     
     $(document).contextmenu({
