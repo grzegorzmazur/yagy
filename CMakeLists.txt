@@ -14,8 +14,6 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     add_definitions(-DYACAS_NO_CONSTEXPR)
 endif ()
 
-add_definitions(-DYAGY_ENABLE_INSPECTOR)
-
 set (YAGY_VERSION_MAJOR 1)
 set (YAGY_VERSION_MINOR 0)
 set (YAGY_VERSION_MICRO 0)
@@ -72,8 +70,12 @@ set_target_properties (libyacas PROPERTIES IMPORTED_LOCATION "${YACAS_PREFIX}/li
 target_link_libraries(yagy Qt5::Widgets Qt5::WebKit Qt5::WebKitWidgets libyacas)
 
 if (WIN32)
-  target_link_libraries (yagy shlwapi)
+    target_link_libraries (yagy shlwapi)
 endif()
+
+set_property (TARGET yagy APPEND PROPERTY
+    COMPILE_DEFINITIONS $<$<CONFIG:Debug>:YAGY_ENABLE_INSPECTOR>
+)
 
 install (TARGETS yagy RUNTIME DESTINATION bin)
 install (DIRECTORY ${YACAS_PREFIX}/share/yacas/scripts DESTINATION share/yagy)
