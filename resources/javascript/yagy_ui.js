@@ -16,7 +16,7 @@ function load(){
     });
     
     $(document).contextmenu({
-                            delegate: ".Expression",
+                            delegate: ".Expression>.Out",
                             menu: [
                                    {title: "Copy TeX", cmd: "copyTeX"},
                                    {title: "Copy Yacas Expression", cmd: "copyYacasExpression"}
