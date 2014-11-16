@@ -201,7 +201,8 @@ function printResults( result ){
 
         var controls = new THREE.TrackballControls(plot3d.camera, plot3d.renderer.domElement);
         controls.addEventListener( 'change', ControlsChanged );
-
+        controls.enabled = false;
+        output[0].controls = controls;
         plot3d.renderer.render(plot3d.scene, plot3d.camera);
 
         function render() {
@@ -214,6 +215,8 @@ function printResults( result ){
         output.resizable({ maxWidth: width, minWidth: 200, minHeight: 200} );
         output.addClass( "resizable" );
         output.resize( function(){ Plot3dResized( this );});
+        output.mouseout( function(event){ Plot3dMouseOut( this, event );});
+        output.click( function(event){ Plot3dClicked( this, event );});
         
     }
 }
@@ -229,6 +232,16 @@ function Plot3dResized( output ){
     plot3d = output.plot3D;
     plot3d.resizePlot( width, height);
     plot3d.renderer.render(plot3d.scene, plot3d.camera);
+}
+
+function Plot3dMouseOut( output, event ){
+    controls = output.controls;
+    controls.enabled = false;
+}
+
+function Plot3dClicked( output, event ){
+    controls = output.controls;
+    controls.enabled = true;
 }
 
 function renderOutput( outputID ){
