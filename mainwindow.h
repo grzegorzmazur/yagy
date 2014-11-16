@@ -5,12 +5,12 @@
 #include <QtCore/QVariant>
 
 #include <QtGui/QCloseEvent>
+#include <QtGui/QClipboard>
 
 #include <QtWidgets/QMainWindow>
 
 #include <QtPrintSupport/QPrinter>
 
-//#define YAGY_ENABLE_INSPECTOR
 #ifdef YAGY_ENABLE_INSPECTOR
 #include <QtWebKitWidgets/QWebInspector>
 #endif
@@ -19,7 +19,6 @@
 #include "yacas/yacas.h"
 
 #include "preferences.h"
-#include <QClipboard>
 
 namespace Ui {
     class MainWindow;
