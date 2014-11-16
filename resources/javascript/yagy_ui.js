@@ -4,9 +4,9 @@ function load(){
     
     $( window ).on( 'blur', function(){ if ( bluredEditable !== null ) $( bluredEditable ).click(); } );
     $( document ).on( 'click', function(){ bluredEditable = null; });
-    $( window ).on( 'resize', function(){
-        MathJax.Hub.Queue(["Rerender", MathJax.Hub]);
-        w = $("body").innerWidth() - $("#Elements>tbody>tr>td:first-child").width() - 20; //Magic 20 is for some margins, TODO: make it right
+    $( window ).on( 'resize', function( event ){
+        
+        w = $("body").width() - $("#Elements>tbody>tr>td:first-child").width() - 30; //Magic 20 is for some margins, TODO: make it right
         $( ".resizable" ).resizable( "option", "maxWidth", w );
         $( ".resizable" ).each( function(){ if ($(this).width() > w ) $(this).width(w); });
     });
@@ -170,6 +170,10 @@ function printResults( result ){
         output.append( "$$" + result["tex_code"] + "$$" );
         renderOutput( outputID );
         output[0].yacasExpression = result["expression"];
+        
+        $(output).resize( function(event){
+                         MathJax.Hub.Rerender(this);
+                         });
 
     }else if( result["type"] === "Error" ){
 
@@ -179,14 +183,14 @@ function printResults( result ){
 
         $.plot(output, result["plot2d_data"] );
 
-        var width = $("#" + outputID).parent().width();
+        var width = $("#" + outputID).width();
         
         output.resizable({ maxWidth: width, minWidth: 200, minHeight: 200} );
         output.addClass( "resizable" );
         
     }else if( result["type"] === "Plot3D" ){
 
-        var width = $("#" + outputID).parent().width();
+        var width = $("#" + outputID).width();
         var height = 300;
 
         webGLEnabled = yacas.isWebGLEnabled();
