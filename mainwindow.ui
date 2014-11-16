@@ -322,6 +322,9 @@
    <property name="text">
     <string>&amp;Stop</string>
    </property>
+   <property name="toolTip">
+    <string>Stop evaluation</string>
+   </property>
   </action>
   <action name="actionEvaluate_Current">
    <property name="icon">
@@ -330,6 +333,9 @@
    </property>
    <property name="text">
     <string>&amp;Current</string>
+   </property>
+   <property name="toolTip">
+    <string>Evaluate current cell</string>
    </property>
    <property name="shortcut">
     <string>Shift+Return</string>
@@ -342,6 +348,9 @@
    </property>
    <property name="text">
     <string>&amp;All</string>
+   </property>
+   <property name="toolTip">
+    <string>Reevaluate all</string>
    </property>
   </action>
   <action name="action_Export">
