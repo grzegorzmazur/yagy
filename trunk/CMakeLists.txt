@@ -100,7 +100,7 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
 
     find_program (RST2MAN rst2man)
 
-    if (${RST2MAN})
+    if (NOT ${RST2MAN})
         add_custom_target (man ALL COMMAND ${RST2MAN} ${PROJECT_SOURCE_DIR}/yagy.1.rst | ${GZIP} -9 > yagy.1.gz)
         install (FILES ${PROJECT_BINARY_DIR}/yagy.1.gz DESTINATION share/man/man1)
     endif ()
