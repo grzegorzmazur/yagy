@@ -33,6 +33,9 @@ public:
     
     QString get_scripts_path() const;
 
+    QString get_cwd() const;
+    void set_cwd(const QString&);
+    
 signals:
     void changed();
     
