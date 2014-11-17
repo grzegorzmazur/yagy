@@ -92,11 +92,19 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     install (FILES debian/copyright DESTINATION share/doc/yagy)
 
     find_package (UnixCommands REQUIRED)
-    add_custom_target(compress_changelog ALL COMMAND ${GZIP} -9 -c ${PROJECT_SOURCE_DIR}/debian/changelog > changelog.gz)
+    add_custom_target (compress_changelog ALL COMMAND ${GZIP} -9 -c ${PROJECT_SOURCE_DIR}/debian/changelog > changelog.gz)
 
     install (FILES ${PROJECT_BINARY_DIR}/changelog.gz DESTINATION share/doc/yagy)
 
     install (PROGRAMS yagy.desktop PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ DESTINATION share/applications)
+
+    find_program (RST2MAN rst2man)
+
+    if (${RST2MAN})
+        add_custom_target (man ALL COMMAND ${RST2MAN} ${PROJECT_SOURCE_DIR}/yagy.1.rst | ${GZIP} -9 > yagy.1.gz)
+        install (FILES ${PROJECT_BINARY_DIR}/yagy.1.gz DESTINATION share/man/man1)
+    endif ()
+
 endif ()
 
 if (WIN32)
@@ -123,7 +131,8 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     set (CPACK_PACKAGE_FILE_NAME "yagy_${YAGY_VERSION}-1_${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
     set (CPACK_DEBIAN_PACKAGE_ENHANCES "yacas")
     set (CPACK_DEBIAN_PACKAGE_DESCRIPTION "Yet Another GUI for Yacas
- Yagy is a graphical user interface for Yacas, a small and highly flexible computer algebra system.")
+ Yagy is a graphical user interface for Yacas, a small and highly flexible
+ computer algebra system.")
     set (CPACK_DEBIAN_PACKAGE_SECTION "math")
     set (CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 elseif (WIN32)
