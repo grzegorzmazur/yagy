@@ -10,7 +10,7 @@ Yet Another GUI for Yacas
 Synopsis
 ========
 
- yagy
+yagy
 
 Description
 ===========
