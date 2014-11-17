@@ -11,6 +11,7 @@
 #include <shlwapi.h>
 #endif
 
+#include <QtCore/QDir>
 
 Preferences::Preferences():
     _settings("yagy.sourceforge.net", "yagy")
@@ -138,6 +139,19 @@ QString Preferences::get_scripts_path() const
        return get_default_scripts_path();
     
     return get_custom_scripts_path();
+}
+
+QString Preferences::get_cwd() const
+{
+    return _settings.value("working_directory", QDir::homePath()).toString();
+}
+
+void Preferences::set_cwd(const QString& cwd)
+{
+    if (get_cwd() != cwd) {
+        _settings.setValue("working_directory", cwd);
+        emit changed();
+    }
 }
 
 bool Preferences::get_enable_WebGL() const

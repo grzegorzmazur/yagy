@@ -8,6 +8,7 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 #include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 #include <QtCore/QList>
 #include <QtCore/QUrl>
 #include <QtCore/QVariant>
@@ -168,7 +169,7 @@ void MainWindow::on_action_New_triggered()
 void MainWindow::on_action_Open_triggered()
 {
     QString fname =
-            QFileDialog::getOpenFileName(this, "Open", "", "Yagy files (*.ygy);;All files (*)");
+            QFileDialog::getOpenFileName(this, "Open", _prefs.get_cwd(), "Yagy files (*.ygy);;All files (*)");
 
     if (fname.length() == 0)
         return;
@@ -191,6 +192,8 @@ void MainWindow::on_action_Open_triggered()
     _modified = false;
     _has_file = true;
     _update_title();
+    
+    _prefs.set_cwd(QFileInfo(f).canonicalPath());
 }
 
 void MainWindow::on_action_Save_triggered()
