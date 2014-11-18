@@ -50,7 +50,6 @@ MainWindow::MainWindow(Preferences& prefs, QWidget *parent) :
     _inspector(nullptr)
 #endif
 {
-    qDebug() << _scripts_path;
     _yacas_server = new YacasServer(_scripts_path);
     
     connect(_yacas_server, SIGNAL(busy(bool)), this, SLOT(handle_engine_busy(bool)));
