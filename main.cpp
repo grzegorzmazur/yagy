@@ -21,6 +21,11 @@ int main(int argc, char *argv[])
         // switch yacas memory manager to thread-safe mode
         PlatObSetThreadSafe(true);
     
+        app.setApplicationName("yagy");
+        app.setApplicationDisplayName("Yagy");
+        app.setOrganizationName("yagy.sourceforge.net");
+        app.setOrganizationDomain("yagy.sourceforge.net");
+        
         app.setAttribute(Qt::AA_DontShowIconsInMenus);
         
         qRegisterMetaType<YacasRequest::State>("YacasRequest::State");

@@ -8,8 +8,7 @@
 
 #include <QtCore/QDir>
 
-Preferences::Preferences(const QApplication& app):
-    _settings("yagy.sourceforge.net", "yagy")
+Preferences::Preferences(const QApplication& app)
 {
 #if defined(__APPLE__)
 
