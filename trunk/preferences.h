@@ -2,13 +2,14 @@
 #define	PREFERENCES_H
 
 #include <QtCore/QSettings>
+#include <QtWidgets/QApplication>
 
 class Preferences: public QObject {
     
     Q_OBJECT
             
 public:
-    Preferences();
+    explicit Preferences(const QApplication&);
     
     bool get_enable_toolbar() const;
     void set_enable_toolbar(bool);
