@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
         
         qRegisterMetaType<YacasRequest::State>("YacasRequest::State");
 
-        Preferences prefs;
+        Preferences prefs(app);
         
 	MainWindow  *widget = new MainWindow (prefs);
     
