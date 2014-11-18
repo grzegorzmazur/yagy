@@ -2,18 +2,13 @@
 
 #if defined(__APPLE__)
 #include <CoreFoundation/CoreFoundation.h>
-#elif defined (__linux__)
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <libgen.h>
 #elif defined(_WIN32)
 #include <shlwapi.h>
 #endif
 
 #include <QtCore/QDir>
 
-Preferences::Preferences():
+Preferences::Preferences(const QApplication& app):
     _settings("yagy.sourceforge.net", "yagy")
 {
 #if defined(__APPLE__)
@@ -26,27 +21,6 @@ Preferences::Preferences():
 
     _default_scripts_path = path;
     _default_scripts_path.append("/yacas.framework/Versions/Current/Resources/scripts/");
-    
-#elif defined(__linux__)
-    
-    struct stat sb;
-    if (stat("/proc/self/exe", &sb) == -1)
-        throw std::runtime_error("Failed to stat /proc/self/exe, bailing out.");
-
-    std::vector<char> buf(sb.st_size + 1);
-
-    const ssize_t r = readlink("/proc/self/exe", buf.data(), sb.st_size + 1);
-
-    if (r == -1)
-        throw std::runtime_error("Failed to read /proc/self/exe, bailing out.");
-
-    if (r > sb.st_size)
-        throw std::runtime_error("/proc/self/exe changed between stat and readlink, bailing out.");
-
-    buf[r] = '\0';
-
-    _default_scripts_path = dirname(dirname(buf.data()));
-    _default_scripts_path.append("/share/yagy/scripts/");
 #elif defined(_WIN32)
     char root_dir_buf[MAX_PATH];
     LPSTATUS status = SHRegGetPathA(HKEY_LOCAL_MACHINE, "SOFTWARE\\yagy\\yagy", 0, root_dir_buf, 0);
@@ -59,7 +33,9 @@ Preferences::Preferences():
     
     _default_scripts_path = root_dir_buf;
 #else
-#error "Yagy not yet ported to this platform, please contact developers"
+    QDir dir(app.applicationDirPath());
+    dir.cd("../share/yagy/scripts");
+    _default_scripts_path = dir.canonicalPath() + "/";
 #endif
 }
 
