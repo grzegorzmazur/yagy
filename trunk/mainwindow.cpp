@@ -562,8 +562,6 @@ void MainWindow::_update_title()
     if (_modified)
         title = "*" + title;
 
-    title += " - Yagy";
-
     setWindowTitle(title);
 
     _ui->action_Save->setEnabled(_modified);
