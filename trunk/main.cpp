@@ -15,41 +15,46 @@ void addSplashScreen( MainWindow* widget );
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+  QApplication app(argc, argv);
     
-    try {
-        // switch yacas memory manager to thread-safe mode
-        PlatObSetThreadSafe(true);
-    
-        app.setApplicationName("yagy");
-        app.setApplicationDisplayName("Yagy");
-        app.setOrganizationName("yagy.sourceforge.net");
-        app.setOrganizationDomain("yagy.sourceforge.net");
-        
-        app.setAttribute(Qt::AA_DontShowIconsInMenus);
-        
-        qRegisterMetaType<YacasRequest::State>("YacasRequest::State");
+  try {
+    #ifndef NO_GLOBALS
+      PlatObSetThreadSafe(true);
+    #endif    
 
-        Preferences prefs(app);
+	app.setApplicationName("yagy");
+    app.setApplicationDisplayName("Yagy");
+    app.setOrganizationName("yagy.sourceforge.net");
+    app.setOrganizationDomain("yagy.sourceforge.net");
+        
+    #ifndef _WIN32
+	  app.setAttribute(Qt::AA_DontShowIconsInMenus);
+    #endif        
+
+	qRegisterMetaType<YacasRequest::State>("YacasRequest::State");
+
+	Preferences prefs(app);
         
 	MainWindow  *widget = new MainWindow (prefs);
     
-#ifndef __APPLE__
-        addSplashScreen( widget );
-#endif
-        
-	widget->show();
+   
     
-	return app.exec();
-    } catch (const std::exception& e) {
-        QMessageBox::critical(nullptr, "YAGY Error", e.what());
-        return 1;
-    } catch (...) {
-        QMessageBox::critical(nullptr, "YAGY Error", "Unknown error");
-        return 1;
-    }
+    #ifndef __APPLE__
+      addSplashScreen( widget );
+    #endif
+
+    widget->show();
     
-    return 0;
+    return app.exec();
+  } catch (const std::exception& e) {
+    QMessageBox::critical(nullptr, "YAGY Error", e.what());
+    return 1;
+  } catch (...) {
+    QMessageBox::critical(nullptr, "YAGY Error", "Unknown error");
+    return 1;
+  }
+    
+  return 0;
 }
 
 void addSplashScreen( MainWindow* widget )
