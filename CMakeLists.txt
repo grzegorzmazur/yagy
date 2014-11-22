@@ -4,6 +4,8 @@ project (YAGY CXX)
 
 set(YACAS_PREFIX "" CACHE FILEPATH "Yacas installation root")
 
+set(YACAS_PREFIX "C:/Program Files (x86)/yacas")
+
 if(NOT EXISTS ${YACAS_PREFIX}/include/yacas/yacas.h)
   message(SEND_ERROR "Can't find yacas.h in ${YACAS_PREFIX}/include/yacas")
 endif()
@@ -68,15 +70,22 @@ if (WIN32)
     set (YAGY_SOURCES ${YAGY_SOURCES} winres/yagy.rc)
 endif ()
 
+if (APPLE OR WIN32)
+    add_definitions(-DNO_GLOBALS)
+endif ()
+
 add_executable (yagy ${YAGY_SOURCES} ${YAGY_QRESOURCES})
 
 add_library (libyacas STATIC IMPORTED)
-set_target_properties (libyacas PROPERTIES IMPORTED_LOCATION "${YACAS_PREFIX}/lib/libyacas.a")
+set_target_properties (libyacas PROPERTIES IMPORTED_LOCATION "${YACAS_PREFIX}/lib/yacas.lib")
 
 target_link_libraries(yagy Qt5::Widgets Qt5::WebKit Qt5::WebKitWidgets libyacas)
 
 if (WIN32)
     target_link_libraries (yagy shlwapi)
+	set_target_properties(yagy PROPERTIES 
+		WIN32_EXECUTABLE YES
+	)
 endif()
 
 set_property (TARGET yagy APPEND PROPERTY
@@ -110,11 +119,17 @@ endif ()
 if (WIN32)
     # FIXME: this is plain ugly, there must be a better way
     # install all the dlls we use
-    install (FILES "/usr/lib/gcc/i686-w64-mingw32/4.8/libgcc_s_sjlj-1.dll" DESTINATION bin)
-    get_target_property(QtCore_location Qt5::Core LOCATION)
+	
+	get_target_property(QtCore_location Qt5::Core LOCATION)
     get_filename_component(QT_DLL_DIR ${QtCore_location} DIRECTORY)
-
-    set (QT_DLLS libgcc_s_dw2-1.dll libstdc++-6.dll libwinpthread-1.dll Qt5WebKit.dll Qt5WebKitWidgets.dll icuin52.dll icuuc52.dll icudt52.dll Qt5Core.dll  Qt5Gui.dll Qt5Multimedia.dll Qt5MultimediaWidgets.dll Qt5Network.dll Qt5OpenGL.dll Qt5Positioning.dll Qt5PrintSupport.dll Qt5Qml.dll Qt5Quick.dll Qt5Sensors.dll Qt5Sql.dll Qt5Svg.dll Qt5Widgets.dll)
+	
+	set (QT_DLLS Qt5WebKit.dll Qt5WebKitWidgets.dll icuin52.dll icuuc52.dll icudt52.dll Qt5Core.dll  Qt5Gui.dll Qt5Multimedia.dll Qt5MultimediaWidgets.dll Qt5Network.dll Qt5OpenGL.dll Qt5Positioning.dll Qt5PrintSupport.dll Qt5Qml.dll Qt5Quick.dll Qt5Sensors.dll Qt5Sql.dll Qt5Svg.dll Qt5Widgets.dll)
+    
+	if (CMAKE_CROSSCOMPILING)
+      install (FILES "/usr/lib/gcc/i686-w64-mingw32/4.8/libgcc_s_sjlj-1.dll" DESTINATION bin)
+	  set (QT_DLLS ${QT_DLLS} libgcc_s_dw2-1.dll libstdc++-6.dll libwinpthread-1.dll )	
+	endif ()
+    
     foreach (_dll ${QT_DLLS})
         install (FILES "${QT_DLL_DIR}/${_dll}" DESTINATION bin)
     endforeach ()
