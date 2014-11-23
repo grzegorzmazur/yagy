@@ -35,6 +35,7 @@ Mac OS X
   - default configuration is Debug. To change to Release edit the YAGY scheme.
 5. To create a distributable application with Qt frameworks included in the bundle run the following command:
 	$$PATH_TO_QT_BIN_FOLDER$$/macdeployqt $$PATH_YAGY_BUILD_FOLDER$$/YAGY.app 
+  Ignore ERROR: no file at "/opt/local/lib/mysql55/lib/libmysqlclient.18.dylib"
   Option -dmg can be added to create a dmg image.
  
 
