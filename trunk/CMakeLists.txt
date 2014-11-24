@@ -4,8 +4,6 @@ project (YAGY CXX)
 
 set(YACAS_PREFIX "" CACHE FILEPATH "Yacas installation root")
 
-set(YACAS_PREFIX "C:/Program Files (x86)/yacas")
-
 if(NOT EXISTS ${YACAS_PREFIX}/include/yacas/yacas.h)
   message(SEND_ERROR "Can't find yacas.h in ${YACAS_PREFIX}/include/yacas")
 endif()
