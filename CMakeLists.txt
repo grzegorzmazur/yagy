@@ -75,7 +75,12 @@ endif ()
 add_executable (yagy ${YAGY_SOURCES} ${YAGY_QRESOURCES})
 
 add_library (libyacas STATIC IMPORTED)
-set_target_properties (libyacas PROPERTIES IMPORTED_LOCATION "${YACAS_PREFIX}/lib/yacas.lib")
+
+if (WIN32)
+    set_target_properties (libyacas PROPERTIES IMPORTED_LOCATION "${YACAS_PREFIX}/lib/yacas.lib")
+else ()
+    set_target_properties (libyacas PROPERTIES IMPORTED_LOCATION "${YACAS_PREFIX}/lib/libyacas.a")
+endif ()
 
 target_link_libraries(yagy Qt5::Widgets Qt5::WebKit Qt5::WebKitWidgets libyacas)
 
