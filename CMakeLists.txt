@@ -122,16 +122,16 @@ endif ()
 if (WIN32)
     # FIXME: this is plain ugly, there must be a better way
     # install all the dlls we use
-	
-	get_target_property(QtCore_location Qt5::Core LOCATION)
+
+    get_target_property(QtCore_location Qt5::Core LOCATION)
     get_filename_component(QT_DLL_DIR ${QtCore_location} DIRECTORY)
-	
-	set (QT_DLLS Qt5WebKit.dll Qt5WebKitWidgets.dll icuin52.dll icuuc52.dll icudt52.dll Qt5Core.dll  Qt5Gui.dll Qt5Multimedia.dll Qt5MultimediaWidgets.dll Qt5Network.dll Qt5OpenGL.dll Qt5Positioning.dll Qt5PrintSupport.dll Qt5Qml.dll Qt5Quick.dll Qt5Sensors.dll Qt5Sql.dll Qt5Svg.dll Qt5Widgets.dll)
-    
-	if (CMAKE_CROSSCOMPILING)
-      install (FILES "/usr/lib/gcc/i686-w64-mingw32/4.8/libgcc_s_sjlj-1.dll" DESTINATION bin)
-	  set (QT_DLLS ${QT_DLLS} libgcc_s_dw2-1.dll libstdc++-6.dll libwinpthread-1.dll )	
-	endif ()
+
+    set (QT_DLLS Qt5WebKit.dll Qt5WebKitWidgets.dll libEGL.dll libGLESv2.dll icuin52.dll icuuc52.dll icudt52.dll Qt5Core.dll  Qt5Gui.dll Qt5Multimedia.dll Qt5MultimediaWidgets.dll Qt5Network.dll Qt5OpenGL.dll Qt5Positioning.dll Qt5PrintSupport.dll Qt5Qml.dll Qt5Quick.dll Qt5Sensors.dll Qt5Sql.dll Qt5Svg.dll Qt5Widgets.dll)
+
+    if (CMAKE_CROSSCOMPILING)
+        install (FILES "/usr/lib/gcc/i686-w64-mingw32/4.8/libgcc_s_sjlj-1.dll" DESTINATION bin)
+        set (QT_DLLS ${QT_DLLS} libgcc_s_dw2-1.dll libstdc++-6.dll libwinpthread-1.dll )
+    endif ()
     
     foreach (_dll ${QT_DLLS})
         install (FILES "${QT_DLL_DIR}/${_dll}" DESTINATION bin)
