@@ -4,8 +4,6 @@ project (YAGY CXX)
 
 set(YACAS_PREFIX "" CACHE FILEPATH "Yacas installation root")
 
-set(YACAS_PREFIX "C:/Program Files (x86)/yacas")
-
 if(NOT EXISTS ${YACAS_PREFIX}/include/yacas/yacas.h)
   message(SEND_ERROR "Can't find yacas.h in ${YACAS_PREFIX}/include/yacas")
 endif()
@@ -18,7 +16,7 @@ endif ()
 
 set (YAGY_VERSION_MAJOR 1)
 set (YAGY_VERSION_MINOR 0)
-set (YAGY_VERSION_MICRO 0)
+set (YAGY_VERSION_MICRO 1)
 
 set (YAGY_VERSION ${YAGY_VERSION_MAJOR}.${YAGY_VERSION_MINOR}.${YAGY_VERSION_MICRO})
 
@@ -77,7 +75,12 @@ endif ()
 add_executable (yagy ${YAGY_SOURCES} ${YAGY_QRESOURCES})
 
 add_library (libyacas STATIC IMPORTED)
-set_target_properties (libyacas PROPERTIES IMPORTED_LOCATION "${YACAS_PREFIX}/lib/yacas.lib")
+
+if (WIN32)
+    set_target_properties (libyacas PROPERTIES IMPORTED_LOCATION "${YACAS_PREFIX}/lib/yacas.lib")
+else ()
+    set_target_properties (libyacas PROPERTIES IMPORTED_LOCATION "${YACAS_PREFIX}/lib/libyacas.a")
+endif ()
 
 target_link_libraries(yagy Qt5::Widgets Qt5::WebKit Qt5::WebKitWidgets libyacas)
 
@@ -123,7 +126,7 @@ if (WIN32)
 	get_target_property(QtCore_location Qt5::Core LOCATION)
     get_filename_component(QT_DLL_DIR ${QtCore_location} DIRECTORY)
 	
-	set (QT_DLLS Qt5WebKit.dll Qt5WebKitWidgets.dll icuin52.dll icuuc52.dll icudt52.dll Qt5Core.dll  Qt5Gui.dll Qt5Multimedia.dll Qt5MultimediaWidgets.dll Qt5Network.dll Qt5OpenGL.dll Qt5Positioning.dll Qt5PrintSupport.dll Qt5Qml.dll Qt5Quick.dll Qt5Sensors.dll Qt5Sql.dll Qt5Svg.dll Qt5Widgets.dll)
+	set (QT_DLLS Qt5WebKit.dll Qt5WebKitWidgets.dll libEGL.dll libGLESv2.dll icuin52.dll icuuc52.dll icudt52.dll Qt5Core.dll  Qt5Gui.dll Qt5Multimedia.dll Qt5MultimediaWidgets.dll Qt5Network.dll Qt5OpenGL.dll Qt5Positioning.dll Qt5PrintSupport.dll Qt5Qml.dll Qt5Quick.dll Qt5Sensors.dll Qt5Sql.dll Qt5Svg.dll Qt5Widgets.dll)
     
 	if (CMAKE_CROSSCOMPILING)
       install (FILES "/usr/lib/gcc/i686-w64-mingw32/4.8/libgcc_s_sjlj-1.dll" DESTINATION bin)
@@ -151,6 +154,9 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     set (CPACK_DEBIAN_PACKAGE_SECTION "math")
     set (CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
 elseif (WIN32)
+	include( InstallRequiredSystemLibraries )
+    set (CPACK_NSIS_EXTRA_PREINSTALL_COMMANDS  "SetRegView 64")
+	set (CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64")
     set (CPACK_GENERATOR NSIS)
     set (CPACK_NSIS_MODIFY_PATH "ON")
     set (CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL "ON")
