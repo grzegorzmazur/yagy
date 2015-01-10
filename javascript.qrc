@@ -15,6 +15,11 @@
         <file>resources/javascript/delaunay.js</file>
     </qresource>
     <qresource>
+        <file>resources/javascript/codemirror/codemirror.js</file>
+        <file>resources/javascript/codemirror/mode/javascript/javascript.js</file>
+        <file>resources/javascript/codemirror/addon/edit/matchbrackets.js</file>
+    </qresource>
+    <qresource>
         <file>resources/javascript/three/three.min.js</file>
         <file>resources/javascript/three/Detector.js</file>
         <file>resources/javascript/three/TrackballControls.js</file>
