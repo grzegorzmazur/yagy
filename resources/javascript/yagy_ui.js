@@ -16,11 +16,13 @@ function load(){
         $( ".resizable" ).resizable( "option", "maxWidth", w );
     });
     
-    //var editor = CodeMirror.fromTextArea($( '#inputExpression' )[0], {lineNumbers: true, mode: {name: "javascript", globalVars: true},matchBrackets: true });
+    CodeMirror.defaults['lineNumbers'] = false;
+    CodeMirror.defaults['mode'] = {name: 'javascript', globalVars: true};
+    CodeMirror.defaults['matchBrackets'] = true;
+    CodeMirror.defaults['readOnly'] = false;
+    CodeMirror.defaults['lineWrapping'] = true;
     
-    editor = CodeMirror.fromTextArea( document.getElementById('inputExpression' ), {lineNumbers: false, mode: {name: "javascript", globalVars: true},matchBrackets: true, readOnly: false, lineWrapping: true});
-    
-    editor.setValue ("2+2");
+    var editor = CodeMirror.fromTextArea( document.getElementById( 'inputExpression' ) );
     $( '#inputExpression' )[0].editor = editor;
     $( editor.getInputField() ).keydown( function( event){
                                           return submitenter(this,event);
@@ -162,7 +164,7 @@ function addInputEditor( lineid, number, value, rootElementID ){
 
     $( rootElementID ).append( $row );
     
-    var editor = CodeMirror.fromTextArea($textarea[0], {lineNumbers: false, mode: {name: "javascript", globalVars: true},matchBrackets: true ,lineWrapping: true});
+    var editor = CodeMirror.fromTextArea( $textarea[0] );
     
     editor.number = lineid;
     
