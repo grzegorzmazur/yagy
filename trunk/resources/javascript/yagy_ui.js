@@ -1,3 +1,5 @@
+
+
 function load(){
     //$("#inputExpression").focus();
     $( "#inputExpression" ).autosize();
@@ -13,6 +15,16 @@ function load(){
                                });
         $( ".resizable" ).resizable( "option", "maxWidth", w );
     });
+    
+    //var editor = CodeMirror.fromTextArea($( '#inputExpression' )[0], {lineNumbers: true, mode: {name: "javascript", globalVars: true},matchBrackets: true });
+    
+    editor = CodeMirror.fromTextArea( document.getElementById('inputExpression' ), {lineNumbers: false, mode: {name: "javascript", globalVars: true},matchBrackets: true, readOnly: false, lineWrapping: true});
+    
+    editor.setValue ("2+2");
+    $( '#inputExpression' )[0].editor = editor;
+    $( editor.getInputField() ).keydown( function( event){
+                                          return submitenter(this,event);
+                                          });
     
     $(document).contextmenu({
                             delegate: ".Expression>.Out",
@@ -64,12 +76,15 @@ function updateInputNumber( updatedNumber) {
 
 function clearInput(){
     $( "#inputExpression" ).val("");
+    $( '#inputExpression' )[0].editor.setValue("");
 }
 
 
 function submitenter( input, event ){
     if( event.which === 13 && event.shiftKey ){
-        calculate( input.value );
+        $( '#inputExpression' )[0].editor.save();
+        value = $( '#inputExpression' )[0].editor.getValue();
+        calculate( value );
         return false;
     }
     if( event.which === 38 && event.shiftKey ){
@@ -132,10 +147,72 @@ function addEditable( lineid, number, value, rootElementID ){
 }
 
 
+
+
+function addInputEditor( lineid, number, value, rootElementID ){
+    
+    var $row = $( "<tr>", {class: 'In'} );
+    
+    var $tdnumber = $("<td>").append( "in  "+ number + ":");
+    
+    var $textarea = $( "<textarea>" ).append( value );
+    var $tdinput = $( "<td>" ).append( $textarea );
+    
+    $row.append( $tdnumber).append( $tdinput );
+
+    $( rootElementID ).append( $row );
+    
+    var editor = CodeMirror.fromTextArea($textarea[0], {lineNumbers: false, mode: {name: "javascript", globalVars: true},matchBrackets: true ,lineWrapping: true});
+    
+    editor.number = lineid;
+    
+    $textarea[0].editor = editor;
+    editor.calculatedExpression = value;
+    
+    editor.on('keydown', function( editor, event ){
+              
+              if( event.which == 13 && event.shiftKey ){
+                editor.save();
+                processChange( editor.getValue(), editor.number, null  );
+              }
+              
+              if( event.which == 38 && event.shiftKey ){
+                goUp( editor.number );
+    
+              }
+              if( event.which == 40 && event.shiftKey ){
+                goDown( editor.number );
+              }
+              
+    });
+    
+    editor.on('keyup', function (editor, e) {
+          
+        $tbody = $(editor.getTextArea()).parents("tbody");
+        if ( $tbody.hasClass("New"))
+            return;
+          
+        original = editor.calculatedExpression;
+        currentValue = editor.getValue();
+        
+        if ( original != currentValue ){
+              $tbody.addClass("Modified");
+        }else{
+              $tbody.removeClass("Modified");
+        }
+    });
+
+    
+    return $textarea;
+}
+
+
+
 function addOutput( lineid, number, rootElementID ){
     outputID = "output_" + lineid;
 
-    var row = $( "<tr class='Out'></tr>" );
+    var $row = $( "<tr>", {class: 'Out'} );
+
     row.append( "<td>out "+ number + ":</td>"  );
     row.append( "<td><div id='" + outputID+ "' ></div></td>" );
     
@@ -265,7 +342,8 @@ function removeOldResults( number ){
 function addExpressionCells( lineID, expressionid, value, rootElementID){
     
     $("<tbody id='expression_" + lineID + "' class='Modified'></tbody").insertBefore( rootElementID );
-    addEditable( lineID, expressionid, value, "#expression_" + lineID);
+    //addEditable( lineID, expressionid, value, "#expression_" + lineID);
+    addInputEditor( lineID, expressionid, value, "#expression_" + lineID);
     addOutput( lineID, expressionid, "#expression_" + lineID);
 }
 
@@ -398,8 +476,13 @@ function goDown( number ){
 }
 
 function goto( number ){
-    if ( number === '0' ) $("#inputExpression").focus();
-    else $("#expression_"+number).find(".editable").click();
+    if ( number === '0' ){
+        //$("#inputExpression").focus();
+        $( '#inputExpression' )[0].editor.focus();
+    }else {
+        //$("#expression_"+number).find(".editable").click();
+        $("#expression_"+number).find("textarea")[0].editor.focus();
+    }
     
 }
 
@@ -428,10 +511,12 @@ function insertElement( whetherAfterOrBefore ){
         element.insertAfter( focused );
     }
     
-    var editable = addEditable(numberOfLines, "", value, "#expression_" + numberOfLines);
+    //var editable = addEditable(numberOfLines, "", value, "#expression_" + numberOfLines);
+    var editor = addInputEditor( numberOfLines, "", value, "#expression_" + numberOfLines);
     
     if ( clickNew ){
-        editable.click();
+        //editable.click();
+        editor.focus();
     }
     numberOfLines++;
 }

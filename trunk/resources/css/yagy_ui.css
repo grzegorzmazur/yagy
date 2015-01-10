@@ -61,6 +61,10 @@ body{
     
 }
 
+.CodeMirror { height: auto; border: 1px solid #ddd; }
+
+td { white-space:pre }
+
 textarea{
     width:100%;
     font-family: courier;
