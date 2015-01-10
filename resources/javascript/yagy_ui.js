@@ -213,10 +213,10 @@ function addOutput( lineid, number, rootElementID ){
 
     var $row = $( "<tr>", {class: 'Out'} );
 
-    row.append( "<td>out "+ number + ":</td>"  );
-    row.append( "<td><div id='" + outputID+ "' ></div></td>" );
+    $row.append( "<td>out "+ number + ":</td>"  );
+    $row.append( "<td><div id='" + outputID+ "' ></div></td>" );
     
-    $( rootElementID ).append( row );
+    $( rootElementID ).append( $row );
     $( "#" + outputID ).append( "<img src='img/progressbar.indicator.gif' width='20' ></img>");
 }
 
