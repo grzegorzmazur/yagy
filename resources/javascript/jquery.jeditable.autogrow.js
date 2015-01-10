@@ -21,14 +21,16 @@ $.editable.addInputType( 'autogrow', {
         return( textarea );
     },
     plugin : function( settings, original ) {
+                        
+        this[0].editor = CodeMirror.fromTextArea($( 'textarea', this )[0], {lineNumbers: false, mode: {name: "javascript", globalVars: true},matchBrackets: true });
 
                         
         $( 'textarea', this ).autosize();
         $( 'textarea', this ).keydown( function (e) {
                                 var number = this.name;
                                 if( e.which == 13 && e.shiftKey ){
-
-                                      $(this).parent().submit();
+                                      $(this).closest( "form" )[0].editor.save();
+                                      $(this).closest( "form" ).submit();
                                 }
                                 //if( e.which == 13 ) e.preventDefault();
                                 if( e.which == 38 && e.shiftKey ){
