@@ -19,7 +19,7 @@ function load(){
     CodeMirror.defaults['lineNumbers'] = false;
     CodeMirror.defaults['mode'] = {name: 'javascript', globalVars: true};
     CodeMirror.defaults['matchBrackets'] = true;
-    CodeMirror.defaults['autoCloseBrackets'] = true;
+    CodeMirror.defaults['autoCloseBrackets'] = '()[]{}""';
     CodeMirror.defaults['readOnly'] = false;
     CodeMirror.defaults['lineWrapping'] = true;
     
