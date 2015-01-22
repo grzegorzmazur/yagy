@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RCC version="1.0">
+    <qresource>
+        <file>resources/javascript/jquery-ui-1.10.4.custom.min.js</file>
+        <file>resources/javascript/jquery-ui-1.11.2.min.js</file>
+        <file>resources/javascript/jquery-1.11.0.min.js</file>
+        <file>resources/javascript/jquery.autosize.min.js</file>
+        <file>resources/javascript/jquery.jeditable.autogrow.js</file>
+        <file>resources/javascript/jquery.jeditable.js</file>
+        <file>resources/javascript/jquery.ui-contextmenu.min.js</file>
+    </qresource>
+    <qresource>
+        <file>resources/javascript/flot/jquery.flot.min.js</file>
+        <file>resources/javascript/flot/jquery.flot.resize.min.js</file>
+    </qresource>
+</RCC>
