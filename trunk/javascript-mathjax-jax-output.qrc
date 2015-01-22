@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RCC version="1.0">
+    <qresource>
+        <file>resources/javascript/mathjax/jax/output/HTML-CSS/jax.js</file>
+        <file>resources/javascript/mathjax/jax/output/HTML-CSS/config.js</file>
+        <file>resources/javascript/mathjax/jax/output/HTML-CSS/imageFonts.js</file>
+        <file>resources/javascript/mathjax/jax/output/HTML-CSS/blank.gif</file>
+        <file>resources/javascript/mathjax/jax/output/HTML-CSS/autoload/maction.js</file>
+        <file>resources/javascript/mathjax/jax/output/HTML-CSS/autoload/mglyph.js</file>
+        <file>resources/javascript/mathjax/jax/output/HTML-CSS/autoload/ms.js</file>
+        <file>resources/javascript/mathjax/jax/output/HTML-CSS/autoload/mtable.js</file>
+        <file>resources/javascript/mathjax/jax/output/HTML-CSS/autoload/multiline.js</file>
+        <file>resources/javascript/mathjax/jax/output/HTML-CSS/autoload/menclose.js</file>
+        <file>resources/javascript/mathjax/jax/output/HTML-CSS/autoload/annotation-xml.js</file>
+        <file>resources/javascript/mathjax/jax/output/HTML-CSS/autoload/mmultiscripts.js</file>
+        <file>resources/javascript/mathjax/jax/output/NativeMML/jax.js</file>
+        <file>resources/javascript/mathjax/jax/output/NativeMML/config.js</file>        
+    </qresource>
+</RCC>

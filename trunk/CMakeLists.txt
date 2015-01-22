@@ -52,8 +52,43 @@ set (YAGY_QRESOURCES qrc_html.cpp qrc_img.cpp)
 if (NOT APPLE)
     qt5_add_resources (qrc_css.cpp css.qrc)
     qt5_add_resources (qrc_javascript.cpp javascript.qrc)
+    qt5_add_resources (qrc_javascript-codemirror.cpp javascript-codemirror.qrc)
+    qt5_add_resources (qrc_javascript-fonts-stix-web-otf.cpp javascript-fonts-stix-web-otf.qrc --compress 9)
+    qt5_add_resources (qrc_javascript-fonts-stix-web-woff.cpp javascript-fonts-stix-web-woff.qrc --compress 9)
+    qt5_add_resources (qrc_javascript-fonts-tex.cpp javascript-fonts-tex.qrc --compress 9)
+    qt5_add_resources (qrc_javascript-jquery.cpp javascript-jquery.qrc)
+    qt5_add_resources (qrc_javascript-mathjax.cpp javascript-mathjax.qrc --compress 9)
+    qt5_add_resources (qrc_javascript-mathjax-config.cpp javascript-mathjax-config.qrc --compress 9)
+    qt5_add_resources (qrc_javascript-mathjax-extensions.cpp javascript-mathjax-extensions.qrc --compress 9)
+    qt5_add_resources (qrc_javascript-mathjax-jax-element.cpp javascript-mathjax-jax-element.qrc --compress 9)
+    qt5_add_resources (qrc_javascript-mathjax-jax-input.cpp javascript-mathjax-jax-input.qrc --compress 9)
+    qt5_add_resources (qrc_javascript-mathjax-jax-output.cpp javascript-mathjax-jax-output.qrc --compress 9)
+    qt5_add_resources (qrc_javascript-mathjax-jax-output-fonts-stix.cpp javascript-mathjax-jax-output-fonts-stix.qrc --compress 9)
+    qt5_add_resources (qrc_javascript-mathjax-jax-output-fonts-stix-web.cpp javascript-mathjax-jax-output-fonts-stix-web.qrc --compress 9)
+    qt5_add_resources (qrc_javascript-mathjax-jax-output-fonts-tex.cpp javascript-mathjax-jax-output-fonts-tex.qrc --compress 9)
+    qt5_add_resources (qrc_javascript-mathjax-localization.cpp javascript-mathjax-localization.qrc --compress 9)
+    qt5_add_resources (qrc_javascript-three.cpp javascript-three.qrc)
 
-    set (YAGY_QRESOURCES ${YAGY_QRESOURCES} qrc_css.cpp qrc_javascript.cpp)
+    set (YAGY_QRESOURCES
+        ${YAGY_QRESOURCES}
+        qrc_css.cpp
+        qrc_javascript.cpp
+        qrc_javascript-codemirror.cpp
+        qrc_javascript-jquery.cpp
+        qrc_javascript-fonts-stix-web-otf.cpp
+        qrc_javascript-fonts-stix-web-woff.cpp
+        qrc_javascript-fonts-tex.cpp
+        qrc_javascript-mathjax.cpp
+        qrc_javascript-mathjax-config.cpp
+        qrc_javascript-mathjax-extensions.cpp
+        qrc_javascript-mathjax-jax-element.cpp
+        qrc_javascript-mathjax-jax-input.cpp
+        qrc_javascript-mathjax-jax-output.cpp
+        qrc_javascript-mathjax-jax-output-fonts-stix.cpp
+        qrc_javascript-mathjax-jax-output-fonts-stix-web.cpp
+        qrc_javascript-mathjax-jax-output-fonts-tex.cpp
+        qrc_javascript-mathjax-localization.cpp
+        qrc_javascript-three.cpp)
 endif ()
 
 set (YAGY_SOURCES

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RCC version="1.0">
+    <qresource>
+        <file>resources/javascript/mathjax/config/local/local.js</file>
+        <file>resources/javascript/mathjax/config/MMLorHTML.js</file>
+        <file>resources/javascript/mathjax/config/TeX-AMS_HTML-full.js</file>
+        <file>resources/javascript/mathjax/config/TeX-AMS_HTML.js</file>
+        <file>resources/javascript/mathjax/config/TeX-AMS-MML_HTMLorMML-full.js</file>
+        <file>resources/javascript/mathjax/config/TeX-AMS-MML_HTMLorMML.js</file>
+    </qresource>
+</RCC>
