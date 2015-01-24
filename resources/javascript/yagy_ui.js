@@ -245,7 +245,7 @@ function printResults( result ){
     output.addClass( result["type"] );
     
     ExpressionElement.addClass( result["type"]);
-    ExpressionElement.removeClass("Modified");
+    ExpressionElement.removeClass("Modified New");
 
     output.text("");
     
@@ -353,7 +353,7 @@ function addExpressionCells( lineID, expressionid, value, rootElementID, express
 
 function calculate( value ){
     
-    addExpressionCells( numberOfLines, currentExpression, value, "#expression_0");
+    addExpressionCells( numberOfLines, currentExpression, value, "#expression_0", "New");
     
     yacas.eval( numberOfLines, value );
     
