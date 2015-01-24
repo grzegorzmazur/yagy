@@ -384,12 +384,31 @@ function processChange( value, number, object ){
 
 }
 
-function evaluateCurrent(){
+function evaluateCurrent_deprecatedEditable(){
     var active = document.activeElement;
     if ( active.id === "inputExpression" && active.value != ""){
         calculate( active.value );
     }else{
         $(document.activeElement).parent().trigger("submit");
+    }
+}
+
+function evaluateCurrent(){
+    var $tbody = $(document.activeElement).parents("tbody");
+    var $input = $tbody.find(".InputTextarea");
+
+    if ( $input.length ){
+        editor = $input[0].editor;
+        processChange( editor.getValue(), editor.number, null  );
+        return;
+    }
+
+    $input = $tbody.find("#inputExpression");
+
+
+    if ( $input.length ){
+        inputVal = $input[0].editor.getValue();
+        if ( inputVal !== "" ) calculate( inputVal );
     }
 }
 
