@@ -158,7 +158,7 @@ function addInputEditor( lineid, number, value, rootElementID ){
     
     var $tdnumber = $("<td>").append( "in  "+ number + ":");
     
-    var $textarea = $( "<textarea>" ).append( value );
+    var $textarea = $( "<textarea>" , {class: 'InputTextarea'}).append( value );
     var $tdinput = $( "<td>" ).append( $textarea );
     
     $row.append( $tdnumber).append( $tdinput );
@@ -342,9 +342,10 @@ function removeOldResults( number ){
     $( "#expression_" + number ).remove();
 }
 
-function addExpressionCells( lineID, expressionid, value, rootElementID){
+function addExpressionCells( lineID, expressionid, value, rootElementID, expression_class){
     
-    $("<tbody id='expression_" + lineID + "' class='Modified'></tbody").insertBefore( rootElementID );
+    
+    $("<tbody>", {id: 'expression_' + lineID , class: expression_class}).insertBefore( rootElementID );
     //addEditable( lineID, expressionid, value, "#expression_" + lineID);
     addInputEditor( lineID, expressionid, value, "#expression_" + lineID);
     addOutput( lineID, expressionid, "#expression_" + lineID);
@@ -370,7 +371,9 @@ function processChange( value, number, object ){
         return;
     }
     
-    addExpressionCells( numberOfLines, currentExpression, decodedValue, "#expression_" + number);
+    expression_class = $("#expression_"+number).attr('class');
+    
+    addExpressionCells( numberOfLines, currentExpression, decodedValue, "#expression_" + number, expression_class);
     
     yacas.eval( numberOfLines, decodedValue );
     
@@ -390,7 +393,7 @@ function evaluateCurrent(){
     }
 }
 
-function evaluateAll(){
+function evaluateAll_deprecatedEditable(){
     $(".editable").each( function() {
                               value = $(this).text();
                               
@@ -409,7 +412,20 @@ function evaluateAll(){
     $("#inputExpression").focus();
 }
 
-function getAllInputs(){
+function evaluateAll(){
+    $(".InputTextarea").each( function() {
+                             editor = this.editor;
+                             //editor.save();
+                             processChange( editor.getValue(), editor.number, null  );
+
+                        
+                        });
+    inputVal = $( "#inputExpression" )[0].editor.getValue();
+    if ( inputVal !== "" ) calculate( inputVal );
+    $("#inputExpression").focus();
+}
+
+function getAllInputs_depreciateEditable(){
     var inputs = [];
     $(".editable").each( function() {
                               value = $(this).text();
@@ -427,6 +443,19 @@ function getAllInputs(){
     
     return inputs;
 }
+
+
+function getAllInputs(){
+    var inputs = [];
+    $(".InputTextarea").each( function() {
+                       inputs.push( this.editor.getValue());
+                
+                       });
+    inputVal = $( "#inputExpression" )[0].editor.getValue();
+    if ( inputVal !== "" ) inputs.push( inputVal );
+    return inputs;
+}
+
 
 function findPreviousExpression( number ){
     var previous = $("#expression_"+ number).prev("tbody");
