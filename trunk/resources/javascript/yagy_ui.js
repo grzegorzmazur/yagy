@@ -17,7 +17,7 @@ function load(){
     });
     
     CodeMirror.defaults['lineNumbers'] = false;
-    CodeMirror.defaults['mode'] = {name: 'javascript', globalVars: true};
+    CodeMirror.defaults['mode'] = {name: 'yacas'};
     CodeMirror.defaults['matchBrackets'] = true;
     CodeMirror.defaults['autoCloseBrackets'] = '()[]{}""';
     CodeMirror.defaults['readOnly'] = false;

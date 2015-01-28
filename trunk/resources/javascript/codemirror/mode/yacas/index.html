@@ -1,0 +1,72 @@
+<!doctype html>
+
+<title>CodeMirror:Yacas mode</title>
+<meta charset="utf-8"/>
+<link rel=stylesheet href="../../doc/docs.css">
+
+<link rel="stylesheet" href="../../lib/codemirror.css">
+<script src="../../lib/codemirror.js"></script>!
+
+<script src="yacas.js"></script>
+<style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+<div id=nav>
+  <a href="http://codemirror.net"><h1>CodeMirror</h1><img id=logo src="../../doc/logo.png"></a>
+
+  <ul>
+    <li><a href="../../index.html">Home</a>
+    <li><a href="../../doc/manual.html">Manual</a>
+    <li><a href="https://github.com/codemirror/codemirror">Code</a>
+  </ul>
+  <ul>
+    <li><a href="../index.html">Language modes</a>
+    <li><a class=active href="#">Yacas</a>
+  </ul>
+</div>
+
+<article>
+<h2>Yacas mode</h2>
+
+    <div><textarea id="code" name="code">
+//numbers
+{1234 .1234 0.1234 23e2}
+
+//strings
+"asda\"a"
+
+//identifiers
+a + as123
+
+//operators
+-
++
+=
+==
+>
+<
+>=
+<=
+..
+
+// keywords
+Local(i);
+ForEach(i, 1 .. 20) Echo("i = ", i);
+
+// builtins
+Cos(2*Pi)
+
+//one line comment
+/* multi
+line commment */
+
+    </textarea></div>
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        mode: {name: "yacas"},
+        lineNumbers: true,
+        indentUnit: 4,
+        matchBrackets: true
+      });
+    </script>
+
+    <p><strong>MIME types defined:</strong> <code>text/x-yacas</code>.</p>
+</article>
