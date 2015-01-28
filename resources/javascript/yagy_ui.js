@@ -244,8 +244,8 @@ function printResults( result ){
     
     output.addClass( result["type"] );
     
+    ExpressionElement.removeClass("Modified New Error Expression");
     ExpressionElement.addClass( result["type"]);
-    ExpressionElement.removeClass("Modified New");
 
     output.text("");
     
