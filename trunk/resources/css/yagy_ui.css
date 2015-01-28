@@ -32,15 +32,17 @@
     color: black;
 }
 
+.Error>tr>td:first-child{
+    background-color: red;
+    color: white;
+}
+
 .Modified>tr>td:first-child{
     background-color: gold;
     color: black;
 }
 
-.Error>tr>td:first-child{
-    background-color: red;
-    color: white;
-}
+
 
 
 
