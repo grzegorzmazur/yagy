@@ -20,17 +20,6 @@ Preferences::Preferences(const QApplication& app)
 
     _default_scripts_path = path;
     _default_scripts_path.append("/yacas.framework/Versions/Current/Resources/scripts/");
-#elif defined(_WIN32)
-    char root_dir_buf[MAX_PATH];
-    LSTATUS status = SHRegGetPathA(HKEY_LOCAL_MACHINE, "SOFTWARE\\Yagy Team\\yagy", 0, root_dir_buf, 0);
-    if (status != ERROR_SUCCESS)
-        throw std::runtime_error("Failed to read registry, bailing out.");
-    std::strcat(root_dir_buf, "\\share\\yagy\\scripts\\");
-    for (char* p = root_dir_buf; *p; ++p)
-        if (*p == '\\')
-            *p = '/';
-    
-    _default_scripts_path = root_dir_buf;
 #else
     QDir dir(app.applicationDirPath());
     dir.cd("../share/yagy/scripts");
