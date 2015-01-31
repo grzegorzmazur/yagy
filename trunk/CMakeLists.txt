@@ -112,7 +112,7 @@ add_executable (yagy ${YAGY_SOURCES} ${YAGY_QRESOURCES})
 
 add_library (libyacas STATIC IMPORTED)
 
-if (WIN32)
+if (MSVC)
     set_target_properties (libyacas PROPERTIES IMPORTED_LOCATION "${YACAS_PREFIX}/lib/yacas.lib")
 else ()
     set_target_properties (libyacas PROPERTIES IMPORTED_LOCATION "${YACAS_PREFIX}/lib/libyacas.a")
