@@ -122,9 +122,7 @@ target_link_libraries(yagy Qt5::Widgets Qt5::WebKit Qt5::WebKitWidgets Qt5::Prin
 
 if (WIN32)
     target_link_libraries (yagy shlwapi)
-	set_target_properties(yagy PROPERTIES 
-		WIN32_EXECUTABLE YES
-	)
+    set_target_properties(yagy PROPERTIES WIN32_EXECUTABLE YES)
 endif()
 
 set_property (TARGET yagy APPEND PROPERTY
