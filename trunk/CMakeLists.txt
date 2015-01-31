@@ -165,7 +165,8 @@ if (WIN32)
 	set (QT_DLLS Qt5WebKit.dll Qt5WebKitWidgets.dll libEGL.dll libGLESv2.dll icuin52.dll icuuc52.dll icudt52.dll Qt5Core.dll  Qt5Gui.dll Qt5Multimedia.dll Qt5MultimediaWidgets.dll Qt5Network.dll Qt5OpenGL.dll Qt5Positioning.dll Qt5PrintSupport.dll Qt5Qml.dll Qt5Quick.dll Qt5Sensors.dll Qt5Sql.dll Qt5Svg.dll Qt5Widgets.dll)
     
     if (CMAKE_CROSSCOMPILING)
-      install (FILES "/usr/lib/gcc/i686-w64-mingw32/4.8/libgcc_s_sjlj-1.dll" DESTINATION bin)
+        exec_program (${CMAKE_CXX_COMPILER} ARGS -print-file-name=libgcc_s_sjlj-1.dll OUTPUT_VARIABLE SJLJ_PATH)
+        install (FILES ${SJLJ_PATH} DESTINATION bin)
         set (QT_DLLS ${QT_DLLS} libgcc_s_dw2-1.dll libstdc++-6.dll libwinpthread-1.dll )	
     endif ()
     
