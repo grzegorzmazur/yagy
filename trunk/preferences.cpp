@@ -1,30 +1,16 @@
 #include "preferences.h"
 
-#if defined(__APPLE__)
-#include <CoreFoundation/CoreFoundation.h>
-#elif defined(_WIN32)
-#include <shlwapi.h>
-#endif
-
 #include <QtCore/QDir>
 
 Preferences::Preferences(const QApplication& app)
 {
-#if defined(__APPLE__)
-
-    CFBundleRef mainBundle = CFBundleGetMainBundle();
-    CFURLRef frameworkURL = CFBundleCopySharedFrameworksURL (mainBundle);
-    char path[PATH_MAX];
-    if (!CFURLGetFileSystemRepresentation(frameworkURL, TRUE, (UInt8 *)path, PATH_MAX))
-        throw std::runtime_error("Failed to find resources, bailing out.");
-
-    _default_scripts_path = path;
-    _default_scripts_path.append("/yacas.framework/Versions/Current/Resources/scripts/");
-#else
     QDir dir(app.applicationDirPath());
+#ifdef __APPLE__
+    dir.cd("../SharedFrameworks/yacas.framework/Versions/Current/Resources/scripts");
+#else
     dir.cd("../share/yagy/scripts");
-    _default_scripts_path = dir.canonicalPath() + "/";
 #endif
+    _default_scripts_path = dir.canonicalPath() + "/";
 }
 
 bool Preferences::get_enable_toolbar() const
