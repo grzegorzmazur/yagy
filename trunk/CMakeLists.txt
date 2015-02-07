@@ -177,6 +177,10 @@ if (WIN32)
     install (DIRECTORY "${QT_DLL_DIR}/../plugins/iconengines" DESTINATION bin)
 endif ()
 
+set (CPACK_SOURCE_GENERATOR "TGZ")
+set (CPACK_SOURCE_IGNORE_FILES "/build/;/.svn/;/install/;/nbproject/;~$;${CPACK_SOURCE_IGNORE_FILES}")
+set (CPACK_SOURCE_PACKAGE_FILE_NAME "yagy_${YAGY_VERSION}")
+
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     set (CPACK_GENERATOR DEB)
     execute_process (COMMAND dpkg --print-architecture OUTPUT_VARIABLE CPACK_DEBIAN_PACKAGE_ARCHITECTURE)
