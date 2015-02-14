@@ -5,5 +5,8 @@
         <file>resources/javascript/codemirror/mode/yacas/yacas.js</file>
         <file>resources/javascript/codemirror/addon/edit/matchbrackets.js</file>
         <file>resources/javascript/codemirror/addon/edit/closebrackets.js</file>
+        <file>resources/javascript/codemirror/addon/hint/show-hint.css</file>
+        <file>resources/javascript/codemirror/addon/hint/show-hint.js</file>
+        <file>resources/javascript/codemirror/addon/hint/anyword-hint.js</file>
     </qresource>
 </RCC>

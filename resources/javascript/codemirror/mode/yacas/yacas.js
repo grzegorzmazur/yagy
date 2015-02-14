@@ -17,15 +17,21 @@
           return new RegExp("^((" + words.join(")|(") + "))\\b");
         }
 
-        var builtins = wordRegexp([
+        var builtins = [
           'Eval', 'Abs', 'ArcCos', 'Cos',
           'Exp', 'Log', 'Sum', 'Max', 'Min', 'Sign', 'Sin',
           'Sqrt'
-        ]);
+        ];
 
-        var keywords = wordRegexp([
+        var builtinsRegex = wordRegexp(builtins);
+
+        var keywords = [
           'If', 'While', 'Until', 'For', 'ForEach', 'Local', 'LocalSymbols'
-        ]);
+        ];
+        
+        var keywordsRegex = wordRegexp(keywords);
+
+        CodeMirror.registerHelper("hintWords", "yacas", builtins.concat(keywords));
 
         // tokenizers
         function tokenComment(stream, state) {
@@ -38,7 +44,7 @@
             }
             
             return 'comment';
-        }
+        };
         
         
         
@@ -76,9 +82,9 @@
 
             // function or macro call
             if (stream.match(/^[a-zA-Z][a-zA-Z0-9]*\s*\(/, false)) {
-                if (stream.match(keywords))
+                if (stream.match(keywordsRegex))
                     return 'keyword';
-                if (stream.match(builtins))
+                if (stream.match(builtinsRegex))
                     return 'builtin';
                 stream.match(/^[a-zA-Z][a-zA-Z0-9]*/);
                 return null;
@@ -96,8 +102,7 @@
             // anything else
             stream.next();
             return null;
-        }
-        ;
+        };
 
 
         return {
