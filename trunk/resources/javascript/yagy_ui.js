@@ -22,6 +22,7 @@ function load(){
     CodeMirror.defaults['autoCloseBrackets'] = '()[]{}""';
     CodeMirror.defaults['readOnly'] = false;
     CodeMirror.defaults['lineWrapping'] = true;
+    CodeMirror.defaults['extraKeys'] = {'Shift-Space': 'autocomplete'};
     
     var editor = CodeMirror.fromTextArea( document.getElementById( 'inputExpression' ) );
     $( '#inputExpression' )[0].editor = editor;
