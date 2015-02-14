@@ -22,9 +22,14 @@ function load(){
     CodeMirror.defaults['autoCloseBrackets'] = '()[]{}""';
     CodeMirror.defaults['readOnly'] = false;
     CodeMirror.defaults['lineWrapping'] = true;
-    CodeMirror.defaults['extraKeys'] = {'Shift-Space': 'autocomplete'};
     
-    var editor = CodeMirror.fromTextArea( document.getElementById( 'inputExpression' ) );
+    if ( /Mac/.test( navigator.platform ))
+        CodeMirror.defaults['extraKeys'] = {'Cmd-Space': 'autocomplete'};
+    else
+        CodeMirror.defaults['extraKeys'] = {'Ctrl-Space': 'autocomplete'};
+    
+    
+    var editor = CodeMirror.fromTextArea( document.getElementById( 'inputExpression' ));
     $( '#inputExpression' )[0].editor = editor;
     $( editor.getInputField() ).keydown( function( event){
                                           return submitenter(this,event);
