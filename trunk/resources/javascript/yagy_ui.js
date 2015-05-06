@@ -39,18 +39,34 @@ function load(){
                             delegate: ".Expression>.Out",
                             menu: [
                                    {title: "Copy TeX", cmd: "copyTeX"},
-                                   {title: "Copy Yacas Expression", cmd: "copyYacasExpression"}
+                                   {title: "Copy Yacas Expression", cmd: "copyYacasExpression"},
+                                   {title: "Simplify", cmd: "simplify"},
+                                   {title: "Differentiate", cmd: "differentiate"},
+                                   {title: "Integrate", cmd: "integrate"},
+                                   {title: "Plot", cmd: "plot"},
+                                   {title: "Plot3DS", cmd: "plot3ds"}
                                    ],
                             select: function(event, ui) {
-                                parents = ui.target.parents(".Expression");
-                            
+                                parents = ui.target.parents('.Expression');
+                           
+                                var rootId = $(parents[0]).parents('.Expression')[0].nextSibling.id;
+                                
                                 if ( ui.cmd == "copyTeX"){
-                                    result = $(parents[0]).children('script')[0].textContent;
-                            
-                                }else if ( ui.cmd == "copyYacasExpression"){
-                                    result = $(parents)[0].yacasExpression;
+                                    yacas.copyToClipboard($(parents[0]).children('script')[0].textContent);
+                                } else if ( ui.cmd == "copyYacasExpression"){
+                                    yacas.copyToClipboard($(parents)[0].yacasExpression);
+                                } else if (ui.cmd === "differentiate") {
+                                    calculateAt('D(x)(' + $(parents)[0].yacasExpression + ')', rootId);
+                                } else if (ui.cmd === "integrate") {
+                                    calculateAt('Integrate(x)(' + $(parents)[0].yacasExpression + ')', rootId);
+                                } else if (ui.cmd === "simplify") {
+                                    calculateAt('Simplify(' + $(parents)[0].yacasExpression + ')', rootId);
+                                } else if (ui.cmd === "plot") {
+                                    calculateAt('Plot2D(' + $(parents)[0].yacasExpression + ')', rootId);
+                                } else if (ui.cmd === "plot3ds") {
+                                    calculateAt('Plot3DS(' + $(parents)[0].yacasExpression + ')', rootId);
                                 }
-                                yacas.copyToClipboard( result );
+                                
                             },
                             preventContextMenuForPopup: true
                             });
@@ -357,9 +373,8 @@ function addExpressionCells( lineID, expressionid, value, rootElementID, express
     addOutput( lineID, expressionid, "#expression_" + lineID);
 }
 
-function calculate( value ){
-    
-    addExpressionCells( numberOfLines, currentExpression, value, "#expression_0", "New");
+function calculateAt( value, rootElementId ) {
+    addExpressionCells( numberOfLines, currentExpression, value, '#' + rootElementId, "New");
     
     yacas.eval( numberOfLines, value );
     
@@ -367,6 +382,12 @@ function calculate( value ){
     numberOfLines++;
     
     clearInput();
+}
+
+function calculate( value ){
+    
+    calculateAt(value, 'expression_0');
+    
 }
 
 function processChange( value, number, object ){
