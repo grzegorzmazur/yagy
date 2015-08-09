@@ -58,11 +58,11 @@ textarea{
     resize: none;
     padding: 4px;
     height: 14px;
-
+    
 }
 .containment{
     width:100%;
-
+    
 }
 .editable{
     color: SlateGray;
