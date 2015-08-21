@@ -14,17 +14,19 @@ YacasEngine::YacasEngine(const QString& scripts_path, YacasRequestQueue& request
     if (!QFile(scripts_path + "yacasinit.ys").exists())
         throw std::runtime_error(QString("Invalid yacas scripts path: %1").arg(scripts_path).toStdString());
 
-    _yacas->Evaluate((std::string("DefaultDirectory(\"") + scripts_path.toStdString() + std::string("\");")).c_str());
+    _yacas->Evaluate(std::string("DefaultDirectory(\"") + scripts_path.toStdString() + std::string("\");"));
     _yacas->Evaluate("Load(\"yacasinit.ys\");");
 
     _yacas->Evaluate("Plot2D'outputs();");
-    
+    _yacas->Evaluate("UnProtect(Plot2D'outputs);");
     _yacas->Evaluate("Plot2D'yagy(values_IsList, _options'hash) <-- Yagy'Plot2D'Data(values, options'hash);");
     _yacas->Evaluate("Plot2D'outputs() := { {\"default\", \"yagy\"}, {\"data\", \"Plot2D'data\"}, {\"gnuplot\", \"Plot2D'gnuplot\"}, {\"java\", \"Plot2D'java\"}, {\"yagy\", \"Plot2D'yagy\"}, };");
-    
+    _yacas->Evaluate("Protect(Plot2D'outputs);");
+    _yacas->Evaluate("UnProtect(Plot3DS'outputs);");
     _yacas->Evaluate("Plot3DS'outputs();");
     _yacas->Evaluate("Plot3DS'yagy(values_IsList, _options'hash) <-- Yagy'Plot3DS'Data(values, options'hash);");
     _yacas->Evaluate("Plot3DS'outputs() := { {\"default\", \"yagy\"}, {\"data\", \"Plot3DS'data\"}, {\"gnuplot\", \"Plot3DS'gnuplot\"}, {\"yagy\", \"Plot3DS'yagy\"},};");
+    _yacas->Evaluate("Protect(Plot3DS'outputs);");
 }
 
 YacasEngine::~YacasEngine()
