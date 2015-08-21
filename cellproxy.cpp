@@ -157,6 +157,34 @@ void CellProxy::on_request_state_changed(YacasRequest::State state)
                 
                 break;
             }
+
+            case YacasRequest::GRAPH: {
+                evaluation_result["type"] = "Graph";
+                const QString result = _request->result().trimmed();
+                QStringList parts = result.split("},{");
+                const QStringList vertices = parts[0].replace("{", "").split(",");
+                QVariantList edges;
+                foreach (QString es, parts[1].replace("}", "").split(",")) {
+                    bool bi = true;
+                    QStringList ft = es.split("<->");
+                    if (ft.length() == 1) {
+                        ft = es.split("->");
+                        bi = false;
+                    }
+                    QVariantMap edge;
+                    edge["from"] = vertices.indexOf(ft[0]) + 1;
+                    edge["to"] = vertices.indexOf(ft[1]) + 1;
+                    edge["bi"] = bi;
+                    
+                    edges.append(edge);
+                }
+                
+                evaluation_result["graph_vertices"] = vertices;
+                evaluation_result["graph_edges"] = edges;
+                
+                break;
+            }
+
             case YacasRequest::ERROR: {
                 evaluation_result["type"] = "Error";
                 evaluation_result["error_message"] = _request->result().trimmed();

@@ -69,6 +69,7 @@ if (NOT APPLE)
     qt5_add_resources (qrc_javascript-mathjax-jax-output-fonts-tex.cpp javascript-mathjax-jax-output-fonts-tex.qrc --compress 9)
     qt5_add_resources (qrc_javascript-mathjax-localization.cpp javascript-mathjax-localization.qrc --compress 9)
     qt5_add_resources (qrc_javascript-three.cpp javascript-three.qrc)
+    qt5_add_resources (qrc_vis.cpp vis.qrc)
 
     set (YAGY_QRESOURCES
         ${YAGY_QRESOURCES}
@@ -89,7 +90,8 @@ if (NOT APPLE)
         qrc_javascript-mathjax-jax-output-fonts-stix-web.cpp
         qrc_javascript-mathjax-jax-output-fonts-tex.cpp
         qrc_javascript-mathjax-localization.cpp
-        qrc_javascript-three.cpp)
+        qrc_javascript-three.cpp
+        qrc_vis.cpp)
 endif ()
 
 set (YAGY_SOURCES

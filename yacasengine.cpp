@@ -82,6 +82,10 @@ void YacasEngine::on_start_processing()
                     result_type = YacasRequest::PLOT3D;
                     result = result.remove("Yagy'Plot3DS'Data(");
                     result.truncate(result.length() - 1);
+                } else if (result.startsWith("Graph(")) {
+                    result_type = YacasRequest::GRAPH;
+                    result = result.remove("Graph(");
+                    result.truncate(result.length() - 1);
                 }
                 request->answer(_idx++, result_type, result, QString::fromStdString(_side_effects.str()));
             } else {

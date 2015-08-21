@@ -11,6 +11,7 @@ Preferences::Preferences(const QApplication& app)
     dir.cd("../share/yagy/scripts");
 #endif
     _default_scripts_path = dir.canonicalPath() + "/";
+    _default_scripts_path = "/home/mazur/NetBeansProjects/github/yacas/install/linux/release/share/yacas/scripts/";
 }
 
 bool Preferences::get_enable_toolbar() const

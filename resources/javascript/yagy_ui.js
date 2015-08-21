@@ -328,6 +328,39 @@ function printResults( result ){
         output.mouseout( function(event){ Plot3dMouseOut( this, event );});
         output.click( function(event){ Plot3dClicked( this, event );});
         
+    } else if (result["type"] === "Graph") {
+        var vertices = result["graph_vertices"];
+        var no_vertices = vertices.length;
+        
+        var vis_vertices = [];
+
+        for (var i = 0; i < no_vertices; ++i)
+            vis_vertices.push({id: i + 1, label: vertices[i]});
+
+        var edges = result["graph_edges"];
+        var no_edges = edges.length;
+
+        var vis_edges = [];
+
+        for (var i = 0; i < no_edges; ++i) {
+            var arrows = 'to';
+            if (edges[i].bi)
+                arrows += ',from';
+            vis_edges.push({from: edges[i].from, to: edges[i].to, arrows: arrows});
+        }
+
+        var width = output.width();
+
+        output.resizable({ maxWidth: width, minWidth: 200, minHeight: 200} );
+        output.addClass( "resizable" );
+
+        var data = {
+          nodes: vis_vertices,
+          edges: vis_edges
+        };
+        var options = {};
+        
+        var network = new vis.Network(output[0], data, options);
     }
 }
 

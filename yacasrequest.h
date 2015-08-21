@@ -19,6 +19,7 @@ public:
         EXPRESSION,
         PLOT2D,
         PLOT3D,
+        GRAPH,
         ERROR
     };
 
