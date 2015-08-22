@@ -1,50 +1,35 @@
+body{
+    margin: 0px;
+}
 
+#Elements{
+    border-collapse:collapse;
+    width:100%;
+    table-layout: fixed;
+    
+}
 
 #Elements>tbody>tr>td:first-child{
-    white-space: nowrap;
     font-size: x-small;
-    overflow: hidden;
-}
-
-#Elements>tbody>tr>td:last-child{
-    width: 99%
-}
-
-.Expression>tr>td:first-child{
+    width: 45px;
     background-color: #66CD00;
     color: white;
 }
-.Expression>tr.Out>td{
-    font-size: 16px;
-}
 
-
-.Plot2D>tr>td:first-child{
-    background-color: #66CD00;
-    color: white;
-}
-.Plot3D>tr>td:first-child{
-    background-color: #66CD00;
-    color: white;
-}
 .New>tr>td:first-child{
-    background-color: LightGray;
-    color: black;
+    background-color: LightGray !important;
+    color: black !important;
 }
 
 .Error>tr>td:first-child{
-    background-color: red;
-    color: white;
+    background-color: red !important;
+    color: white !important;
 }
 
 .Modified>tr>td:first-child{
-    background-color: gold;
-    color: black;
+    background-color: gold !important;
+    color: black !important;
 }
-
-
-
-
 
 
 td{
@@ -53,19 +38,18 @@ td{
     padding: 5px;
 }
 
-body{
-    margin: 0px;
+
+.Expression>tr.Out>td{
+    font-size: 16px;
 }
 
-#Elements{
-    border-collapse:collapse;
-    width:100%;
-    
+
+.CodeMirror { height: auto; width: 100%}
+.CodeMirror-focused {
+    -webkit-box-sizing:border-box;
+    border: 1px solid #ddd;
 }
-
-.CodeMirror { height: auto; border: 1px solid #ddd; }
-
-td { white-space:pre }
+#expression_0 .CodeMirror{ border: 1px solid #ddd; }
 
 textarea{
     width:100%;

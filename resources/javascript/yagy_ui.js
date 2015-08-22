@@ -2,10 +2,9 @@
 
 function load(){
     //$("#inputExpression").focus();
-    $( "#inputExpression" ).autosize();
     
-    $( window ).on( 'blur', function(){ if ( bluredEditable !== null ) $( bluredEditable ).click(); } );
-    $( document ).on( 'click', function(){ bluredEditable = null; });
+    $( "#inputExpression" ).autosize();
+
     $( window ).on( 'resize', function( event ){
         
         w = $("body").width() - $("#Elements>tbody>tr>td:first-child").innerWidth() - 10; //10 is for padding in the td.Out element
@@ -349,10 +348,7 @@ function printResults( result ){
             vis_edges.push({from: edges[i].from, to: edges[i].to, arrows: arrows});
         }
 
-        var width = output.width();
 
-        output.resizable({ maxWidth: width, minWidth: 200, minHeight: 200} );
-        output.addClass( "resizable" );
 
         var data = {
           nodes: vis_vertices,
@@ -361,6 +357,13 @@ function printResults( result ){
         var options = {};
         
         var network = new vis.Network(output[0], data, options);
+
+        var width = output.width();
+        
+        output.resizable({ maxWidth: width, minWidth: 200, minHeight: 200} );
+        output.addClass( "resizable" );
+    
+    
     }
 }
 
