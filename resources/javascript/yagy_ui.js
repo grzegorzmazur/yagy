@@ -9,7 +9,12 @@ function scrollListener(e){
     e.preventDefault();
 }
 
+
 function load(){
+    
+    MathBar.initializeFunctions( "javascript/functions.json" )
+    
+
     //$("#inputExpression").focus();
 
     //To keep CodeMirror editor from bad scrolling
@@ -197,7 +202,7 @@ function addSideEffects( number, side_effects, rootElementID ){
 
 function toogleMathBar( button ){
     if ( button.mathBar == null ){
-        var bar = new MathBar( button.name , functions, 2, button, function( result ){ parseMathBarResult( result, button.name )} );
+        var bar = new MathBar( button.name , "anyType", 2, button, function( result ){ parseMathBarResult( result, button.name )} );
         button.mathBar = bar;
     }else{
         button.mathBar.Toggle();

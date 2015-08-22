@@ -1,0 +1,72 @@
+ [
+  {
+  "functionName": "Simplify",
+  "parameters": [
+                 {
+                 "parameterName": "Range",
+                 "parameterType": "edit",
+                 "defaultValue": "-5:5"
+                 },
+                 {
+                 "parameterName": "SomeOther",
+                 "parameterType": "checkbox",
+                 "defaultValue": true
+                 }
+                 ]
+  },
+  {
+  "functionName": "Integrate",
+  "parameters": [
+                 {
+                 "parameterName": "SomeOther",
+                 "parameterType": "checkbox",
+                 "defaultValue": true
+                 },
+                 {
+                 "parameterName": "Range",
+                 "parameterType": "edit",
+                 "defaultValue": "-5:5"
+                 },
+                 {
+                 "parameterName": "SomeOther_2",
+                 "parameterType": "edit",
+                 "defaultValue": "-5:5"
+                 },
+                 {
+                 "parameterName": "SomeOther_3",
+                 "parameterType": "checkbox",
+                 "defaultValue": true
+                 }
+                 ]
+  },
+  {
+  "functionName": "Plot",
+  "parameters": [
+                 {
+                 "parameterName": "Range",
+                 "parameterType": "edit",
+                 "defaultValue": "-5:5"
+                 },
+                 {
+                 "parameterName": "SomeOther",
+                 "parameterType": "checkbox",
+                 "defaultValue": true
+                 }
+                 ]
+  },
+  {
+  "functionName": "Plot3DS",
+  "parameters": [
+                 {
+                 "parameterName": "Range",
+                 "parameterType": "edit",
+                 "defaultValue": "-5:5"
+                 },
+                 {
+                 "parameterName": "SomeOther",
+                 "parameterType": "checkbox",
+                 "defaultValue": true
+                 }
+                 ]
+  }
+  ]

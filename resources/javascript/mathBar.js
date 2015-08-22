@@ -1,7 +1,8 @@
 var selectMoreText = "more";
+var functions;
 
 //VIF - Very Importatnt Function
-function MathBar( outputID, functions, numberOfVIF, button, callback ) {
+function MathBar( outputID, expressionType, numberOfVIF, button, callback ) {
     var self = this;
     
     self.outputID = outputID;
@@ -189,5 +190,13 @@ MathBar.prototype.Toggle = function(){
     if ( this.visible ) this.Hide();
     else this.Show();
     
+}
+
+MathBar.initializeFunctions = function(jsonfile){
+    
+    $.getJSON( "javascript/functions.json", function( data ) {
+              functions = data;
+              console.log( functions );
+              });
 }
 
