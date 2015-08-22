@@ -36,7 +36,8 @@ macx{
     CSS.files = resources/css
     IMG.files = resources/img
     HTML.files = resources/html
-    QMAKE_BUNDLE_DATA += CSS JAVASCRIPT FRAMEWORK IMG HTML
+    VIS.files = resources/vis
+    QMAKE_BUNDLE_DATA += CSS JAVASCRIPT FRAMEWORK IMG HTML VIS
     
     CONFIG += lib_bundle
 
