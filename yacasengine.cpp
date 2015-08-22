@@ -22,8 +22,8 @@ YacasEngine::YacasEngine(const QString& scripts_path, YacasRequestQueue& request
     _yacas->Evaluate("Plot2D'yagy(values_IsList, _options'hash) <-- Yagy'Plot2D'Data(values, options'hash);");
     _yacas->Evaluate("Plot2D'outputs() := { {\"default\", \"yagy\"}, {\"data\", \"Plot2D'data\"}, {\"gnuplot\", \"Plot2D'gnuplot\"}, {\"java\", \"Plot2D'java\"}, {\"yagy\", \"Plot2D'yagy\"}, };");
     _yacas->Evaluate("Protect(Plot2D'outputs);");
-    _yacas->Evaluate("UnProtect(Plot3DS'outputs);");
     _yacas->Evaluate("Plot3DS'outputs();");
+    _yacas->Evaluate("UnProtect(Plot3DS'outputs);");
     _yacas->Evaluate("Plot3DS'yagy(values_IsList, _options'hash) <-- Yagy'Plot3DS'Data(values, options'hash);");
     _yacas->Evaluate("Plot3DS'outputs() := { {\"default\", \"yagy\"}, {\"data\", \"Plot3DS'data\"}, {\"gnuplot\", \"Plot3DS'gnuplot\"}, {\"yagy\", \"Plot3DS'yagy\"},};");
     _yacas->Evaluate("Protect(Plot3DS'outputs);");
