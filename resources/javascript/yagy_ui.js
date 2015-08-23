@@ -201,8 +201,9 @@ function addSideEffects( number, side_effects, rootElementID ){
 }
 
 function toogleMathBar( button ){
+
     if ( button.mathBar == null ){
-        var bar = new MathBar( button.name , "anyType", 2, button, function( result ){ parseMathBarResult( result, button.name )} );
+        var bar = new MathBar( button.name , 2, button, function( result ){ parseMathBarResult( result, button.name )} );
         button.mathBar = bar;
     }else{
         button.mathBar.Toggle();

@@ -2,7 +2,7 @@ var selectMoreText = "more";
 var functions;
 
 //VIF - Very Importatnt Function
-function MathBar( outputID, expressionType, numberOfVIF, button, callback ) {
+function MathBar( outputID, numberOfVIF, button, callback ) {
     var self = this;
     
     self.outputID = outputID;
