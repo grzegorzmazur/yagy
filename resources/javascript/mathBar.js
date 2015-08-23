@@ -12,6 +12,7 @@ function MathBar( outputID, expressionType, numberOfVIF, button, callback ) {
     self.currentOptionVIF = true;
     self.callback = callback;
     self.visible = false;
+    self.outputValue = $("#" + outputID)[0].yacasExpression;
     
     var $mathBarElement = $( "<div>" , { class: "MathBar" } ).hide();
     var $functionsDiv = $("<div>", {class : "radio_group_horizontal styled_radio"});
@@ -161,11 +162,11 @@ MathBar.prototype.Run = function(){
             outValues[ parameterName ] = this.mathBarElement.find( "[name='" + parameterName + "']:first" ).prop("checked");
         }
     }
-
-    result = [ functions[this.currentOption]["functionName"], outValues];
+    
+    var parser = this.functions[this.currentOption]["parser"];
+    result = window[parser](this.outputValue, outValues);
     
     this.callback( result );
-
     this.Remove();
 }
 
