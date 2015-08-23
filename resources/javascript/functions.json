@@ -1,7 +1,7 @@
 {"functions":{
  "number":[
   {
-  "functionName": "Sqaure Root",
+  "functionName": "Square Root",
   "parameters": [],
   "parser": "square_root_parser"
   }],
