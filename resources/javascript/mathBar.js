@@ -6,7 +6,7 @@ function MathBar( outputID, numberOfVIF, button, callback ) {
     var self = this;
     
     self.outputID = outputID;
-    self.functions = functions["number"];
+    self.functions = functions["func_one_variable"];
     self.button = button;
     self.currentOption = 0;
     self.currentOptionVIF = true;
@@ -123,8 +123,11 @@ MathBar.prototype.optionClicked = function( functionName, VIF ){
         $label = $("<label>");
 
         if ( parameters[i]["parameterType"] == "edit"){
+            defaultValue = parameters[i]["defaultValue"];
+            
             $input = $("<input>", {type: "text", name: parameters[i]["parameterName"]});
-            $input.val( parameters[i]["defaultValue"]);
+            $input.attr( "size", defaultValue.length*4 );
+            $input.val( defaultValue );
             
             $label.append( parameters[i]["parameterName"] + ": ");
             $label.append( $input );
