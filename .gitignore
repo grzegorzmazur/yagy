@@ -1,3 +1,11 @@
 /nbproject/
 /build/
 /install/
+/Debug/
+/YAGY.build/
+/YAGY.xcodeproj/
+/moc_*.cpp
+/ui_*.h
+/qrc_*.cpp
+.qmake.stash
+Info.plist

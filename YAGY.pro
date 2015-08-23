@@ -17,9 +17,9 @@ ICON = icon.icns
 macx{
 
     CONFIG(debug, debug|release) {
-        YACAS_PREFIX = ../../yacas/code/Debug
+        YACAS_PREFIX = ../yacas/Debug
     } else {
-        YACAS_PREFIX = ../../yacas/code/Release
+        YACAS_PREFIX = ../yacas/Release
         DEFINES += QT_NO_DEBUG_OUTPUT
     }
 
