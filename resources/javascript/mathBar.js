@@ -6,7 +6,7 @@ function MathBar( outputID, expressionType, numberOfVIF, button, callback ) {
     var self = this;
     
     self.outputID = outputID;
-    self.functions = functions;
+    self.functions = functions["number"];
     self.button = button;
     self.currentOption = 0;
     self.currentOptionVIF = true;
@@ -14,7 +14,6 @@ function MathBar( outputID, expressionType, numberOfVIF, button, callback ) {
     self.visible = false;
     
     var $mathBarElement = $( "<div>" , { class: "MathBar" } ).hide();
-
     var $functionsDiv = $("<div>", {class : "radio_group_horizontal styled_radio"});
     
     //In case number of all functions is 1 more than VIF do not display combobox with only one function
@@ -24,13 +23,13 @@ function MathBar( outputID, expressionType, numberOfVIF, button, callback ) {
     }
     
     for( i = 0; i < numberOfVIF; i++){
-        $input = $("<input>", { type: "radio", name: outputID, value: functions[i]["functionName"]})
+        $input = $("<input>", { type: "radio", name: outputID, value: self.functions[i]["functionName"]})
         
         if ( i == 0 ) $input.prop( "checked", true );
         
         $input.click( function(){ self.optionClicked( this.value, true )});
         
-        $span = $("<span>").append( functions[i]["functionName"]);
+        $span = $("<span>").append( self.functions[i]["functionName"]);
         
         $label = $("<label>");
         $label.append( $input );
@@ -39,14 +38,14 @@ function MathBar( outputID, expressionType, numberOfVIF, button, callback ) {
         $functionsDiv.append( $label );
     }
     
-    if ( i != functions.length ){
+    if ( i != self.functions.length ){
     
         var $functionsSelect = $("<select>");
     
         $functionsSelect.append( $("<option>").append( selectMoreText ));
     
-        for( i = numberOfVIF; i < functions.length; i++){
-            $functionsSelect.append( $("<option>").append( functions[i]["functionName"]) );
+        for( i = numberOfVIF; i < self.functions.length; i++){
+            $functionsSelect.append( $("<option>").append( self.functions[i]["functionName"]) );
         }
     
         $functionsDiv.append( $("<label>").append($functionsSelect ));
@@ -66,16 +65,11 @@ function MathBar( outputID, expressionType, numberOfVIF, button, callback ) {
     $mathRow.append( $("<td>", {class: "submitButton"}).append( $submitButton ));
     
 
-
-    
     $mathBarTable = $("<table>").append( $mathRow );
-    
     
     $( "#" + self.outputID ).after( $mathBarElement.append( $mathBarTable ));
 
-    
     self.mathBarElement = $mathBarElement;
-    
     
     self.Show();
     $functionsDiv.parent().width( $functionsDiv.width() - 4);
@@ -110,8 +104,8 @@ MathBar.prototype.optionClicked = function( functionName, VIF ){
 
     
     for( i = 0; i < this.functions.length; i++ ){
-        if( functions[i]["functionName"] == functionName ){
-            var parameters = functions[i]["parameters"];
+        if( this.functions[i]["functionName"] == functionName ){
+            var parameters = this.functions[i]["parameters"];
             break;
         }
     }
@@ -195,7 +189,7 @@ MathBar.prototype.Toggle = function(){
 MathBar.initializeFunctions = function(jsonfile){
     
     $.getJSON( "javascript/functions.json", function( data ) {
-              functions = data;
+              functions = data["functions"];
               console.log( functions );
               });
 }
