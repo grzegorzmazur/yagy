@@ -18,7 +18,10 @@ function MathBar( outputID, expressionType, numberOfVIF, button, callback ) {
     
     //In case number of all functions is 1 more than VIF do not display combobox with only one function
     //but treat all of them as VIFs
-    if ( functions.length - numberOfVIF == 1 ){
+    
+    if ( numberOfVIF > self.functions.length ) numberOfVIF = self.functions.length;
+    
+    if ( self.functions.length - numberOfVIF == 1 ){
         numberOfVIF++;
     }
     
@@ -74,9 +77,13 @@ function MathBar( outputID, expressionType, numberOfVIF, button, callback ) {
     self.Show();
     $functionsDiv.parent().width( $functionsDiv.width() - 4);
 
-    self.optionClicked( functions[0]["functionName"], true );
-    $functionsSelect.selectmenu();
-    $functionsSelect.on( "selectmenuselect", function( event, ui ) { self.optionClicked( this.value, false )} );
+    self.optionClicked( self.functions[0]["functionName"], true );
+    
+    
+    if ( $functionsSelect ){
+        $functionsSelect.selectmenu();
+        $functionsSelect.on( "selectmenuselect", function( event, ui ) { self.optionClicked( this.value, false )} );
+    }
 
 };
 
