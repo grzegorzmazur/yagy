@@ -237,7 +237,7 @@ MathBar.prototype.Run = function(){
     result = window[parser](this.outputValue, outValues);
     
     this.callback( result );
-    this.Remove();
+    this.Hide();
 }
 
 MathBar.prototype.Remove = function(){
