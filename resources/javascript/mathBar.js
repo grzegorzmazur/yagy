@@ -129,7 +129,7 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
         defaultValue = parameter["defaultValue"];
         
         $input = $("<input>", {type: "text", name: parameter["parameterName"]});
-        $input.attr( "size", defaultValue.length*4 );
+        $input.attr( "size", defaultValue.length*5 );
         $input.val( defaultValue );
         
         $label.append( parameter["parameterName"] + ": ");
@@ -156,26 +156,33 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
         
         $input.change( function(){
                       if( $(this).is(":checked")){
-                      $(".check_" + parameter["parameterName"] ).prop( "disabled", false );
+                        enableParameters( parameter["parameterName"] );
                       }else{
-                      $(".check_" + parameter["parameterName"] ).prop( "disabled", true );
+                        disableParameters( parameter["parameterName"] );
                       }
                       });
         
 
         $input.prop( "checked", checked );
         $label.append( $input );
-        $label.append( parameter["parameterName"]+ ": ");
+        $label.append( parameter["parameterName"]);
         
         conditionalParameters = parameter["parameters"];
         var $outerlabel = $("<span>").append( $label );
         
         for ( i = 0; i < conditionalParameters.length; i++ ){
             $condparLabel = this.getPropertyLabel( conditionalParameters[i]);
-            $condparLabel.find("input").prop( "disabled", !checked );
-            $condparLabel.find("input").addClass( "check_" + parameter["parameterName"]);
+            $condparLabel.addClass( "check_" + parameter["parameterName"]);
+            
+            if ( !checked ){
+                $condparLabel.addClass( "labelDisabled" );
+                $condparLabel.find("input").prop( "disabled", true );
+            }
+            
             $outerlabel.append( $condparLabel );
         }
+        
+        
         $label = $outerlabel;
 
     }
@@ -183,6 +190,17 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
     return $label;
     
 };
+
+function disableParameters( parameterName ){
+    $label =  $(".check_" + parameterName ).addClass( "labelDisabled" );
+    $label.find("input").prop( "disabled", true );
+}
+
+function enableParameters( parameterName ){
+    $label =  $(".check_" + parameterName ).removeClass( "labelDisabled" );
+    $label.find("input").prop( "disabled", false );
+}
+
 
 MathBar.prototype.GetPropertyValue = function( parameter, outValues ){
     type = parameter["parameterType"];

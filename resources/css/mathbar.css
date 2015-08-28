@@ -28,11 +28,7 @@ width: 250px;
  /*   width: 300px;*/
 }
 
-.parameters label{
-   display: inline-block;
-     white-space: nowrap;
-     padding-right: 2px;
-}
+
 
 .Expression button.MathBarButton{
     background:url(./images/double_arrows_down_disabled.png) no-repeat;
@@ -95,6 +91,22 @@ width: 250px;
     padding-left: 5px;
 }
 
+.MathBar input[type="text"]:disabled {
+    color: gray;
+    background-color: #F5FAFF;
+}
+
+.MathBar .parameters label{
+    margin-left: 3px;
+    margin-right: 3px;
+    display: inline-block;
+    white-space: nowrap;
+    padding-right: 2px;
+}
+
+.MathBar label.labelDisabled{
+    color: lightgray;
+}
 .MathBar{
     background-color: #F5FAFF;
     border: 1px solid #C2E0FF;
@@ -162,6 +174,8 @@ width: 250px;
     color: #246BB2;
     margin: 0px;
 }
+
+
 
 
 
