@@ -10,7 +10,7 @@ function simplify_parser( outputValue, parameters ){
 
 function integrate_parser( outputValue, parameters ){
     console.log( "This is integrate parser");
-    variable = parameters["Variable"];
+    variable = parameters["variable"];
     
     definite = parameters["definite"];
     
@@ -25,12 +25,12 @@ function integrate_parser( outputValue, parameters ){
 
 function derivative_parser( outputValue, parameters ){
     console.log( "This is derivative parser");
-    variable = parameters["Variable"];
+    variable = parameters["variable"];
     return "D("+ variable +")" + outputValue;
 }
 
 function plot_2d_parser( outputValue, parameters ){
     console.log( "This is Plot 2D parser");
-    range = parameters["Range"];
+    range = parameters["range"];
     return "Plot2D(" + outputValue + "," + range + ")";
 }
