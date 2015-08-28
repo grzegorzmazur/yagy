@@ -1,7 +1,20 @@
 
+//Function stops scrolling event, and just scrool the window
+//Otherwise Code-Mirror editor kept scrolling one line up even if there was no line to scroll
+function scrollListener(e){
+
+    dx = e.wheelDeltaX;
+    dy = -1 * e.wheelDeltaY;
+    
+    window.scrollBy( dx, dy);
+    e.preventDefault();
+}
 
 function load(){
     //$("#inputExpression").focus();
+
+    //To keep CodeMirror editor from bad scrolling
+    document.body.addEventListener( "mousewheel", function(e){ scrollListener(e);} );
     
     $( "#inputExpression" ).autosize();
 
