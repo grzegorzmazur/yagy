@@ -11,7 +11,16 @@ function simplify_parser( outputValue, parameters ){
 function integrate_parser( outputValue, parameters ){
     console.log( "This is integrate parser");
     variable = parameters["Variable"];
-    return "Integrate("+ variable +")" + outputValue;
+    
+    definite = parameters["definite"];
+    
+    if ( definite ){
+        to = parameters["to"];
+        from = parameters["from"];
+        return "Integrate("+ variable + "," + from + "," + to + ")" + outputValue;
+    }else{
+        return "Integrate("+ variable +")" + outputValue;
+    }
 }
 
 function derivative_parser( outputValue, parameters ){

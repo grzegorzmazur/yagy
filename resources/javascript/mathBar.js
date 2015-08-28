@@ -105,11 +105,7 @@ MathBar.prototype.optionClicked = function( functionName, VIF ){
         $(this.mathBarElement).find( "select").parent().removeClass("checked");
     }
     
-
-    
     console.log( "Option clicked: " + functionName ) ;
-    
-
     
     for( i = 0; i < this.functions.length; i++ ){
         if( this.functions[i]["functionName"] == functionName ){
@@ -119,35 +115,96 @@ MathBar.prototype.optionClicked = function( functionName, VIF ){
     }
     this.currentOption = i;
     
+    
     for ( i = 0; i < parameters.length; i++ ){
-        $label = $("<label>");
-
-        if ( parameters[i]["parameterType"] == "edit"){
-            defaultValue = parameters[i]["defaultValue"];
-            
-            $input = $("<input>", {type: "text", name: parameters[i]["parameterName"]});
-            $input.attr( "size", defaultValue.length*4 );
-            $input.val( defaultValue );
-            
-            $label.append( parameters[i]["parameterName"] + ": ");
-            $label.append( $input );
-        }
-        
-
-        if ( parameters[i]["parameterType"] == "checkbox"){
-            
-            $input = $("<input>", {type: "checkbox", name: parameters[i]["parameterName"] });
-            $input.prop( "checked", parameters[i]["defaultValue"]);
-            $label.append( $input );
-            $label.append( parameters[i]["parameterName"]);
-        }
-        $parametersElement.append( $label );
-        
+        $parametersElement.append( this.getPropertyLabel( parameters[i]) );
     }
     
+};
 
+MathBar.prototype.getPropertyLabel = function( parameter ){
+    var $label = $("<label>");
+    
+    if ( parameter["parameterType"] == "edit"){
+        defaultValue = parameter["defaultValue"];
+        
+        $input = $("<input>", {type: "text", name: parameter["parameterName"]});
+        $input.attr( "size", defaultValue.length*4 );
+        $input.val( defaultValue );
+        
+        $label.append( parameter["parameterName"] + ": ");
+        $label.append( $input );
+    }
+    
+    
+    if ( parameter["parameterType"] == "checkbox"){
+        
+        $input = $("<input>", {type: "checkbox", name: parameter["parameterName"] });
+        $input.prop( "checked", parameter["defaultValue"]);
+        $label.append( $input );
+        $label.append( parameter["parameterName"]);
+    }
+    
+    if ( parameter["parameterType"] == "condition"){
+        $input = $("<input>", {type: "checkbox", name: parameter["parameterName"] });
+        
+        if ( parameter["defaultValue"] == "true" ){
+            checked = true;
+        }else{
+            checked = false;
+        }
+        
+        $input.change( function(){
+                      if( $(this).is(":checked")){
+                      $(".check_" + parameter["parameterName"] ).prop( "disabled", false );
+                      }else{
+                      $(".check_" + parameter["parameterName"] ).prop( "disabled", true );
+                      }
+                      });
+        
+
+        $input.prop( "checked", checked );
+        $label.append( $input );
+        $label.append( parameter["parameterName"]+ ": ");
+        
+        conditionalParameters = parameter["parameters"];
+        var $outerlabel = $("<span>").append( $label );
+        
+        for ( i = 0; i < conditionalParameters.length; i++ ){
+            $condparLabel = this.getPropertyLabel( conditionalParameters[i]);
+            $condparLabel.find("input").prop( "disabled", !checked );
+            $condparLabel.find("input").addClass( "check_" + parameter["parameterName"]);
+            $outerlabel.append( $condparLabel );
+        }
+        $label = $outerlabel;
+
+    }
+    
+    return $label;
     
 };
+
+MathBar.prototype.GetPropertyValue = function( parameter, outValues ){
+    type = parameter["parameterType"];
+    parameterName = parameter["parameterName"];
+    
+    if ( type == "edit" ){
+        outValues[ parameterName ] = this.mathBarElement.find( "[name='" + parameterName + "']:first" ).val();
+    }
+    if ( type == "checkbox" ){
+        outValues[ parameterName ] = this.mathBarElement.find( "[name='" + parameterName + "']:first" ).prop("checked");
+    }
+    
+    if ( type == "condition" ){
+        outValues[ parameterName ] = this.mathBarElement.find( "[name='" + parameterName + "']:first" ).prop("checked");
+        conditionalParameters = parameter["parameters"];
+        for ( i = 0; i < conditionalParameters.length; i++ ){
+          this.GetPropertyValue( conditionalParameters[i], outValues );
+        }
+    }
+
+    
+}
 
 MathBar.prototype.Run = function(){
     
@@ -155,15 +212,7 @@ MathBar.prototype.Run = function(){
     var outValues = [];
     
     for ( i = 0; i < parameters.length; i++ ){
-        type = parameters[i]["parameterType"];
-        parameterName = parameters[i]["parameterName"];
-
-        if ( type == "edit" ){
-            outValues[ parameterName ] = this.mathBarElement.find( "[name='" + parameterName + "']:first" ).val();
-        }
-        if ( type == "checkbox" ){
-            outValues[ parameterName ] = this.mathBarElement.find( "[name='" + parameterName + "']:first" ).prop("checked");
-        }
+        this.GetPropertyValue( parameters[i], outValues );
     }
     
     var parser = this.functions[this.currentOption]["parser"];

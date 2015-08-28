@@ -1,118 +1,141 @@
-{"functions":{
- "number":[
-  {
-  "functionName": "Square Root",
-  "parameters": [],
-  "parser": "square_root_parser"
-  }],
-"func_one_variable":[
-           {
-           "functionName": "Simplify",
-           "parameters": [],
-           "parser": "simplify_parser"
-           },
-           {
-           "functionName": "Integrate",
-            "parameters": [{
-                     "parameterName": "Variable",
-                     "parameterType": "edit",
-                     "defaultValue": "x"
-                     
-                     }],
-           "parser": "integrate_parser"
-                     },
-                     {
-                     "functionName": "Derivative",
-                     "parameters": [{
-                                    "parameterName": "Variable",
-                                    "parameterType": "edit",
-                                    "defaultValue": "x"
-                                    
-                                    }],
-                     "parser": "derivative_parser"
-                     },
-           {
-           "functionName": "Plot",
-           "parameters": [
-                          {
-                          "parameterName": "Range",
-                          "parameterType": "edit",
-                          "defaultValue": "-5:5"
-                          }
-                          ],
-            "parser": "plot_2d_parser"
-           }],
-    "func2zm":[
-               {
-               "functionName": "Simplify",
-               "parameters": [
+{
+    "functions": {
+        "number": [
+                   {
+                   "functionName": "Square Root",
+                   "parameters": [],
+                   "parser": "square_root_parser"
+                   }
+                   ],
+        "func_one_variable": [
                               {
-                              "parameterName": "Range",
-                              "parameterType": "edit",
-                              "defaultValue": "-5:5"
+                              "functionName": "Simplify",
+                              "parameters": [],
+                              "parser": "simplify_parser"
                               },
                               {
-                              "parameterName": "SomeOther",
-                              "parameterType": "checkbox",
-                              "defaultValue": true
+                              "functionName": "Integrate",
+                              "parameters": [
+                                             {
+                                             "parameterName": "Variable",
+                                             "parameterType": "edit",
+                                             "defaultValue": "x"
+                                             },
+                                             {
+                                             "parameterName": "definite",
+                                             "parameterType": "condition",
+                                             "defaultValue": "0",
+                                             "parameters": [
+                                                            {
+                                                            "parameterName": "from",
+                                                            "parameterType": "edit",
+                                                            "defaultValue": "0"
+                                                            },
+                                                            {
+                                                            "parameterName": "to",
+                                                            "parameterType": "edit",
+                                                            "defaultValue": "5"
+                                                            }
+                                                            ]
+                                             }
+                                             ],
+                              "parser": "integrate_parser"
+                              },
+                              {
+                              "functionName": "Derivative",
+                              "parameters": [
+                                             {
+                                             "parameterName": "Variable",
+                                             "parameterType": "edit",
+                                             "defaultValue": "x"
+                                             }
+                                             ],
+                              "parser": "derivative_parser"
+                              },
+                              {
+                              "functionName": "Plot",
+                              "parameters": [
+                                             {
+                                             "parameterName": "Range",
+                                             "parameterType": "edit",
+                                             "defaultValue": "-5:5"
+                                             }
+                                             ],
+                              "parser": "plot_2d_parser"
                               }
                               ],
-               "parser": "simplify_parser"
-               },
-               {
-               "functionName": "Integrate",
-               "parameters": [
-                              {
-                              "parameterName": "SomeOther",
-                              "parameterType": "checkbox",
-                              "defaultValue": true
-                              },
-                              {
-                              "parameterName": "Range",
-                              "parameterType": "edit",
-                              "defaultValue": "-5:5"
-                              },
-                              {
-                              "parameterName": "SomeOther_2",
-                              "parameterType": "edit",
-                              "defaultValue": "-5:5"
-                              },
-                              {
-                              "parameterName": "SomeOther_3",
-                              "parameterType": "checkbox",
-                              "defaultValue": true
-                              }
-                              ]
-               },
-               {
-               "functionName": "Plot",
-               "parameters": [
-                              {
-                              "parameterName": "Range",
-                              "parameterType": "edit",
-                              "defaultValue": "-5:5"
-                              },
-                              {
-                              "parameterName": "SomeOther",
-                              "parameterType": "checkbox",
-                              "defaultValue": true
-                              }
-                              ]
-               },
-               {
-               "functionName": "Plot3DS",
-               "parameters": [
-                              {
-                              "parameterName": "Range",
-                              "parameterType": "edit",
-                              "defaultValue": "-5:5"
-                              },
-                              {
-                              "parameterName": "SomeOther",
-                              "parameterType": "checkbox",
-                              "defaultValue": true
-                              }
-                              ]
-               }]
-
-}}
+        "func2zm": [
+                    {
+                    "functionName": "Simplify",
+                    "parameters": [
+                                   {
+                                   "parameterName": "Range",
+                                   "parameterType": "edit",
+                                   "defaultValue": "-5:5"
+                                   },
+                                   {
+                                   "parameterName": "SomeOther",
+                                   "parameterType": "checkbox",
+                                   "defaultValue": true
+                                   }
+                                   ],
+                    "parser": "simplify_parser"
+                    },
+                    {
+                    "functionName": "Integrate",
+                    "parameters": [
+                                   {
+                                   "parameterName": "SomeOther",
+                                   "parameterType": "checkbox",
+                                   "defaultValue": true
+                                   },
+                                   {
+                                   "parameterName": "Range",
+                                   "parameterType": "edit",
+                                   "defaultValue": "-5:5"
+                                   },
+                                   {
+                                   "parameterName": "SomeOther_2",
+                                   "parameterType": "edit",
+                                   "defaultValue": "-5:5"
+                                   },
+                                   {
+                                   "parameterName": "SomeOther_3",
+                                   "parameterType": "checkbox",
+                                   "defaultValue": true
+                                   }
+                                   ]
+                    },
+                    {
+                    "functionName": "Plot",
+                    "parameters": [
+                                   {
+                                   "parameterName": "Range",
+                                   "parameterType": "edit",
+                                   "defaultValue": "-5:5"
+                                   },
+                                   {
+                                   "parameterName": "SomeOther",
+                                   "parameterType": "checkbox",
+                                   "defaultValue": true
+                                   }
+                                   ]
+                    },
+                    {
+                    "functionName": "Plot3DS",
+                    "parameters": [
+                                   {
+                                   "parameterName": "Range",
+                                   "parameterType": "edit",
+                                   "defaultValue": "-5:5"
+                                   },
+                                   {
+                                   "parameterName": "SomeOther",
+                                   "parameterType": "checkbox",
+                                   "defaultValue": true
+                                   }
+                                   ]
+                    }
+                    ]
+    }
+}
