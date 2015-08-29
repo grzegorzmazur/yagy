@@ -45,8 +45,10 @@ function MathBar( outputID, numberOfVIF, button, callback ) {
     if ( i != self.functions.length ){
     
         var $functionsSelect = $("<select>");
-    
-        $functionsSelect.append( $("<option>").append( selectMoreText ));
+        $option = $("<option>").append( selectMoreText );
+        $option.attr( "disabled", true );
+        $option.attr( "selected", true);
+        $functionsSelect.append($option );
     
         for( i = numberOfVIF; i < self.functions.length; i++){
             $functionsSelect.append( $("<option>").append( self.functions[i]["functionName"]) );
