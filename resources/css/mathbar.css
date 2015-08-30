@@ -31,8 +31,8 @@ width: 250px;
 
 
 .Expression button.MathBarButton{
-    background:url(./images/double_arrows_down_disabled.png) no-repeat;
-    background-size: 12px 12px;
+    background:url(./images/double_arrows_down_disabled.png) center center no-repeat;
+    background-size: 8px 8px;
     width: 12px;
     height: 12px;
     border: none;
@@ -41,25 +41,18 @@ width: 250px;
 }
 
 .Expression:hover button.MathBarButton{
-    background:url(./images/double_arrows_down.png) no-repeat;
-    background-size: 12px 12px;
+    background:url(./images/double_arrows_down.png) center center no-repeat;
+    background-size: 8px 8px;
 }
 
 .Expression button.MathBarButton.up{
-    background:url(./images/double_arrows_up_disabled.png) no-repeat;
-    background-size: 12px 12px;
-    width: 12px;
-    height: 12px;
-    border: none;
-    
+    background:url(./images/double_arrows_up_disabled.png) center center no-repeat;
+    background-size: 8px 8px;
 }
 
 .Expression:hover button.MathBarButton.up{
-    background:url(./images/double_arrows_up.png) no-repeat;
-    background-size: 12px 12px;
-    width: 12px;
-    height: 12px;
-    border: none;
+    background:url(./images/double_arrows_up.png) center center no-repeat;
+    background-size: 8px 8px;
 }
 
 
