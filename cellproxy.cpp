@@ -35,7 +35,7 @@ void CellProxy::on_request_state_changed(YacasRequest::State state)
             case YacasRequest::EXPRESSION: {
                 const QString result = _request->result().trimmed();
                 const QString texform_expr = QString("TeXForm(Hold(") + result + "));";
-                _yacas2tex.Evaluate(texform_expr.toStdString().c_str());
+                _yacas2tex.Evaluate(texform_expr.toStdString());
                 const QString texform_result = QString::fromStdString(_yacas2tex.Result());
                 const QString tex_code =
                     texform_result.trimmed().mid(2, texform_result.length() - 5);
@@ -43,6 +43,50 @@ void CellProxy::on_request_state_changed(YacasRequest::State state)
                 evaluation_result["expression"] = result;
                 evaluation_result["tex_code"] = tex_code;
 
+                bool is_number = false;
+                bool is_constant = false;
+                bool is_vector = false;
+                bool is_matrix = false;
+                bool is_square_matrix = false;
+                
+                _yacas2tex.Evaluate((QString("IsNumber(Hold(") + result + "));").toStdString());
+                if (_yacas2tex.Result() == "True;")
+                    is_number = true;
+                _yacas2tex.Evaluate((QString("IsConstant(Hold(") + result + "));").toStdString());
+                if (_yacas2tex.Result() == "True;")
+                    is_constant = true;
+                 _yacas2tex.Evaluate((QString("IsVector(Hold(") + result + "));").toStdString());
+                if (_yacas2tex.Result() == "True;")
+                    is_vector = true;
+                 _yacas2tex.Evaluate((QString("IsMatrix(Hold(") + result + "));").toStdString());
+                if (_yacas2tex.Result() == "True;")
+                    is_matrix = true;
+                _yacas2tex.Evaluate((QString("IsSquareMatrix(Hold(") + result + "));").toStdString());
+                if (_yacas2tex.Result() == "True;")
+                    is_square_matrix = true;
+
+                evaluation_result["expression_type"] = "function";
+
+                if (is_number)
+                    evaluation_result["expression_type"] = "number";
+                else if (is_constant && !(is_vector || is_matrix))
+                    evaluation_result["expression_type"] = "constant";
+                else if (is_vector)
+                    evaluation_result["expression_type"] = "vector";
+                else if (is_square_matrix)
+                    evaluation_result["expression_type"] = "square_matrix";
+                else if (is_matrix)
+                    evaluation_result["expression_type"] = "matrix";
+
+                evaluation_result["variables"] = QStringList();
+                
+                _yacas2tex.Evaluate((QString("VarList(Hold(") + result + "));").toStdString());
+                QString vars = QString::fromStdString(_yacas2tex.Result());
+                vars = vars.remove("{");
+                vars.truncate(vars.length() - 2);
+                if (vars.length() != 0)
+                    evaluation_result["variables"] = vars.split(",");
+                
                 break;
             }
             case YacasRequest::PLOT2D: {
