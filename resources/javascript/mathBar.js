@@ -130,6 +130,7 @@ MathBar.prototype.optionClicked = function( functionName, VIF ){
         $parametersElement.append( this.getPropertyLabel( parameters[i]) );
     }
     
+    $parametersElement.find("select").selectmenu();
 };
 
 MathBar.prototype.getPropertyLabel = function( parameter ){

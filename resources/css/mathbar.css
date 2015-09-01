@@ -167,6 +167,22 @@ width: 250px;
     margin: 0px;
 }
 
+.parameters label>span[role=combobox] {
+    background: url(./images/mathBar_combobox_triangle.png) right 5px center no-repeat, linear-gradient(  white, 	white);
+    border: 1px solid #C2E0FF;
+    padding: 1px;
+    padding-left: 5px;
+}
+
+.parameters label>span[role=combobox]:hover {
+    background: url(./images/mathBar_combobox_triangle.png) right 5px center no-repeat, linear-gradient(   	white, 	#D6EBFF);
+    color: #555;
+}
+
+.parameters .ui-state-focus {
+    color: #555;
+}
+
 .styled_radio label>span[role=combobox] {
     background: url(./images/mathBar_combobox_triangle.png) right 5px center no-repeat, linear-gradient(  white, 	#F3F9FF);
 }
