@@ -70,11 +70,7 @@
                     "parameters": [],
                     "parser": "simplify_parser"
                     },
-                    {
-                    "functionName": "Plot3DS",
-                    "parameters": [],
-                    "parser": "plot_3d_parser"
-                    },
+
                        {
                        "functionName": "Integrate",
                        "parameters": [
@@ -102,6 +98,11 @@
                                       }
                                       ],
                        "parser": "integrate_parser"
+                       },
+                       {
+                       "functionName": "Plot3DS",
+                       "parameters": [],
+                       "parser": "plot_3d_parser"
                        }
                     ]
     }
