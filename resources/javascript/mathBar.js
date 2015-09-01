@@ -81,7 +81,13 @@ function MathBar( outputID, options, button, callback ) {
     self.mathBarElement = $mathBarElement;
     
     self.Show();
-    $functionsDiv.parent().width( $functionsDiv.width() - 4);
+    
+    if ( numberOfVIF == self.functions.length ){
+        $functionsDiv.parent().width( $functionsDiv.width() + 1 );
+    }else{
+        console.log( $functionsDiv.width());
+        $functionsDiv.parent().width( $functionsDiv.width()  );
+    }
 
     self.optionClicked( self.functions[0]["functionName"], true );
     

@@ -12,6 +12,8 @@
 .MathBar table{
     table-layout:fixed;
     width: 100%;
+    border-spacing: 0px;
+    padding: 2px;
 }
 
 .MathBar td.functions{
@@ -115,6 +117,7 @@ width: 250px;
 
 
 .separator{
+    margin-left: 0px;
     width: 1px;
     background-color:#C2E0FF;
 }
@@ -176,7 +179,9 @@ width: 250px;
     background: url(./images/mathBar_combobox_triangle_white.png) right 5px center no-repeat, linear-gradient(  #47A3FF, #246BB2);
 }
 
-
+.MathBar select{
+    margin: 0px;
+}
 
 
 .radio_group_horizontal{
