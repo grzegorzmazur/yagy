@@ -200,10 +200,26 @@ function addSideEffects( number, side_effects, rootElementID ){
     row.append("<td><span>" + side_effects + "</span></td>");
 }
 
-function toogleMathBar( button ){
+function toogleMathBar( button, type, variables ){
+    
+    console.log( variables );
+    
+    
+    var options = {};
+    options["VIF"] = 2;
+    options["type"] = type;
+    
+    if ( variables.length > 0 ){
+        options["type"] = options["type"] + "_" + variables.length;
+        options["defaultParameters"] = {};
+        options["defaultParameters"]["variable"] = variables[0];
+    }
+    
 
+        console.log( options );
+    
     if ( button.mathBar == null ){
-        var bar = new MathBar( button.name , 2, button, function( result ){ parseMathBarResult( result, button.name )} );
+        var bar = new MathBar( button.name , options, button, function( result ){ parseMathBarResult( result, button.name )} );
         button.mathBar = bar;
     }else{
         button.mathBar.Toggle();
@@ -239,14 +255,16 @@ function printResults( result ){
 
     if( result["type"] === "Expression" ){
 
+        console.log( result );
         output.addClass( "outside");
         output.append( "$$" + result["tex_code"] + "$$" );
+        
+        if ( MathBar.supportsExpressionType( result["expression_type"], result["variables"].length )){
 
-        $button = $("<button>", {name: outputID, class: "MathBarButton"});
-        $button.click( function(){ toogleMathBar( this )});
-        
-        
-        output.append( $("<div>", {class: "inside"}).append( $button ));
+            $button = $("<button>", {name: outputID, class: "MathBarButton"});
+            $button.click( function(){ toogleMathBar( this, result["expression_type"], result["variables"] )});
+            output.append( $("<div>", {class: "inside"}).append( $button ));
+        }
  
         renderOutput( outputID );
         output[0].yacasExpression = result["expression"];

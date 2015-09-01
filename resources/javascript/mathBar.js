@@ -2,11 +2,14 @@ var selectMoreText = "more";
 var functions;
 
 //VIF - Very Importatnt Function
-function MathBar( outputID, numberOfVIF, button, callback ) {
+function MathBar( outputID, options, button, callback ) {
     var self = this;
     
+    numberOfVIF = options["VIF"];
+    
     self.outputID = outputID;
-    self.functions = functions["func_one_variable"];
+    self.functions = functions[options["type"]];
+    self.defaultParameters = options["defaultParameters"];
     self.button = button;
     self.currentOption = 0;
     self.currentOptionVIF = true;
@@ -127,8 +130,18 @@ MathBar.prototype.optionClicked = function( functionName, VIF ){
 MathBar.prototype.getPropertyLabel = function( parameter ){
     var $label = $("<label>");
     
-    if ( parameter["parameterType"] == "edit"){
+
+    
+    if( this.defaultParameters[parameter["parameterName"]] != undefined ){
+        defaultValue = this.defaultParameters[parameter["parameterName"]];
+    }else{
         defaultValue = parameter["defaultValue"];
+    }
+    
+
+    
+    if ( parameter["parameterType"] == "edit"){
+        
         
         $input = $("<input>", {type: "text", name: parameter["parameterName"]});
         $input.attr( "size", defaultValue.length*5 );
@@ -142,7 +155,7 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
     if ( parameter["parameterType"] == "checkbox"){
         
         $input = $("<input>", {type: "checkbox", name: parameter["parameterName"] });
-        $input.prop( "checked", parameter["defaultValue"]);
+        $input.prop( "checked", defaultValue);
         $label.append( $input );
         $label.append( parameter["parameterName"]);
     }
@@ -150,7 +163,7 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
     if ( parameter["parameterType"] == "condition"){
         $input = $("<input>", {type: "checkbox", name: parameter["parameterName"] });
         
-        if ( parameter["defaultValue"] == "true" ){
+        if ( defaultValue == "true" ){
             checked = true;
         }else{
             checked = false;
@@ -274,3 +287,13 @@ MathBar.initializeFunctions = function(jsonfile){
               });
 }
 
+MathBar.supportsExpressionType = function( expressionType, numberOfVariables ){
+    if ( numberOfVariables > 0 ){
+        expressionType += "_" + numberOfVariables;
+    }
+    
+    if( functions[expressionType] != undefined ){
+        return true;
+    }
+    return false;
+}

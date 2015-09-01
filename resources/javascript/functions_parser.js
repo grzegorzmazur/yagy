@@ -34,3 +34,9 @@ function plot_2d_parser( outputValue, parameters ){
     range = parameters["range"];
     return "Plot2D(" + outputValue + "," + range + ")";
 }
+
+function plot_3d_parser( outputValue, parameters ){
+    console.log( "This is Plot 3D parser");
+    return "Plot3DS(" + outputValue + ")";
+}
+
