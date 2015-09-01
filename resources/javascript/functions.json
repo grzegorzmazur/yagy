@@ -18,7 +18,7 @@
                               "parameters": [
                                              {
                                              "parameterName": "variable",
-                                             "parameterType": "edit",
+                                             "parameterType": "select",
                                              "defaultValue": "x"
                                              },
                                              {
@@ -80,8 +80,8 @@
                        "parameters": [
                                       {
                                       "parameterName": "variable",
-                                      "parameterType": "edit",
-                                      "defaultValue": "x"
+                                      "parameterType": "select",
+                                      "defaultValue": ["x","y"]
                                       },
                                       {
                                       "parameterName": "definite",

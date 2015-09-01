@@ -126,7 +126,6 @@ MathBar.prototype.optionClicked = function( functionName, VIF ){
     }
     this.currentOption = i;
     
-    
     for ( i = 0; i < parameters.length; i++ ){
         $parametersElement.append( this.getPropertyLabel( parameters[i]) );
     }
@@ -136,18 +135,13 @@ MathBar.prototype.optionClicked = function( functionName, VIF ){
 MathBar.prototype.getPropertyLabel = function( parameter ){
     var $label = $("<label>");
     
-
-    
     if( this.defaultParameters[parameter["parameterName"]] != undefined ){
         defaultValue = this.defaultParameters[parameter["parameterName"]];
     }else{
         defaultValue = parameter["defaultValue"];
     }
     
-
-    
     if ( parameter["parameterType"] == "edit"){
-        
         
         $input = $("<input>", {type: "text", name: parameter["parameterName"]});
         $input.attr( "size", defaultValue.length*5 );
@@ -156,7 +150,6 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
         $label.append( parameter["parameterName"] + ": ");
         $label.append( $input );
     }
-    
     
     if ( parameter["parameterType"] == "checkbox"){
         
@@ -182,7 +175,6 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
                         disableParameters( parameter["parameterName"] );
                       }
                       });
-        
 
         $input.prop( "checked", checked );
         $label.append( $input );
@@ -203,13 +195,22 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
             $outerlabel.append( $condparLabel );
         }
         
-        
         $label = $outerlabel;
-
+    }
+    
+    if ( parameter["parameterType"] == "select"){
+        
+        var $select = $("<select>", { name: parameter["parameterName"] });
+        
+        for( optionNumber = 0; optionNumber < defaultValue.length; optionNumber++){
+            $select.append( $("<option>").append( defaultValue[optionNumber]) );
+        }
+        
+        $label.append( parameter["parameterName"] + ": ");
+        $label.append( $select );
     }
     
     return $label;
-    
 };
 
 function disableParameters( parameterName ){
@@ -241,8 +242,10 @@ MathBar.prototype.GetPropertyValue = function( parameter, outValues ){
           this.GetPropertyValue( conditionalParameters[i], outValues );
         }
     }
-
     
+    if ( type == "select" ){
+        outValues[ parameterName ] = this.mathBarElement.find( "[name='" + parameterName + "']:first" ).val();
+    }
 }
 
 MathBar.prototype.Run = function(){

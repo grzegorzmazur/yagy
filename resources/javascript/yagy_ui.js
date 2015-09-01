@@ -212,7 +212,7 @@ function toogleMathBar( button, type, variables ){
     if ( variables.length > 0 ){
         options["type"] = options["type"] + "_" + variables.length;
         options["defaultParameters"] = {};
-        options["defaultParameters"]["variable"] = variables[0];
+        options["defaultParameters"]["variable"] = variables;
     }
     
 
