@@ -70,7 +70,25 @@
                                              }
                                              ],
                               "parser": "plot_2d_parser"
-                              }
+                       },
+                       {
+                       "functionName": "Limit",
+                       "parameters": [
+                                      {
+                                      "parameterName": "variable",
+                                      "parameterType": "select",
+                                      "defaultValue": "x",
+                                      "text":"as"
+                                      },
+                                      {
+                                      "parameterName": "value",
+                                      "parameterType": "edit",
+                                      "defaultValue": "0",
+                                      "text": "approaches"
+                                      }
+                                      ],
+                       "parser": "limit_parser"
+                       }
                               ],
         "function_2": [
                     {

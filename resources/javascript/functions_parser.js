@@ -44,3 +44,13 @@ function plot_3d_parser( outputValue, parameters ){
     return "Plot3DS(" + outputValue + ")";
 }
 
+function limit_parser( outputValue, parameters ){
+    console.log( "This is limit parser");
+    
+    variable = parameters["variable"];
+    value = parameters["value"];
+    
+    
+    return "Limit(" + variable + "," + value + ")" + outputValue;
+}
+
