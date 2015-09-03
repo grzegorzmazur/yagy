@@ -142,13 +142,19 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
         defaultValue = parameter["defaultValue"];
     }
     
+    if( parameter["text"] != undefined ){
+        text = parameter["text"];
+    }else{
+        text = parameter["parameterName"];
+    }
+    
     if ( parameter["parameterType"] == "edit"){
         
         $input = $("<input>", {type: "text", name: parameter["parameterName"]});
         $input.attr( "size", defaultValue.length*5 );
         $input.val( defaultValue );
         
-        $label.append( parameter["parameterName"] + ": ");
+        $label.append( text );
         $label.append( $input );
     }
     
@@ -157,7 +163,7 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
         $input = $("<input>", {type: "checkbox", name: parameter["parameterName"] });
         $input.prop( "checked", defaultValue);
         $label.append( $input );
-        $label.append( parameter["parameterName"]);
+        $label.append( text);
     }
     
     if ( parameter["parameterType"] == "condition"){
@@ -179,7 +185,7 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
 
         $input.prop( "checked", checked );
         $label.append( $input );
-        $label.append( parameter["parameterName"]);
+        $label.append( text );
         
         conditionalParameters = parameter["parameters"];
         var $outerlabel = $("<span>").append( $label );
@@ -207,7 +213,7 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
             $select.append( $("<option>").append( defaultValue[optionNumber]) );
         }
         
-        $label.append( parameter["parameterName"] + ": ");
+        $label.append( text );
         $label.append( $select );
     }
     

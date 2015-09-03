@@ -19,11 +19,13 @@
                                              {
                                              "parameterName": "variable",
                                              "parameterType": "select",
-                                             "defaultValue": "x"
+                                             "defaultValue": "x",
+                                             "text" : "over"
                                              },
                                              {
                                              "parameterName": "definite",
                                              "parameterType": "condition",
+                                             "text" : "",
                                              "defaultValue": "0",
                                              "parameters": [
                                                             {
@@ -47,7 +49,8 @@
                                              {
                                              "parameterName": "variable",
                                              "parameterType": "edit",
-                                             "defaultValue": "x"
+                                             "defaultValue": "x",
+                                             "text": "with respect to"
                                              }
                                              ],
                               "parser": "derivative_parser"
@@ -77,12 +80,14 @@
                                       {
                                       "parameterName": "variable",
                                       "parameterType": "select",
-                                      "defaultValue": ["x","y"]
+                                      "defaultValue": ["x","y"],
+                                      "text" : "over"
                                       },
                                       {
                                       "parameterName": "definite",
                                       "parameterType": "condition",
                                       "defaultValue": "0",
+                                      "text" : "",
                                       "parameters": [
                                                      {
                                                      "parameterName": "from",
