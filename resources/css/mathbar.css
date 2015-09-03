@@ -18,19 +18,12 @@
 
 .MathBar td.functions{
     vertical-align: top;
-}
-
-.MathBar table>tbody>tr>td:first-child{
-/*    white-space: nowrap;*/
-width: 250px;
+    width: 100%;
 }
 
 .MathBar td.parameters{
     word-wrap:break-word;
- /*   width: 300px;*/
 }
-
-
 
 .Expression button.MathBarButton{
     background:url(./images/double_arrows_down_disabled.png) center center no-repeat;
