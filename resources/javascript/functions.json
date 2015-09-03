@@ -5,6 +5,16 @@
                    "functionName": "Square Root",
                    "parameters": [],
                    "parser": "square_root_parser"
+                   },
+                   {
+                   "functionName": "Exponential",
+                   "parameters": [],
+                   "parser": "exponential_parser"
+                   },
+                   {
+                   "functionName": "Natural Logarithm",
+                   "parameters": [],
+                   "parser": "natural_logarithm_parser"
                    }
                    ],
         "function_1": [

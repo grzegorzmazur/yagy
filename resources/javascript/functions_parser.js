@@ -3,6 +3,19 @@ function square_root_parser( outputValue, parameters ){
     return "Sqrt(" + outputValue + ")";
 }
 
+
+
+function natural_logarithm_parser( outputValue, parameters ){
+    console.log( "This is natural logarithm parser");
+    return "Ln(" + outputValue + ")";
+}
+
+function exponential_parser( outputValue, parameters ){
+    console.log( "This is exponential parser");
+    return "Exp(" + outputValue + ")";
+}
+
+
 function simplify_parser( outputValue, parameters ){
     console.log( "This is simplify parser");
     return "Simplify(" + outputValue + ")";
