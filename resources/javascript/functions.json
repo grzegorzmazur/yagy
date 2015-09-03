@@ -59,9 +59,14 @@
                               "functionName": "Plot",
                               "parameters": [
                                              {
-                                             "parameterName": "range",
+                                             "parameterName": "from",
                                              "parameterType": "edit",
-                                             "defaultValue": "-5:5"
+                                             "defaultValue": "-5"
+                                             },
+                                             {
+                                             "parameterName": "to",
+                                             "parameterType": "edit",
+                                             "defaultValue": "5"
                                              }
                                              ],
                               "parser": "plot_2d_parser"
@@ -105,7 +110,7 @@
                        "parser": "integrate_parser"
                        },
                        {
-                       "functionName": "Plot3DS",
+                       "functionName": "Plot",
                        "parameters": [],
                        "parser": "plot_3d_parser"
                        }

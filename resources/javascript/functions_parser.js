@@ -31,8 +31,12 @@ function derivative_parser( outputValue, parameters ){
 
 function plot_2d_parser( outputValue, parameters ){
     console.log( "This is Plot 2D parser");
-    range = parameters["range"];
-    return "Plot2D(" + outputValue + "," + range + ")";
+    
+    from = parameters["from"];
+    to = parameters["to"];
+    
+    
+    return "Plot2D(" + outputValue + "," + from + ":" + to + ")";
 }
 
 function plot_3d_parser( outputValue, parameters ){
