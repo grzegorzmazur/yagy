@@ -29,7 +29,7 @@
                                              {
                                              "parameterName": "variable",
                                              "parameterType": "select",
-                                             "defaultValue": "x",
+                                             "defaultValue": ["x"],
                                              "text" : "over"
                                              },
                                              {
@@ -58,8 +58,8 @@
                               "parameters": [
                                              {
                                              "parameterName": "variable",
-                                             "parameterType": "edit",
-                                             "defaultValue": "x",
+                                             "parameterType": "select",
+                                             "defaultValue": ["x"],
                                              "text": "with respect to"
                                              }
                                              ],
