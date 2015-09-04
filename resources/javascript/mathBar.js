@@ -133,6 +133,10 @@ MathBar.prototype.optionClicked = function( functionName, VIF ){
 
 MathBar.prototype.getPropertyLabel = function( parameter ){
     var $label = $("<label>");
+    var defaultValue;
+    var text;
+    
+    var type = parameter["parameterType"];
     
     if( this.defaultParameters[parameter["parameterName"]] != undefined ){
         defaultValue = this.defaultParameters[parameter["parameterName"]];
@@ -146,7 +150,25 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
         text = parameter["parameterName"];
     }
     
-    if ( parameter["parameterType"] == "edit"){
+    if ( type == "select" ){
+        if (defaultValue.length == 1 ){
+            type = "label";
+            defaultValue = defaultValue[0];
+        }
+    }
+
+    if ( type == "label"){
+        
+        $span = $("<span>", {class: "parameter", name: parameter["parameterName"]});
+        $span.append( defaultValue );
+        
+        $label.append( text );
+        $label.append( $span );
+    }
+    
+    
+    
+    if ( type == "edit"){
         
         $input = $("<input>", {type: "text", name: parameter["parameterName"]});
         $input.attr( "size", defaultValue.length*5 );
@@ -156,7 +178,7 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
         $label.append( $input );
     }
     
-    if ( parameter["parameterType"] == "checkbox"){
+    if ( type == "checkbox"){
         
         $input = $("<input>", {type: "checkbox", name: parameter["parameterName"] });
         $input.prop( "checked", defaultValue);
@@ -164,7 +186,7 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
         $label.append( text);
     }
     
-    if ( parameter["parameterType"] == "condition"){
+    if ( type == "condition"){
         $input = $("<input>", {type: "checkbox", name: parameter["parameterName"] });
         
         if ( defaultValue == "true" ){
@@ -205,7 +227,7 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
         $label = $outerlabel;
     }
     
-   if ( parameter["parameterType"] == "select"){
+   if ( type == "select"){
         
         var $select = $("<select>", { name: parameter["parameterName"] });
         
@@ -237,6 +259,11 @@ MathBar.prototype.GetPropertyValue = function( parameter, outValues ){
     type = parameter["parameterType"];
     parameterName = parameter["parameterName"];
     
+    
+    if ( type == "label" ){
+        outValues[ parameterName ] = this.mathBarElement.find( "[name='" + parameterName + "']:first" ).text();
+    }
+    
     if ( type == "edit" ){
         outValues[ parameterName ] = this.mathBarElement.find( "[name='" + parameterName + "']:first" ).val();
     }
@@ -253,7 +280,13 @@ MathBar.prototype.GetPropertyValue = function( parameter, outValues ){
     }
     
     if ( type == "select" ){
-        outValues[ parameterName ] = this.mathBarElement.find( "[name='" + parameterName + "']:first" ).val();
+        $select = this.mathBarElement.find( "[name='" + parameterName + "']:first" );
+        if ( $select.val() != ""){
+            outValues[ parameterName ] = $select.val();
+        }else{
+            outValues[ parameterName ] = $select.text();
+        }
+
     }
 }
 
