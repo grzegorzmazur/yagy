@@ -110,7 +110,7 @@
 }
 
 .MathBar input[type="text"]:disabled {
-    color: gray;
+    color: #C2E0FF;
     background-color: #F5FAFF;
 }
 
@@ -188,7 +188,7 @@
     margin-left: 5px;
 }
 
-.parameters label>span[role=combobox]:hover {
+.parameters label>span[role=combobox]:not(.ui-state-disabled):hover {
     background: url(./images/mathBar_combobox_triangle.png) right 5px center no-repeat, linear-gradient(   	white, 	#D6EBFF);
     color: #246BB2;
 }
