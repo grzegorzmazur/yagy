@@ -29,7 +29,7 @@ function MathBar( outputID, options, button, callback ) {
         numberOfVIF++;
     }
     
-    for( i = 0; i < numberOfVIF; i++){
+    for( var i = 0; i < numberOfVIF; i++){
         $input = $("<input>", { type: "radio", name: outputID, value: self.functions[i]["functionName"]})
         
         if ( i == 0 ) $input.prop( "checked", true );
@@ -53,7 +53,7 @@ function MathBar( outputID, options, button, callback ) {
         $option.attr( "selected", true);
         $functionsSelect.append($option );
     
-        for( i = numberOfVIF; i < self.functions.length; i++){
+        for( var i = numberOfVIF; i < self.functions.length; i++){
             $functionsSelect.append( $("<option>").append( self.functions[i]["functionName"]) );
         }
     
@@ -85,12 +85,10 @@ function MathBar( outputID, options, button, callback ) {
     if ( numberOfVIF == self.functions.length ){
         $functionsDiv.parent().width( $functionsDiv.width() + 1 );
     }else{
-        console.log( $functionsDiv.width());
         $functionsDiv.parent().width( $functionsDiv.width()  );
     }
 
     self.optionClicked( self.functions[0]["functionName"], true );
-    
     
     if ( $functionsSelect ){
         $functionsSelect.selectmenu();
@@ -100,6 +98,8 @@ function MathBar( outputID, options, button, callback ) {
 };
 
 MathBar.prototype.optionClicked = function( functionName, VIF ){
+
+    console.log( "Option clicked: " + functionName ) ;
     
     if ( self.currentOptionVIF && functionName == selectMoreText ) return;
     self.currentOptionVIF = VIF;
@@ -108,7 +108,7 @@ MathBar.prototype.optionClicked = function( functionName, VIF ){
     $parametersElement.html("");
     
     if ( functionName == selectMoreText ) return;
-    
+
     if ( !VIF ){
         $(this.mathBarElement).find( "input:checked" ).prop("checked", false);
         $(this.mathBarElement).find( "select").parent().addClass("checked");
@@ -116,17 +116,15 @@ MathBar.prototype.optionClicked = function( functionName, VIF ){
         $(this.mathBarElement).find( "select").parent().removeClass("checked");
     }
     
-    console.log( "Option clicked: " + functionName ) ;
-    
-    for( i = 0; i < this.functions.length; i++ ){
+    for( var i = 0; i < this.functions.length; i++ ){
         if( this.functions[i]["functionName"] == functionName ){
             var parameters = this.functions[i]["parameters"];
             break;
         }
     }
     this.currentOption = i;
-    
-    for ( i = 0; i < parameters.length; i++ ){
+
+    for ( var i = 0; i < parameters.length; i++ ){
         $parametersElement.append( this.getPropertyLabel( parameters[i]) );
     }
     
@@ -190,13 +188,15 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
         conditionalParameters = parameter["parameters"];
         var $outerlabel = $("<span>").append( $label );
         
-        for ( i = 0; i < conditionalParameters.length; i++ ){
+        
+        for ( var i = 0; i < conditionalParameters.length; i++ ){
             $condparLabel = this.getPropertyLabel( conditionalParameters[i]);
             $condparLabel.addClass( "check_" + parameter["parameterName"]);
             
             if ( !checked ){
                 $condparLabel.addClass( "labelDisabled" );
                 $condparLabel.find("input").prop( "disabled", true );
+                $condparLabel.find("select").prop( "disabled", true );
             }
             
             $outerlabel.append( $condparLabel );
@@ -205,12 +205,12 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
         $label = $outerlabel;
     }
     
-    if ( parameter["parameterType"] == "select"){
+   if ( parameter["parameterType"] == "select"){
         
         var $select = $("<select>", { name: parameter["parameterName"] });
         
-        for( optionNumber = 0; optionNumber < defaultValue.length; optionNumber++){
-            $select.append( $("<option>").append( defaultValue[optionNumber]) );
+        for( var i = 0; i < defaultValue.length; i++){
+            $select.append( $("<option>").append( defaultValue[i]) );
         }
         
         $label.append( text );
@@ -223,11 +223,13 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
 function disableParameters( parameterName ){
     $label =  $(".check_" + parameterName ).addClass( "labelDisabled" );
     $label.find("input").prop( "disabled", true );
+    $label.find("select").selectmenu( "disable" );
 }
 
 function enableParameters( parameterName ){
     $label =  $(".check_" + parameterName ).removeClass( "labelDisabled" );
     $label.find("input").prop( "disabled", false );
+    $label.find("select").selectmenu( "enable" );
 }
 
 
@@ -245,7 +247,7 @@ MathBar.prototype.GetPropertyValue = function( parameter, outValues ){
     if ( type == "condition" ){
         outValues[ parameterName ] = this.mathBarElement.find( "[name='" + parameterName + "']:first" ).prop("checked");
         conditionalParameters = parameter["parameters"];
-        for ( i = 0; i < conditionalParameters.length; i++ ){
+        for ( var i = 0; i < conditionalParameters.length; i++ ){
           this.GetPropertyValue( conditionalParameters[i], outValues );
         }
     }
@@ -260,7 +262,7 @@ MathBar.prototype.Run = function(){
     var parameters = this.functions[this.currentOption]["parameters"];
     var outValues = [];
     
-    for ( i = 0; i < parameters.length; i++ ){
+    for ( var i = 0; i < parameters.length; i++ ){
         this.GetPropertyValue( parameters[i], outValues );
     }
     
