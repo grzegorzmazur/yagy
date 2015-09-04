@@ -95,6 +95,19 @@
                                       "parameterType": "edit",
                                       "defaultValue": "0",
                                       "text": "approaches"
+                                      },
+                                      {
+                                      "parameterName": "direction",
+                                      "parameterType": "condition",
+                                      "text" : "",
+                                      "defaultValue": "0",
+                                      "parameters": [
+                                                     {
+                                                     "parameterName": "from",
+                                                     "parameterType": "select",
+                                                     "defaultValue": ["Left","Right"]
+                                                     }
+                                                     ]
                                       }
                                       ],
                        "parser": "limit_parser"

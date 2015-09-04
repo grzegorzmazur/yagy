@@ -62,8 +62,16 @@ function limit_parser( outputValue, parameters ){
     
     variable = parameters["variable"];
     value = parameters["value"];
-    
-    
-    return "Limit(" + variable + "," + value + ")" + outputValue;
+    direction = parameters["direction"];
+
+
+    if ( direction ){
+        from = parameters["from"];
+        return "Limit(" + variable + "," + value + "," + from + ")" + outputValue;
+
+    }else{
+        return "Limit(" + variable + "," + value + ")" + outputValue;
+
+    }
 }
 
