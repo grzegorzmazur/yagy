@@ -1,160 +1,126 @@
 {
-    "functions": {
-        "number": [
-                   {
-                   "functionName": "Square Root",
-                   "parameters": [],
-                   "parser": "square_root_parser"
-                   },
-                   {
-                   "functionName": "Exponential",
-                   "parameters": [],
-                   "parser": "exponential_parser"
-                   },
-                   {
-                   "functionName": "Natural Logarithm",
-                   "parameters": [],
-                   "parser": "natural_logarithm_parser"
-                   }
-                   ],
-        "function_1": [
-                              {
-                              "functionName": "Simplify",
-                              "parameters": [],
-                              "parser": "simplify_parser"
-                              },
-                              {
-                              "functionName": "Integrate",
-                              "parameters": [
-                                             {
-                                             "parameterName": "variable",
-                                             "parameterType": "select",
-                                             "defaultValue": ["x"],
-                                             "text" : "over"
-                                             },
-                                             {
-                                             "parameterName": "definite",
-                                             "parameterType": "condition",
-                                             "text" : "",
-                                             "defaultValue": "0",
-                                             "parameters": [
-                                                            {
-                                                            "parameterName": "from",
-                                                            "parameterType": "edit",
-                                                            "defaultValue": "0"
-                                                            },
-                                                            {
-                                                            "parameterName": "to",
-                                                            "parameterType": "edit",
-                                                            "defaultValue": "5"
-                                                            }
-                                                            ]
-                                             }
-                                             ],
-                              "parser": "integrate_parser"
-                              },
-                              {
-                              "functionName": "Derivative",
-                              "parameters": [
-                                             {
-                                             "parameterName": "variable",
-                                             "parameterType": "select",
-                                             "defaultValue": ["x"],
-                                             "text": "with respect to"
-                                             }
-                                             ],
-                              "parser": "derivative_parser"
-                              },
-                              {
-                              "functionName": "Plot",
-                              "parameters": [
-                                             {
-                                             "parameterName": "from",
-                                             "parameterType": "edit",
-                                             "defaultValue": "-5"
-                                             },
-                                             {
-                                             "parameterName": "to",
-                                             "parameterType": "edit",
-                                             "defaultValue": "5"
-                                             }
-                                             ],
-                              "parser": "plot_2d_parser"
-                       },
-                       {
-                       "functionName": "Limit",
-                       "parameters": [
-                                      {
-                                      "parameterName": "variable",
-                                      "parameterType": "select",
-                                      "defaultValue": "x",
-                                      "text":"as"
-                                      },
-                                      {
-                                      "parameterName": "value",
-                                      "parameterType": "edit",
-                                      "defaultValue": "0",
-                                      "text": "approaches"
-                                      },
-                                      {
-                                      "parameterName": "direction",
-                                      "parameterType": "condition",
-                                      "text" : "",
-                                      "defaultValue": "0",
-                                      "parameters": [
-                                                     {
-                                                     "parameterName": "from",
-                                                     "parameterType": "select",
-                                                     "defaultValue": ["Left","Right"]
-                                                     }
-                                                     ]
-                                      }
-                                      ],
-                       "parser": "limit_parser"
-                       }
-                              ],
-        "function_2": [
-                    {
-                    "functionName": "Simplify",
-                    "parameters": [],
-                    "parser": "simplify_parser"
-                    },
-
-                       {
-                       "functionName": "Integrate",
-                       "parameters": [
-                                      {
-                                      "parameterName": "variable",
-                                      "parameterType": "select",
-                                      "defaultValue": ["x","y"],
-                                      "text" : "over"
-                                      },
-                                      {
-                                      "parameterName": "definite",
-                                      "parameterType": "condition",
-                                      "defaultValue": "0",
-                                      "text" : "",
-                                      "parameters": [
-                                                     {
-                                                     "parameterName": "from",
-                                                     "parameterType": "edit",
-                                                     "defaultValue": "0"
-                                                     },
-                                                     {
-                                                     "parameterName": "to",
-                                                     "parameterType": "edit",
-                                                     "defaultValue": "5"
-                                                     }
-                                                     ]
-                                      }
-                                      ],
-                       "parser": "integrate_parser"
-                       },
-                       {
-                       "functionName": "Plot",
-                       "parameters": [],
-                       "parser": "plot_3d_parser"
-                       }
-                    ]
+    "categories": {
+            "number": [ "Square Root", "Exponential", "Natural Logarithm"],
+            "function_1": ["Simplify","Integrate","Derivative", "Plot2D","Limit" ],
+            "function_2": ["Simplify","Integrate","Derivative", "Plot3D" ]
+        },
+    "functions":{
+        "Square Root":
+            {
+                "parameters": [],
+                "parser": "square_root_parser"
+            },
+        "Exponential":
+            {
+                "parameters": [],
+                "parser": "exponential_parser"
+            },
+        "Natural Logarithm":
+            {
+                "parameters": [],
+                "parser": "natural_logarithm_parser"
+            },
+        "Simplify":
+            {
+                "parameters": [],
+                "parser": "simplify_parser"
+            },
+        "Integrate":
+            {
+                "parameters": [
+                               {
+                               "parameterName": "variable",
+                               "parameterType": "select",
+                               "defaultValue": ["x"],
+                               "text" : "over"
+                               },
+                               {
+                               "parameterName": "definite",
+                               "parameterType": "condition",
+                               "text" : "",
+                               "defaultValue": "0",
+                               "parameters": [
+                                              {
+                                              "parameterName": "from",
+                                              "parameterType": "edit",
+                                              "defaultValue": "0"
+                                              },
+                                              {
+                                              "parameterName": "to",
+                                              "parameterType": "edit",
+                                              "defaultValue": "5"
+                                              }
+                                              ]
+                               }
+                               ],
+                "parser": "integrate_parser"
+            },
+        "Derivative":
+            {
+                "parameters": [
+                               {
+                               "parameterName": "variable",
+                               "parameterType": "select",
+                               "defaultValue": ["x"],
+                               "text": "with respect to"
+                               }
+                               ],
+                "parser": "derivative_parser"
+            },
+        "Plot2D":
+            {
+                "parameters": [
+                               {
+                               "parameterName": "from",
+                               "parameterType": "edit",
+                               "defaultValue": "-5"
+                               },
+                               {
+                               "parameterName": "to",
+                               "parameterType": "edit",
+                               "defaultValue": "5"
+                               }
+                               ],
+                "text": "Plot",
+                "parser": "plot_2d_parser"
+            },
+        "Limit":
+            {
+                "parameters": [
+                               {
+                               "parameterName": "variable",
+                               "parameterType": "select",
+                               "defaultValue": "x",
+                               "text":"as"
+                               },
+                               {
+                               "parameterName": "value",
+                               "parameterType": "edit",
+                               "defaultValue": "0",
+                               "text": "approaches"
+                               },
+                               {
+                               "parameterName": "direction",
+                               "parameterType": "condition",
+                               "text" : "",
+                               "defaultValue": "0",
+                               "parameters": [
+                                              {
+                                              "parameterName": "from",
+                                              "parameterType": "select",
+                                              "defaultValue": ["Left","Right"]
+                                              }
+                                              ]
+                               }
+                               ],
+                "parser": "limit_parser"
+            },
+        "Plot3D":
+            {
+                "parameters": [],
+                "text": "Plot",
+                "parser": "plot_3d_parser"
+            }
+            
     }
-}
+    }

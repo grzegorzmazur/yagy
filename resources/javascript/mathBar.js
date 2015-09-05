@@ -1,5 +1,6 @@
 var selectMoreText = "more";
 var functions;
+var categories;
 
 //VIF - Very Importatnt Function
 function MathBar( outputID, options, button, callback ) {
@@ -8,7 +9,7 @@ function MathBar( outputID, options, button, callback ) {
     numberOfVIF = options["VIF"];
     
     self.outputID = outputID;
-    self.functions = functions[options["type"]];
+    self.functions = self.getFunctions( options["type"] );
     self.defaultParameters = options["defaultParameters"];
     self.button = button;
     self.currentOption = 0;
@@ -30,13 +31,19 @@ function MathBar( outputID, options, button, callback ) {
     }
     
     for( var i = 0; i < numberOfVIF; i++){
+        var text = self.functions[i]["text"];
+        if ( text == undefined ){
+            text = self.functions[i]["functionName"];
+        }
         $input = $("<input>", { type: "radio", name: outputID, value: self.functions[i]["functionName"]})
         
         if ( i == 0 ) $input.prop( "checked", true );
         
         $input.click( function(){ self.optionClicked( this.value, true )});
         
-        $span = $("<span>").append( self.functions[i]["functionName"]);
+
+        
+        $span = $("<span>").append( text );
         
         $label = $("<label>");
         $label.append( $input );
@@ -46,6 +53,7 @@ function MathBar( outputID, options, button, callback ) {
     }
     
     if ( i != self.functions.length ){
+
     
         var $functionsSelect = $("<select>");
         $option = $("<option>").append( selectMoreText );
@@ -53,8 +61,12 @@ function MathBar( outputID, options, button, callback ) {
         $option.attr( "selected", true);
         $functionsSelect.append($option );
     
-        for( var i = numberOfVIF; i < self.functions.length; i++){
-            $functionsSelect.append( $("<option>").append( self.functions[i]["functionName"]) );
+        for( var j = numberOfVIF; j < self.functions.length; j++){
+            var text = self.functions[j]["text"];
+            if ( text == undefined ){
+                text = self.functions[j]["functionName"];
+            }
+            $functionsSelect.append( $("<option>", {name: self.functions[j]["functionName"]}).append( text ) );
         }
     
         $functionsDiv.append( $("<label>").append($functionsSelect ));
@@ -92,10 +104,25 @@ function MathBar( outputID, options, button, callback ) {
     
     if ( $functionsSelect ){
         $functionsSelect.selectmenu();
-        $functionsSelect.on( "selectmenuselect", function( event, ui ) { self.optionClicked( this.value, false )} );
+        $functionsSelect.on( "selectmenuselect", function( event, ui ) { self.optionClicked( $('option:selected', this).attr("name"), false )} );
     }
 
 };
+
+MathBar.prototype.getFunctions = function( functionType ){
+    var func = [];
+    funcList = categories[ functionType ];
+    for (var i = 0; i < funcList.length; i++){
+        ff = functions[ funcList[i] ];
+        if ( ff == undefined ){
+            console.error( "Function " + funcList[i] + " is not defined! (Function category: " +  functionType + ")");
+            continue;
+        }
+        ff["functionName"] = funcList[i];
+        func.push(ff);
+    }
+    return func;
+}
 
 MathBar.prototype.optionClicked = function( functionName, VIF ){
 
@@ -335,7 +362,7 @@ MathBar.initializeFunctions = function(jsonfile){
     
     $.getJSON( "javascript/functions.json", function( data ) {
               functions = data["functions"];
-              console.log( functions );
+              categories = data["categories"];
               });
 }
 
@@ -344,7 +371,7 @@ MathBar.supportsExpressionType = function( expressionType, numberOfVariables ){
         expressionType += "_" + numberOfVariables;
     }
     
-    if( functions[expressionType] != undefined ){
+    if( categories[expressionType] != undefined ){
         return true;
     }
     return false;
