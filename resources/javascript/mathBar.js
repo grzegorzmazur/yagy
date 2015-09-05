@@ -196,10 +196,11 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
         }
         
         $input.change( function(){
+                      $mathBarElement = $(this).parents(".MathBar:first");
                       if( $(this).is(":checked")){
-                        enableParameters( parameter["parameterName"] );
+                        MathBar.enableParameters( $mathBarElement, parameter["parameterName"] );
                       }else{
-                        disableParameters( parameter["parameterName"] );
+                        MathBar.disableParameters( $mathBarElement, parameter["parameterName"] );
                       }
                       });
 
@@ -242,14 +243,14 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
     return $label;
 };
 
-function disableParameters( parameterName ){
-    $label =  $(".check_" + parameterName ).addClass( "labelDisabled" );
+ MathBar.disableParameters = function( $mathBarElement, parameterName ){
+    $label =  $mathBarElement.find(".check_" + parameterName ).addClass( "labelDisabled" );
     $label.find("input").prop( "disabled", true );
     $label.find("select").selectmenu( "disable" );
 }
 
-function enableParameters( parameterName ){
-    $label =  $(".check_" + parameterName ).removeClass( "labelDisabled" );
+MathBar.enableParameters = function( $mathBarElement, parameterName ){
+    $label =  $mathBarElement.find(".check_" + parameterName ).removeClass( "labelDisabled" );
     $label.find("input").prop( "disabled", false );
     $label.find("select").selectmenu( "enable" );
 }
