@@ -110,8 +110,7 @@
 }
 
 .MathBar input[type="text"]:disabled {
-    color: #C2E0FF;
-    background-color: #F5FAFF;
+    -webkit-text-fill-color : #246BB2;
 }
 
 .MathBar .parameters label{
@@ -123,7 +122,7 @@
 }
 
 .MathBar label.labelDisabled{
-    color: lightgray;
+    opacity: 0.35;
 }
 
 
@@ -199,6 +198,7 @@
 
 .MathBar .parameters .ui-state-default  {
     color: #246BB2;
+    opacity: 1;
 }
 
 
