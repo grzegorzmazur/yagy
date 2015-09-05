@@ -1,6 +1,6 @@
-var selectMoreText = "more";
-var functions;
-var categories;
+MathBar.selectMoreText = "more";
+MathBar.functions;
+MathBar.categories;
 
 //VIF - Very Importatnt Function
 function MathBar( outputID, options, button, callback ) {
@@ -49,7 +49,7 @@ function MathBar( outputID, options, button, callback ) {
     if ( i != self.functions.length ){
 
         var $functionsSelect = $("<select>");
-        var $option = $("<option>").append( selectMoreText );
+        var $option = $("<option>").append( MathBar.selectMoreText );
         $option.attr( "disabled", true );
         $option.attr( "selected", true);
         $functionsSelect.append($option );
@@ -99,9 +99,9 @@ function MathBar( outputID, options, button, callback ) {
 
 MathBar.prototype.getFunctions = function( functionType ){
     var func = [];
-    var funcList = categories[ functionType ];
+    var funcList = MathBar.categories[ functionType ];
     for (var i = 0; i < funcList.length; i++){
-        var ff = functions[ funcList[i] ];
+        var ff = MathBar.functions[ funcList[i] ];
         if ( ff == undefined ){
             console.error( "Function " + funcList[i] + " is not defined! (Function category: " +  functionType + ")");
             continue;
@@ -116,13 +116,13 @@ MathBar.prototype.optionClicked = function( functionName, VIF ){
 
     console.log( "Option clicked: " + functionName ) ;
     
-    if ( self.currentOptionVIF && functionName == selectMoreText ) return;
+    if ( self.currentOptionVIF && functionName == MathBar.selectMoreText ) return;
     self.currentOptionVIF = VIF;
     
     var $parametersElement = $(this.mathBarElement).find(".parameters");
     $parametersElement.html("");
     
-    if ( functionName == selectMoreText ) return;
+    if ( functionName == MathBar.selectMoreText ) return;
 
     if ( !VIF ){
         $(this.mathBarElement).find( "input:checked" ).prop("checked", false);
@@ -150,43 +150,43 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
     var $label = $("<label>");
     var type = parameter["parameterType"];
 
-    var defaultValue = this.defaultParameters[parameter["parameterName"]];
-    if( defaultValue == undefined ) defaultValue = parameter["defaultValue"];
-    if( defaultValue == undefined ) defaultValue = "";
+    var value = this.defaultParameters[parameter["parameterName"]];
+    if( value == undefined ) value = parameter["defaultValue"];
+    if( value == undefined ) value = "";
 
     var text = parameter["text"];
     if ( text == undefined ) text = parameter["parameterName"];
     
     if ( type == "select" ){
-        if ( defaultValue.length == 1 ){
+        if ( value.length == 1 ){
             type = "label";
-            defaultValue = defaultValue[0];
+            value = value[0];
         }
     }
 
     if ( type == "label"){
         var $span = $("<span>", {class: "parameter", name: parameter["parameterName"]});
-        $span.append( defaultValue );
+        $span.append( value );
         $label.append( text ).append( $span );
     }
     
     if ( type == "edit"){
         var $input = $("<input>", {type: "text", name: parameter["parameterName"]});
-        $input.attr( "size", defaultValue.length*5 );
-        $input.val( defaultValue );
+        $input.attr( "size", value.length*5 );
+        $input.val( value );
         $label.append( text ).append( $input );
     }
     
     if ( type == "checkbox"){
         var $input = $("<input>", {type: "checkbox", name: parameter["parameterName"] });
-        $input.prop( "checked", defaultValue);
+        $input.prop( "checked", value);
         $label.append( $input ).append( text);
     }
     
     if ( type == "condition"){
         var $input = $("<input>", {type: "checkbox", name: parameter["parameterName"] });
         
-        checked = defaultValue == "true" ;
+        checked = value == "true" ;
         
         $input.change( function(){
                       $mathBarElement = $(this).parents(".MathBar:first");
@@ -219,8 +219,8 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
         
         var $select = $("<select>", { name: parameter["parameterName"] });
         
-        for( var i = 0; i < defaultValue.length; i++){
-            $select.append( $("<option>").append( defaultValue[i]) );
+        for( var i = 0; i < value.length; i++){
+            $select.append( $("<option>").append( value[i]) );
         }
         
         $label.append( text ).append( $select );
@@ -315,8 +315,8 @@ MathBar.prototype.Toggle = function(){
 
 MathBar.initializeFunctions = function(jsonfile){    
     $.getJSON( "javascript/functions.json", function( data ) {
-              functions = data["functions"];
-              categories = data["categories"];
+              MathBar.functions = data["functions"];
+              MathBar.categories = data["categories"];
               });
 }
 
@@ -325,7 +325,7 @@ MathBar.supportsExpressionType = function( expressionType, numberOfVariables ){
         expressionType += "_" + numberOfVariables;
     }
     
-    if( categories[expressionType] != undefined ){
+    if( MathBar.categories[expressionType] != undefined ){
         return true;
     }
     return false;
