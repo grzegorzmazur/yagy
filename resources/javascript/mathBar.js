@@ -5,8 +5,7 @@ var categories;
 //VIF - Very Importatnt Function
 function MathBar( outputID, options, button, callback ) {
     var self = this;
-    
-    numberOfVIF = options["VIF"];
+    var numberOfVIF = options["VIF"];
     
     self.outputID = outputID;
     self.functions = self.getFunctions( options["type"] );
@@ -32,40 +31,33 @@ function MathBar( outputID, options, button, callback ) {
     
     for( var i = 0; i < numberOfVIF; i++){
         var text = self.functions[i]["text"];
-        if ( text == undefined ){
-            text = self.functions[i]["functionName"];
-        }
-        $input = $("<input>", { type: "radio", name: outputID, value: self.functions[i]["functionName"]})
+        if ( text == undefined ) text = self.functions[i]["functionName"];
+        
+        var $input = $("<input>", { type: "radio", name: outputID, value: self.functions[i]["functionName"]})
         
         if ( i == 0 ) $input.prop( "checked", true );
         
         $input.click( function(){ self.optionClicked( this.value, true )});
         
-
-        
         $span = $("<span>").append( text );
-        
         $label = $("<label>");
-        $label.append( $input );
-        $label.append( $span );
+        $label.append( $input ).append( $span );
         
         $functionsDiv.append( $label );
     }
     
     if ( i != self.functions.length ){
 
-    
         var $functionsSelect = $("<select>");
-        $option = $("<option>").append( selectMoreText );
+        var $option = $("<option>").append( selectMoreText );
         $option.attr( "disabled", true );
         $option.attr( "selected", true);
         $functionsSelect.append($option );
     
         for( var j = numberOfVIF; j < self.functions.length; j++){
             var text = self.functions[j]["text"];
-            if ( text == undefined ){
-                text = self.functions[j]["functionName"];
-            }
+            if ( text == undefined ) text = self.functions[j]["functionName"];
+
             $functionsSelect.append( $("<option>", {name: self.functions[j]["functionName"]}).append( text ) );
         }
     
@@ -73,25 +65,21 @@ function MathBar( outputID, options, button, callback ) {
         
     }
     
-
-    
-    $submitButton = $("<button>", {class: "submitButton"} );
+    var $submitButton = $("<button>", {class: "submitButton"} );
     $submitButton.click( function(){ self.Run() });
     
-    
-    $mathRow = $("<tr>");
+    var $mathRow = $("<tr>");
     $mathRow.append( $("<td>", {class: "functions"}).append($functionsDiv) );
     $mathRow.append( $("<td>", {class: "separator"}));
     $mathRow.append( $("<td>", {class: "parameters"}).append( $("<div>", {class: "parameters"})));
     $mathRow.append( $("<td>", {class: "submitButton"}).append( $submitButton ));
     
 
-    $mathBarTable = $("<table>").append( $mathRow );
+    var $mathBarTable = $("<table>").append( $mathRow );
     
     $( "#" + self.outputID ).after( $mathBarElement.append( $mathBarTable ));
 
     self.mathBarElement = $mathBarElement;
-    
     self.Show();
     
     if ( numberOfVIF == self.functions.length ){
@@ -111,9 +99,9 @@ function MathBar( outputID, options, button, callback ) {
 
 MathBar.prototype.getFunctions = function( functionType ){
     var func = [];
-    funcList = categories[ functionType ];
+    var funcList = categories[ functionType ];
     for (var i = 0; i < funcList.length; i++){
-        ff = functions[ funcList[i] ];
+        var ff = functions[ funcList[i] ];
         if ( ff == undefined ){
             console.error( "Function " + funcList[i] + " is not defined! (Function category: " +  functionType + ")");
             continue;
@@ -160,87 +148,59 @@ MathBar.prototype.optionClicked = function( functionName, VIF ){
 
 MathBar.prototype.getPropertyLabel = function( parameter ){
     var $label = $("<label>");
-    var defaultValue;
-    var text;
-    
     var type = parameter["parameterType"];
-    
-    if( this.defaultParameters[parameter["parameterName"]] != undefined ){
-        defaultValue = this.defaultParameters[parameter["parameterName"]];
-    }else{
-        defaultValue = parameter["defaultValue"];
-    }
-    
-    if( parameter["text"] != undefined ){
-        text = parameter["text"];
-    }else{
-        text = parameter["parameterName"];
-    }
+
+    var defaultValue = this.defaultParameters[parameter["parameterName"]];
+    if( defaultValue == undefined ) defaultValue = parameter["defaultValue"];
+    if( defaultValue == undefined ) defaultValue = "";
+
+    var text = parameter["text"];
+    if ( text == undefined ) text = parameter["parameterName"];
     
     if ( type == "select" ){
-        if (defaultValue.length == 1 ){
+        if ( defaultValue.length == 1 ){
             type = "label";
             defaultValue = defaultValue[0];
         }
     }
 
     if ( type == "label"){
-        
-        $span = $("<span>", {class: "parameter", name: parameter["parameterName"]});
+        var $span = $("<span>", {class: "parameter", name: parameter["parameterName"]});
         $span.append( defaultValue );
-        
-        $label.append( text );
-        $label.append( $span );
+        $label.append( text ).append( $span );
     }
     
-    
-    
     if ( type == "edit"){
-        
-        $input = $("<input>", {type: "text", name: parameter["parameterName"]});
+        var $input = $("<input>", {type: "text", name: parameter["parameterName"]});
         $input.attr( "size", defaultValue.length*5 );
         $input.val( defaultValue );
-        
-        $label.append( text );
-        $label.append( $input );
+        $label.append( text ).append( $input );
     }
     
     if ( type == "checkbox"){
-        
-        $input = $("<input>", {type: "checkbox", name: parameter["parameterName"] });
+        var $input = $("<input>", {type: "checkbox", name: parameter["parameterName"] });
         $input.prop( "checked", defaultValue);
-        $label.append( $input );
-        $label.append( text);
+        $label.append( $input ).append( text);
     }
     
     if ( type == "condition"){
-        $input = $("<input>", {type: "checkbox", name: parameter["parameterName"] });
+        var $input = $("<input>", {type: "checkbox", name: parameter["parameterName"] });
         
-        if ( defaultValue == "true" ){
-            checked = true;
-        }else{
-            checked = false;
-        }
+        checked = defaultValue == "true" ;
         
         $input.change( function(){
                       $mathBarElement = $(this).parents(".MathBar:first");
-                      if( $(this).is(":checked")){
-                        MathBar.enableParameters( $mathBarElement, parameter["parameterName"] );
-                      }else{
-                        MathBar.disableParameters( $mathBarElement, parameter["parameterName"] );
-                      }
-                      });
+                      MathBar.toggleParameters( $mathBarElement, parameter["parameterName"], !$(this).is(":checked"));
+                    });
 
         $input.prop( "checked", checked );
-        $label.append( $input );
-        $label.append( text );
+        $label.append( $input ).append( text );
         
-        conditionalParameters = parameter["parameters"];
+        var conditionalParameters = parameter["parameters"];
         var $outerlabel = $("<span>").append( $label );
         
-        
         for ( var i = 0; i < conditionalParameters.length; i++ ){
-            $condparLabel = this.getPropertyLabel( conditionalParameters[i]);
+            var $condparLabel = this.getPropertyLabel( conditionalParameters[i]);
             $condparLabel.addClass( "check_" + parameter["parameterName"]);
             
             if ( !checked ){
@@ -263,29 +223,24 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
             $select.append( $("<option>").append( defaultValue[i]) );
         }
         
-        $label.append( text );
-        $label.append( $select );
+        $label.append( text ).append( $select );
     }
     
     return $label;
 };
 
- MathBar.disableParameters = function( $mathBarElement, parameterName ){
-    $label =  $mathBarElement.find(".check_" + parameterName ).addClass( "labelDisabled" );
-    $label.find("input").prop( "disabled", true );
-    $label.find("select").selectmenu( "disable" );
+MathBar.toggleParameters = function( $mathBarElement, parameterName, disabled ){
+    $label =  $mathBarElement.find(".check_" + parameterName ).toggleClass( "labelDisabled", disabled );
+    $label.find("input").prop( "disabled", disabled );
+    if ( disabled )
+        $label.find("select").selectmenu( "disable" );
+    else
+        $label.find("select").selectmenu( "enable" );
 }
-
-MathBar.enableParameters = function( $mathBarElement, parameterName ){
-    $label =  $mathBarElement.find(".check_" + parameterName ).removeClass( "labelDisabled" );
-    $label.find("input").prop( "disabled", false );
-    $label.find("select").selectmenu( "enable" );
-}
-
 
 MathBar.prototype.GetPropertyValue = function( parameter, outValues ){
-    type = parameter["parameterType"];
-    parameterName = parameter["parameterName"];
+    var type = parameter["parameterType"];
+    var parameterName = parameter["parameterName"];
     
     
     if ( type == "label" ){
@@ -328,7 +283,7 @@ MathBar.prototype.Run = function(){
     }
     
     var parser = this.functions[this.currentOption]["parser"];
-    result = window[parser](this.outputValue, outValues);
+    var result = window[parser](this.outputValue, outValues);
     
     this.callback( result );
     this.Hide();
@@ -358,8 +313,7 @@ MathBar.prototype.Toggle = function(){
     
 }
 
-MathBar.initializeFunctions = function(jsonfile){
-    
+MathBar.initializeFunctions = function(jsonfile){    
     $.getJSON( "javascript/functions.json", function( data ) {
               functions = data["functions"];
               categories = data["categories"];

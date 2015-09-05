@@ -38,7 +38,7 @@
                                "parameterName": "definite",
                                "parameterType": "condition",
                                "text" : "",
-                               "defaultValue": "0",
+                               "defaultValue": "false",
                                "parameters": [
                                               {
                                               "parameterName": "from",
@@ -103,7 +103,7 @@
                                "parameterName": "direction",
                                "parameterType": "condition",
                                "text" : "",
-                               "defaultValue": "0",
+                               "defaultValue": "false",
                                "parameters": [
                                               {
                                               "parameterName": "from",
