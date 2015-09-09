@@ -1,21 +1,21 @@
 {
     "categories": {
-            "number": [ "Square Root", "Exponential", "Natural Logarithm"],
+            "number": [ "Sqrt", "Exp", "Ln"],
             "function_1": ["Simplify","Integrate","Derivative", "Plot2D","Limit" ],
             "function_2": ["Simplify","Integrate","Derivative", "Plot3D" ]
         },
     "functions":{
-        "Square Root":
+        "Sqrt":
             {
                 "parameters": [],
                 "parser": "square_root_parser"
             },
-        "Exponential":
+        "Exp":
             {
                 "parameters": [],
                 "parser": "exponential_parser"
             },
-        "Natural Logarithm":
+        "Ln":
             {
                 "parameters": [],
                 "parser": "natural_logarithm_parser"
