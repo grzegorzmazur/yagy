@@ -98,19 +98,86 @@ function MathBar( outputID, options, button, callback ) {
 
 };
 
-MathBar.prototype.getFunctions = function( functionType ){
-    var func = [];
-    var funcList = MathBar.categories[ functionType ];
-    for (var i = 0; i < funcList.length; i++){
-        var ff = MathBar.functions[ funcList[i] ];
-        if ( ff == undefined ){
-            console.error( "Function " + funcList[i] + " is not defined! (Function category: " +  functionType + ")");
-            continue;
+MathBar.ParseFunctions = function(){
+    var keys = Object.keys( MathBar.categories );
+    for ( var j = 0; j < keys.length; j++ ){
+        var funcList = MathBar.categories[ keys[j] ];
+        for (var i = 0; i < funcList.length; i++){
+            var ff = MathBar.functions[ funcList[i] ];
+            if ( ff == undefined ){
+                console.error( "Function " + funcList[i] + " is not defined! (Function category: " +  functionType + ")");
+            }
         }
-        ff["functionName"] = funcList[i];
-        func.push(ff);
     }
-    return func;
+    var keys = Object.keys( MathBar.functions );
+    for ( var j = 0; j < keys.length; j++ ){
+        var func = MathBar.functions[ keys[j]];
+        if ( func["text"] == undefined ){
+            func["text"] = keys[j];
+        }
+        var parameters = func["parameters"];
+        if ( parameters == undefined ){
+            func["parameters"] = [];
+        }
+        for ( var i = 0; i < parameters.length; i++ ){
+            MathBar.ParseParameter( parameters[i] );
+        }
+        if ( func["parser"] == undefined ){
+            console.error( "Parser for function: " + keys[j] + " is undefined");
+        }else{
+            if( window[func["parser"]] == undefined ){
+                console.error( "Parser: " + func["parser"] + " is undefined");
+            }
+        }
+    }
+}
+
+MathBar.ParseParameter = function( parameter ){
+    console.log( parameter );
+    if ( parameter["parameterName"] == undefined ){
+        console.error( "Name of parameter is undefined: " + parameter);
+        parameter["parameterName"] = "undefined";
+    }
+    
+    if ( parameter["text"] == undefined ){
+        parameter["text"] = parameter["parameterName"];
+    }
+    
+    if ( parameter["parameterType"] == undefined ){
+        parameter["parameterType"] = "edit";
+        console.warning( "Lack of type of parameter: " + parameter["parameterName"] );
+    }
+    
+    if ( parameter["defaultValue"] == undefined ){
+        switch( parameter["parameterType"] ){
+            case "label":
+                parameter["defaultValue"] = "";
+                break;
+            case "edit":
+                parameter["defaultValue"] = "";
+                break;
+            case "checkbox":
+                parameter["defaultValue"] = false;
+                break;
+            case "condition":
+                parameter["defaultValue"] = false;
+                break;
+            case "select":
+                parameter["defaultValue"] = [];
+                break;
+            default:
+                console.error( "This paramter type is not implemented: "+ type + "!");
+        }
+        
+    }
+    
+    var parameters = parameter["parameters"];
+    if ( parameters != undefined ){
+        for ( var i = 0; i < parameters.length; i++ ){
+            MathBar.ParseParameter( parameters[i] );
+        }
+    }
+
 }
 
 MathBar.prototype.optionClicked = function( functionName, VIF ){
@@ -150,10 +217,8 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
 
     var value = this.defaultParameters[parameter["parameterName"]];
     if( value == undefined ) value = parameter["defaultValue"];
-    if( value == undefined ) value = "";
 
     var text = parameter["text"];
-    if ( text == undefined ) text = parameter["parameterName"];
     
     if ( type == "select" ){
         if ( value.length == 1 ){
@@ -315,6 +380,7 @@ MathBar.initializeFunctions = function(jsonfile){
     $.getJSON( "javascript/functions.json", function( data ) {
               MathBar.functions = data["functions"];
               MathBar.categories = data["categories"];
+              MathBar.ParseFunctions();
               });
 }
 
