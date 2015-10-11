@@ -10,16 +10,16 @@ CONFIG += c++11
 QMAKE_CXXFLAGS += -std=c++11
 
 CONFIG += debug
-CONFIG += release
 
 ICON = icon.icns
 
 macx{
 
+    YACAS_PREFIX = ../yacas/Release
+
     CONFIG(debug, debug|release) {
-        YACAS_PREFIX = ../yacas/Debug
+        DEFINES += YAGY_ENABLE_INSPECTOR
     } else {
-        YACAS_PREFIX = ../yacas/Release
         DEFINES += QT_NO_DEBUG_OUTPUT
     }
 

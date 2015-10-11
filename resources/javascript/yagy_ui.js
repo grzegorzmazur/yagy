@@ -1,4 +1,3 @@
-
 //Function stops scrolling event, and just scrool the window
 //Otherwise Code-Mirror editor kept scrolling one line up even if there was no line to scroll
 function scrollListener(e){
@@ -10,13 +9,19 @@ function scrollListener(e){
     e.preventDefault();
 }
 
+
 function load(){
+    
+    MathBar.initializeFunctions( "javascript/functions.json" )
+    
+
     //$("#inputExpression").focus();
 
     //To keep CodeMirror editor from bad scrolling
     document.body.addEventListener( "mousewheel", function(e){ scrollListener(e);} );
     
     $( "#inputExpression" ).autosize();
+
 
     $( window ).on( 'resize', function( event ){
         
@@ -26,6 +31,7 @@ function load(){
                                if ($(this).width() > w || $(this).width() == maxwidth ) $(this).width(w);
                                });
         $( ".resizable" ).resizable( "option", "maxWidth", w );
+       // $( ".CodeMirror").width( w - 2 );
     });
     
     CodeMirror.defaults['lineNumbers'] = false;
@@ -47,38 +53,23 @@ function load(){
                                           return submitenter(this,event);
                                           });
     
+    
+    
     $(document).contextmenu({
                             delegate: ".Expression>.Out",
                             menu: [
                                    {title: "Copy TeX", cmd: "copyTeX"},
-                                   {title: "Copy Yacas Expression", cmd: "copyYacasExpression"},
-                                   {title: "Simplify", cmd: "simplify"},
-                                   {title: "Differentiate", cmd: "differentiate"},
-                                   {title: "Integrate", cmd: "integrate"},
-                                   {title: "Plot", cmd: "plot"},
-                                   {title: "Plot3DS", cmd: "plot3ds"}
+                                   {title: "Copy Yacas Expression", cmd: "copyYacasExpression"}
                                    ],
                             select: function(event, ui) {
                                 parents = ui.target.parents('.Expression');
-                           
-                                var rootId = $(parents[0]).parents('.Expression')[0].nextSibling.id;
                                 
                                 if ( ui.cmd == "copyTeX"){
                                     yacas.copyToClipboard($(parents[0]).children('script')[0].textContent);
                                 } else if ( ui.cmd == "copyYacasExpression"){
                                     yacas.copyToClipboard($(parents)[0].yacasExpression);
-                                } else if (ui.cmd === "differentiate") {
-                                    calculateAt('D(x)(' + $(parents)[0].yacasExpression + ')', rootId);
-                                } else if (ui.cmd === "integrate") {
-                                    calculateAt('Integrate(x)(' + $(parents)[0].yacasExpression + ')', rootId);
-                                } else if (ui.cmd === "simplify") {
-                                    calculateAt('Simplify(' + $(parents)[0].yacasExpression + ')', rootId);
-                                } else if (ui.cmd === "plot") {
-                                    calculateAt('Plot2D(' + $(parents)[0].yacasExpression + ')', rootId);
-                                } else if (ui.cmd === "plot3ds") {
-                                    calculateAt('Plot3DS(' + $(parents)[0].yacasExpression + ')', rootId);
                                 }
-                                
+                            
                             },
                             preventContextMenuForPopup: true
                             });
@@ -105,7 +96,7 @@ function changeMathJaxFont( newFont ){
 
 var currentExpression = 1;
 var numberOfLines = 1;
-var bluredEditable = null;
+
 
 function updateInputNumber( updatedNumber) {
     $( "#inputCounter" ).html( "in " + updatedNumber + ":" );
@@ -132,60 +123,6 @@ function submitenter( input, event ){
     return true;
 }
 
-function editableReset( element ){
-    original = $(element).parents("span")[0].calculatedExpression;
-    revert = $(element).parents("span")[0].revert;
-    if ( original === revert ){
-        $(element).parents("tbody").removeClass("Modified");
-    }
-}
-
-function editableBlur( element ){
-    bluredEditable = element;
-    $(element).parents("tbody").addClass("NotToCalculate");
-    $(element).children().submit();
-} 
-
-var EmptyEditableText = "Click to edit...";
-
-function changeToEditable( elementID, number ){
-    $( elementID ).editable(
-                            function(value, settings) { return value; },
-                            {
-                                width   : '100%',
-                                type    : "autogrow",
-                                tooltip : EmptyEditableText,
-                                style   : "width:100%",
-                                onreset: function(value,settings){
-                                    editableReset( this );
-                                },
-                                onblur  : function( value, setting){
-                                    editableBlur ( this );
-                                },
-                                name    : number,
-                                callback: function( value, settings ){
-                                    processChange( value, settings.name, this  );
-                                }
-                            });
-}
-
-function addEditable( lineid, number, value, rootElementID ){
-
-    var row = $( "<tr class='In'></tr>" );
-    row.append( "<td>in&nbsp&nbsp"+ number + ":</td>" );
-    row.append( "<td><span class='editable'>"+ value +"</span></td>" );
-    $( rootElementID ).append( row );
-    
-    var editable = row.find(".editable");
-    editable[0].calculatedExpression = value;
-    
-    changeToEditable( editable, lineid );
-    return editable;
-}
-
-
-
-
 function addInputEditor( lineid, number, value, rootElementID ){
     
     var $row = $( "<tr>", {class: 'In'} );
@@ -210,6 +147,7 @@ function addInputEditor( lineid, number, value, rootElementID ){
               
               if( event.which == 13 && event.shiftKey ){
                 editor.save();
+                event.preventDefault();
                 processChange( editor.getValue(), editor.number, null  );
               }
               
@@ -238,9 +176,8 @@ function addInputEditor( lineid, number, value, rootElementID ){
               $tbody.removeClass("Modified");
         }
     });
-
     
-    return $textarea;
+    return editor;
 }
 
 
@@ -263,6 +200,33 @@ function addSideEffects( number, side_effects, rootElementID ){
     row.append("<td><span>" + side_effects + "</span></td>");
 }
 
+function toogleMathBar( button, type, variables ){
+
+    var options = {};
+    options["VIF"] = 2;
+    options["type"] = type;
+    
+    if ( variables.length > 0 ){
+        options["type"] = options["type"] + "_" + variables.length;
+        options["defaultParameters"] = {};
+        options["defaultParameters"]["variable"] = variables;
+    }
+    
+
+    
+    if ( button.mathBar == null ){
+        var bar = new MathBar( button.name , options, button, function( result ){ parseMathBarResult( result, button.name )} );
+        button.mathBar = bar;
+    }else{
+        button.mathBar.Toggle();
+    }
+}
+
+function parseMathBarResult( result, outputID ){
+    calculateMathBar( result, outputID );
+}
+
+
 function printResults( result ){
     number = result["idx"];
     outputID = "output_" + number;
@@ -282,17 +246,25 @@ function printResults( result ){
     ExpressionElement.addClass( result["type"]);
 
     output.text("");
-    
+
     if( result["type"] === "Expression" ){
 
+        output.addClass( "outside");
         output.append( "$$" + result["tex_code"] + "$$" );
+        
+        if ( MathBar.supportsExpressionType( result["expression_type"], result["variables"].length )){
+
+            $button = $("<button>", {name: outputID, class: "MathBarButton"});
+            $button.click( function(){ toogleMathBar( this, result["expression_type"], result["variables"] )});
+            output.append( $("<div>", {class: "inside"}).append( $button ));
+        }
+ 
         renderOutput( outputID );
         output[0].yacasExpression = result["expression"];
-        
         $(output).resize( function(event){
                          MathJax.Hub.Rerender(this);
                          });
-
+    
     }else if( result["type"] === "Error" ){
 
         output.append( result["error_message"] );
@@ -430,12 +402,22 @@ function calculateAt( value, rootElementId ) {
     currentExpression++;
     numberOfLines++;
     
-    clearInput();
+    
 }
 
 function calculate( value ){
     
     calculateAt(value, 'expression_0');
+    clearInput();
+    
+    
+}
+
+function calculateMathBar( value, outputID ){
+    number = outputID.split("_")[1];
+    nextNumber = findNextExpression(number);
+    calculateAt( value, "expression_" + nextNumber);
+    goto( nextNumber );
     
 }
 
@@ -453,21 +435,17 @@ function processChange( value, number, object ){
     
     yacas.eval( numberOfLines, decodedValue );
     
+    goDown( number );
+    
     currentExpression++;
     numberOfLines++;
+    
     
     removeOldResults( number );
 
 }
 
-function evaluateCurrent_deprecatedEditable(){
-    var active = document.activeElement;
-    if ( active.id === "inputExpression" && active.value != ""){
-        calculate( active.value );
-    }else{
-        $(document.activeElement).parent().trigger("submit");
-    }
-}
+
 
 function evaluateCurrent(){
     var $tbody = $(document.activeElement).parents("tbody");
@@ -488,24 +466,7 @@ function evaluateCurrent(){
     }
 }
 
-function evaluateAll_deprecatedEditable(){
-    $(".editable").each( function() {
-                              value = $(this).text();
-                              
-                              if ( value === "" ){
-                                $(this).find("form:first").trigger("submit");
-                              }else{
-                              
-                                if ( value === EmptyEditableText ) value = "";
-                        
-                                number = $(this).parents("tbody")[0].id.split("_")[1];
-                                processChange( value, number, this );
-                              }
-                           });
-    inputVal = $( "#inputExpression" ).val();
-    if ( inputVal !== "" ) calculate( inputVal );
-    $("#inputExpression").focus();
-}
+
 
 function evaluateAll(){
     $(".InputTextarea").each( function() {
@@ -520,24 +481,7 @@ function evaluateAll(){
     $("#inputExpression").focus();
 }
 
-function getAllInputs_depreciateEditable(){
-    var inputs = [];
-    $(".editable").each( function() {
-                              value = $(this).text();
-                              
-                              if ( value === "" ){
-                                inputs.push( $(this).find("textarea:first").val() );
-                              }else{
-                              
-                                if ( value === EmptyEditableText ) value = "";
-                                inputs.push( value );
-                              }
-                              });
-    inputVal = $( "#inputExpression" ).val();
-    if ( inputVal !== "" ) inputs.push( inputVal );
-    
-    return inputs;
-}
+
 
 
 function getAllInputs(){

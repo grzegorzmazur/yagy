@@ -44,12 +44,17 @@ td{
 }
 
 
-.CodeMirror { height: auto; width: 100%}
+.CodeMirror {
+    box-sizing:border-box;
+    height: auto;
+    width: 100%
+}
 .CodeMirror-focused {
-    -webkit-box-sizing:border-box;
     border: 1px solid #ddd;
 }
-#expression_0 .CodeMirror{ border: 1px solid #ddd; }
+#expression_0 .CodeMirror{
+    border: 1px solid #ddd;
+}
 
 textarea{
     width:100%;
@@ -58,11 +63,11 @@ textarea{
     resize: none;
     padding: 4px;
     height: 14px;
-
+    
 }
 .containment{
     width:100%;
-
+    
 }
 .editable{
     color: SlateGray;
