@@ -46,6 +46,7 @@ function MathBar( outputID, options, button, callback ) {
         $label.append( $input ).append( $span );
         
         $functionsDiv.append( $label );
+        $label.dblclick( function(e){ e.stopPropagation(); self.Run(); });
     }
     
     if ( i != self.categories.length ){
@@ -55,6 +56,7 @@ function MathBar( outputID, options, button, callback ) {
         $option.attr( "disabled", true );
         $option.attr( "selected", true);
         $functionsSelect.append($option );
+        
     
         for( var j = numberOfVIF; j < self.categories.length; j++){
             var func = MathBar.functions[self.categories[j]];
@@ -62,12 +64,21 @@ function MathBar( outputID, options, button, callback ) {
             $functionsSelect.append( $("<option>", {name: self.categories[j]}).append( text ) );
         }
     
-        $functionsDiv.append( $("<label>").append($functionsSelect ));
+        $label = $("<label>");
+        $label.dblclick( function(e){
+                        if ( $label.find("option:selected").val() == MathBar.selectMoreText ){
+                        return true;
+                        }
+                        e.stopPropagation();
+                        self.Run();
+                        return false;
+                    });
+        $functionsDiv.append($label.append($functionsSelect ));
         
     }
     
     var $submitButton = $("<button>", {class: "submitButton"} );
-    $submitButton.click( function(){ self.Run() });
+    $submitButton.click( function(){ self.Run(); });
     
     var $mathRow = $("<tr>");
     $mathRow.append( $("<td>", {class: "functions"}).append($functionsDiv) );
