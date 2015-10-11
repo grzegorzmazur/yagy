@@ -121,7 +121,53 @@
             },
         "Plot3D":
             {
-                "parameters": [],
+                "parameters": [
+                               {
+                               "parameterName": "var",
+                               "parameterType": "label",
+                               "defaultValue": "%VARIABLE%0%",
+                               "text" : ""
+                               },
+                               
+                               {
+                               "parameterName": "variable_0_from",
+                               "parameterType": "edit",
+                               "defaultValue": "-5",
+                               "widestValue": "00000",
+                               "text": "from"
+                               },
+                               {
+                               "parameterName": "variable_0_to",
+                               "parameterType": "edit",
+                               "defaultValue": "5",
+                               "widestValue": "00000",
+                               "text": "to"
+                               },
+                               {
+                               "parameterName": "var",
+                               "parameterType": "label",
+                               "defaultValue": "%VARIABLE%1%",
+                               "text" : ""
+                               },
+                               {
+                               "parameterName": "variable_1_from",
+                               "parameterType": "edit",
+                               "defaultValue": "-5",
+                               "widestValue": "00000",
+                               "text": "from"
+                               },
+                               {
+                               "parameterName": "variable_1_to",
+                               "parameterType": "edit",
+                               "defaultValue": "5",
+                               "widestValue": "00000",
+                               "text": "to"
+                               }
+
+                               
+                               
+                
+                ],
                 "text": "Plot",
                 "parser": "plot_3d_parser"
             }

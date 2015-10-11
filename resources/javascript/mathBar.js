@@ -219,33 +219,73 @@ MathBar.prototype.optionClicked = function( functionName, VIF ){
     $parametersElement.find("select").selectmenu();
 };
 
+MathBar.prototype.changeConstToVariables = function ( text ){
+    var variables = this.defaultParameters["variable"];
+    
+    if ( $.isArray( text ) ){
+        for ( var k = 0; k < text.length; k++ ){
+            text[k] = this.changeConstToVariables( text[k]);
+        }
+        return text;
+    }
+    
+    
+    if ( variables.length == 1 ){
+        text = text.replace("%VARIABLE%", variables );
+    }
+    
+    if ( variables.length > 1 ){
+        for ( var j = 0; j < variables.length; j++ ){
+            textToSearch = "%VARIABLE%" + j + "%";
+            text = text.replace( textToSearch , variables[j] );
+        }
+    }
+    
+    return text;
+    
+}
+
 MathBar.prototype.getPropertyLabel = function( parameter ){
     var $label = $("<label>");
     var type = parameter["parameterType"];
 
     var value = this.defaultParameters[parameter["parameterName"]];
     if( value == undefined ) value = parameter["defaultValue"];
-
-    var text = parameter["text"];
+   
+    value = this.changeConstToVariables( value );
+    
+    var text =  this.changeConstToVariables( parameter["text"] );
     
     if ( type == "select" ){
         if ( value.length == 1 ){
             type = "label";
-            value = value[0];
+            value = value[0] ;
         }
     }
 
     if ( type == "label"){
         var $span = $("<span>", {class: "parameter", name: parameter["parameterName"]});
         $span.append( value );
-        $label.append( text ).append( $span );
+
+        if ( text == "" ){
+            $span.css("margin-left", "0px");
+        }else{
+            $label.append( text );
+        }
+
+        $label.append( $span );
     }
     
     if ( type == "edit"){
         var $input = $("<input>", {type: "text", name: parameter["parameterName"]});
         $input.css( "width", parameter["inputWidth"]);
         $input.val( value );
-        $label.append( text ).append( $input );
+        
+        if ( text != "" ){
+            $label.append( text );
+        }
+        
+        $label.append( $input );
     }
     
     if ( type == "checkbox"){

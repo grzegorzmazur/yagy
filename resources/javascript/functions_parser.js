@@ -54,7 +54,13 @@ function plot_2d_parser( outputValue, parameters ){
 
 function plot_3d_parser( outputValue, parameters ){
     console.log( "This is Plot 3D parser");
-    return "Plot3DS(" + outputValue + ")";
+    
+    from_0 = parameters["variable_0_from"];
+    to_0 = parameters["variable_0_to"];
+    from_1 = parameters["variable_1_from"];
+    to_1 = parameters["variable_1_to"];
+
+    return "Plot3DS(" + outputValue + "," + from_0 + ":" + to_0 + "," + from_1 + ":" + to_1 + ")";
 }
 
 function limit_parser( outputValue, parameters ){
