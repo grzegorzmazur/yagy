@@ -96,8 +96,10 @@
 .MathBar input{
     border: 1px solid #C2E0FF;
     padding-left: 5px;
+    padding-right: 2px;
     margin-left: 5px;
     margin-right: 0px;
+    text-align: right;
     color: #246BB2;
 }
 
@@ -231,4 +233,18 @@
     padding: 0px 2px 0px 0px;
 }
 
+#MathBarStringWidthTest{
+    position: absolute;
+    visibility: hidden;
+    height: auto;
+    width: auto;
+    white-space: nowrap; 
+    padding-left: 5px;
+    padding-right: 5px;
+    font-family: sans-serif;
+    font-size: small;
+    border-spacing: 2px;
+    display: none;
+    
+}
 

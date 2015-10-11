@@ -171,6 +171,14 @@ MathBar.ParseParameter = function( parameter ){
         
     }
     
+    if ( parameter["parameterType"] == "edit" ){
+        if ( parameter["widestValue"] != undefined ){
+            parameter["inputWidth"] = MathBar.calculateInputWidth( parameter["widestValue"] );
+        }else{
+            parameter["inputWidth"] = MathBar.calculateInputWidth( parameter["defaultValue"] ) * 3;
+        }
+    }
+    
     var parameters = parameter["parameters"];
     if ( parameters != undefined ){
         for ( var i = 0; i < parameters.length; i++ ){
@@ -235,7 +243,7 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
     
     if ( type == "edit"){
         var $input = $("<input>", {type: "text", name: parameter["parameterName"]});
-        $input.attr( "size", value.length*5 );
+        $input.css( "width", parameter["inputWidth"]);
         $input.val( value );
         $label.append( text ).append( $input );
     }
@@ -394,3 +402,13 @@ MathBar.supportsExpressionType = function( expressionType, numberOfVariables ){
     }
     return false;
 }
+
+MathBar.calculateInputWidth = function( value ){
+    $testDiv = $("#MathBarStringWidthTest");
+    $testDiv.show();
+    $testDiv.text( value );
+    var width = $testDiv.width()+1;
+    $testDiv.hide();
+    return width;
+}
+

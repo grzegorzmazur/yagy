@@ -43,13 +43,14 @@
                                               {
                                               "parameterName": "from",
                                               "parameterType": "edit",
-                                              "defaultValue": "0"
+                                              "defaultValue": "0",
+                                              "widestValue": "-Infinity"
                                               },
                                               {
                                               "parameterName": "to",
                                               "parameterType": "edit",
-                                              "defaultValue": "5"
-                                              }
+                                              "defaultValue": "5",
+                                              "widestValue": "-Infinity"                                              }
                                               ]
                                }
                                ],
@@ -73,12 +74,14 @@
                                {
                                "parameterName": "from",
                                "parameterType": "edit",
-                               "defaultValue": "-5"
+                               "defaultValue": "-5",
+                               "widestValue": "00000"
                                },
                                {
                                "parameterName": "to",
                                "parameterType": "edit",
-                               "defaultValue": "5"
+                               "defaultValue": "5",
+                               "widestValue": "00000"
                                }
                                ],
                 "text": "Plot",
@@ -97,7 +100,8 @@
                                "parameterName": "value",
                                "parameterType": "edit",
                                "defaultValue": "0",
-                               "text": "approaches"
+                               "text": "approaches",
+                               "widestValue": "-Infinity"
                                },
                                {
                                "parameterName": "direction",
