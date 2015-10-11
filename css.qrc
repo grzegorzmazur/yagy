@@ -4,7 +4,15 @@
         <file>resources/css/codemirror.css</file>
         <file>resources/css/jquery-ui-1.10.4.custom.min.css</file>
         <file>resources/css/jquery-ui-1.11.2.min.css</file>
-        <file>resources/css/images/ui-icons_222222_256x240.png</file>
         <file>resources/css/yagy_ui.css</file>
+        <file>resources/css/mathbar.css</file>
+        <file>resources/css/images/double_arrows_down.png</file>
+        <file>resources/css/images/double_arrows_down_disabled.png</file>
+        <file>resources/css/images/double_arrows_up.png</file>
+        <file>resources/css/images/double_arrows_up_disabled.png</file>
+        <file>resources/css/images/mathBar_combobox_triangle.png</file>
+        <file>resources/css/images/mathBar_combobox_triangle_white.png</file>
+        <file>resources/css/images/mathBar_submit_triangle_gradient.png</file>
+        <file>resources/css/images/mathBar_submit_triangle_gradient_light.png</file>
     </qresource>
 </RCC>
