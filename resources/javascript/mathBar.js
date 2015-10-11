@@ -424,12 +424,23 @@ MathBar.prototype.Toggle = function(){
     
 }
 
-MathBar.initializeFunctions = function(jsonfile){    
-    $.getJSON( "javascript/functions.json", function( data ) {
-              MathBar.functions = data["functions"];
-              MathBar.categories = data["categories"];
-              MathBar.ParseFunctions();
-              });
+MathBar.initializeFunctions = function(jsonfile){  
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 4 ){
+            if (xhttp.status == 200 || xhttp.status == 0){
+                data =  jQuery.parseJSON(xhttp.responseText);
+                MathBar.functions = data["functions"];
+                MathBar.categories = data["categories"];
+                MathBar.ParseFunctions();
+            }else{
+                console.error( "Couldn't load json file");
+            }
+        }
+    }
+  
+    xhttp.open("GET", jsonfile, true);
+    xhttp.send(); 
 }
 
 MathBar.supportsExpressionType = function( expressionType, numberOfVariables ){
