@@ -4,5 +4,8 @@
         <file>resources/javascript/yagy_ui.js</file>
         <file>resources/javascript/plot3d.js</file>
         <file>resources/javascript/delaunay.js</file>
+        <file>resources/javascript/mathBar.js</file>
+        <file>resources/javascript/functions_parser.js</file>
+        <file>resources/javascript/functions.json</file>
     </qresource>
 </RCC>
