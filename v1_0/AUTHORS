@@ -1,0 +1,13 @@
+Yagy, the Yet Another GUI for Yacas, is brought to you by:
+
+* Marta Noga <mnoga@users.sourceforge.net
+* Grzegorz Mazur <grzesiek@users.sourceforge.net>
+
+Apart from our code, YAGY makes use of several libraries:
+ * delaunay.js: https://github.com/ironwallaby/delaunay
+ * Flot: http://www.flotcharts.org/
+ * jQuery: http://jquery.com/
+ * MathJax: http://www.mathjax.org/
+ * QT: http://qt-project.org/
+ * three.js: http://threejs.org/
+ * yacas: http://yacas.sourceforge.net/
