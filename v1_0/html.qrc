@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/html/yagy_ui.html</file>
+    </qresource>
+</RCC>
