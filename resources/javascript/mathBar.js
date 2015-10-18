@@ -92,6 +92,7 @@ function MathBar( outputID, options, button, callback ) {
     $( "#" + self.outputID ).after( $mathBarElement.append( $mathBarTable ));
 
     self.mathBarElement = $mathBarElement;
+    $mathBarElement[0].mathBar = self;
     self.Show();
     
     if ( numberOfVIF == self.categories.length ){
@@ -108,6 +109,16 @@ function MathBar( outputID, options, button, callback ) {
     }
 
 };
+
+MathBar.keydownEventHandler = function( event ){
+    event.preventDefault();
+    $mathBarElement = $(this).parents(".MathBar:first");
+    if( event.which == 13 && event.shiftKey ){
+        $mathBarElement[0].mathBar.Run();
+    }
+    return false;
+};
+
 
 MathBar.ParseFunctions = function(){
     var keys = Object.keys( MathBar.categories );
@@ -289,6 +300,7 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
     
     if ( type == "edit"){
         var $input = $("<input>", {type: "text", name: parameter["parameterName"]});
+        $input.keydown( MathBar.keydownEventHandler );
         $input.css( "width", parameter["inputWidth"]);
         $input.val( value );
         
