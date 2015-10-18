@@ -111,12 +111,13 @@ function MathBar( outputID, options, button, callback ) {
 };
 
 MathBar.keydownEventHandler = function( event ){
-    event.preventDefault();
     $mathBarElement = $(this).parents(".MathBar:first");
     if( event.which == 13 && event.shiftKey ){
+        event.preventDefault();
         $mathBarElement[0].mathBar.Run();
+        return false;
     }
-    return false;
+    return true;
 };
 
 
