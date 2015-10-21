@@ -24,6 +24,7 @@ before_install:
   - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../install ..
   - make
   - make install
+  - cd
   
 before_script:
   - mkdir build
