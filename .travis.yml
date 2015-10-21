@@ -9,7 +9,7 @@ addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
-    - kubuntu-ppa-backports
+    - kubuntu-backports
     packages:
     - gcc-5
     - g++-5
