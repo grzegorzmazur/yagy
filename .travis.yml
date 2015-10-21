@@ -29,6 +29,6 @@ before_script:
   - mkdir build
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Release -DYACAS_PREFIX=../yacas-master/install ..
-  
+
 script:
   - make
