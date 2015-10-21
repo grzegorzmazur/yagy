@@ -10,10 +10,17 @@ addons:
     sources:
     - ubuntu-toolchain-r-test
     - kubuntu-backports
+    - ubuntu-sdk-team
     packages:
     - gcc-5
     - g++-5
     - cmake
+    - qtbase5-dev
+    - qtdeclarative5-dev
+    - libqt5webkit5-dev
+    - libsqlite3-dev
+    - qt5-default
+    - qttools5-dev-tools
 
 before_install:
   - pwd
