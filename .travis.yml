@@ -14,6 +14,7 @@ addons:
     - g++-5
 
 before_install:
+  - pwd
   - export CC=gcc-5 CXX=g++-5
   - wget https://github.com/grzegorzmazur/yacas/archive/master.zip
   - unzip master.zip
@@ -24,7 +25,7 @@ before_install:
   - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../install ..
   - make
   - make install
-  - cd
+  - cd ../..
   
 before_script:
   - mkdir build
