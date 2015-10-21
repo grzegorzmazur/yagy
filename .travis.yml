@@ -1,0 +1,34 @@
+sudo: false
+
+os:
+  - linux
+
+language: cpp
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-5
+    - g++-5
+
+before_install:
+  - export CC=gcc-5 CXX=g++-5
+  - wget https://github.com/grzegorzmazur/yacas/archive/master.zip
+  - unzip master.zip
+  - cd yacas-master
+  - mkdir install
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../install ..
+  - make
+  - make install
+  
+before_script:
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=Release -DYACAS_PREFIX=../yacas-master/install ..
+  
+script:
+  - make
