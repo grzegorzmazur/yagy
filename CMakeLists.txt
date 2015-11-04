@@ -120,7 +120,7 @@ else ()
     set_target_properties (libyacas PROPERTIES IMPORTED_LOCATION "${YACAS_PREFIX}/lib/libyacas.a")
 endif ()
 
-target_link_libraries(yagy Qt5::Widgets Qt5::WebKit Qt5::WebKitWidgets Qt5::PrintSupport libyacas)
+target_link_libraries(yagy Qt5::Core Qt5::Widgets Qt5::WebKit Qt5::WebKitWidgets Qt5::PrintSupport libyacas)
 
 if (WIN32)
     target_link_libraries (yagy shlwapi)
