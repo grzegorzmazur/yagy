@@ -17,6 +17,15 @@ function MathBar( outputID, options, button, callback ) {
     self.categories = MathBar.categories[ options["type"] ];
     self.outputValue = $("#" + outputID)[0].yacasExpression;
     
+    $(button).on('keydown', function( event ){
+                 if( event.which == 13  ){
+                    event.preventDefault();
+                    if ( event.shiftKey ){
+                        this.mathBar.Run();
+                    }
+                }
+              });
+    
     var $mathBarElement = $( "<div>" , { class: "MathBar" } ).hide();
     var $functionsDiv = $("<div>", {class : "radio_group_horizontal styled_radio"});
     
