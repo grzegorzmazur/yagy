@@ -42,6 +42,15 @@ include_directories (
   "${YACAS_PREFIX}/include"
   )
 
+# seems to be required for older qt5 cmake modules
+include_directories (
+    ${Qt5Core_INCLUDE_DIRS}
+    ${Qt5Widgets_INCLUDE_DIRS}
+    ${Qt5WebKit_INCLUDE_DIRS}
+    ${Qt5WebKitWidgets_INCLUDE_DIRS}
+    ${Qt5PrintSupport_INCLUDE_DIRS}
+)
+
 qt5_wrap_ui (ui_mainwindow.h mainwindow.ui)
 qt5_wrap_ui (ui_preferences_dialog.h preferences_dialog.ui)
 
