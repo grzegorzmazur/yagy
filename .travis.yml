@@ -14,7 +14,6 @@ addons:
     packages:
     - gcc-5
     - g++-5
-    - cmake
     - qtbase5-dev
     - qtdeclarative5-dev
     - libqt5webkit5-dev
@@ -24,6 +23,9 @@ addons:
 
 before_install:
   - pwd
+  - wget https://cmake.org/files/v3.2/cmake-3.2.3-Linux-x86_64.tar.gz
+  - tar xzf cmake-3.2.3-Linux-x86_64.tar.gz
+  - export PATH=`pwd`/cmake-3.2.3-Linux-x86_64/bin:$PATH
   - export CC=gcc-5 CXX=g++-5
   - wget https://github.com/grzegorzmazur/yacas/archive/master.zip
   - unzip master.zip
