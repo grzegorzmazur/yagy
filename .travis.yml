@@ -11,7 +11,7 @@ before_install:
   - sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
   - sudo apt-add-repository -y ppa:beineri/opt-qt542
   - sudo apt-get -qq update
-  - sudo apt-get -qq install g++-4.8 libc6-i386 qt54tools qt54svg qt54webkit
+  - sudo apt-get -qq install g++-4.8 qt54base qt54tools qt54svg qt54webkit
   - export CXX=g++-4.8
   - export CC=gcc-4.8
   - wget https://github.com/grzegorzmazur/yacas/archive/master.zip
@@ -20,7 +20,7 @@ before_install:
   - mkdir install
   - mkdir build
   - cd build
-  - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../install ..
+  - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../install -DCMAKE_PREFIX_PATH=/opt/qt54/lib/cmake ..
   - make
   - make install
   - cd ../..
