@@ -32,13 +32,22 @@ macx{
     FRAMEWORK.files = $${YACAS_PREFIX}/yacas.framework
     FRAMEWORK.path = Contents/SharedFrameworks
     
-    JAVASCRIPT.files = resources/javascript
+    CODEMIRROR.files = resources/codemirror
     CSS.files = resources/css
+    FLOT.files = resources/flot
+    FONTS.files = resources/fonts
+    IMAGES.files = resources/images
     IMG.files = resources/img
-    HTML.files = resources/html
+    JQUERY.files = resources/jquery
+    MATHBAR.files = resources/mathbar
+    MATHJAX.files = resources/mathjax
+    PLOT3D.files = resources/plot3d
+    THREE.files = resources/three
     VIS.files = resources/vis
-    QMAKE_BUNDLE_DATA += CSS JAVASCRIPT FRAMEWORK IMG HTML VIS
-    
+    YAGY_UI.files = resources/yagy_ui
+QMAKE_BUNDLE_DATA += CSS JAVASCRIPT FRAMEWORK CODEMIRROR CSS FLOT FONTS IMAGES IMG JQUERY MATHBAR MATHJAX PLOT3D THREE VIS YAGY_UI
+
+
     CONFIG += lib_bundle
 
 } else {
