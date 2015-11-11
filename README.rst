@@ -2,6 +2,9 @@
 Yagy, Yet Another GUI for Yacas, Yet Another Computer Algebra System
 ====================================================================
 
+.. image:: https://travis-ci.org/grzegorzmazur/yagy.svg?branch=master
+    :target: https://travis-ci.org/grzegorzmazur/yagy
+
 Compilation instructions
 ========================
 
