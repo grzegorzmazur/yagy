@@ -6,7 +6,7 @@ Compilation instructions
 ========================
 
 Prerequisites
-————————————-
+—————————————
 
 1. yacas version 1.3.5
   - installations
