@@ -42,55 +42,66 @@ include_directories (
   "${YACAS_PREFIX}/include"
   )
 
+# seems to be required for older qt5 cmake modules
+include_directories (
+    ${Qt5Core_INCLUDE_DIRS}
+    ${Qt5Widgets_INCLUDE_DIRS}
+    ${Qt5WebKit_INCLUDE_DIRS}
+    ${Qt5WebKitWidgets_INCLUDE_DIRS}
+    ${Qt5PrintSupport_INCLUDE_DIRS}
+)
+
 qt5_wrap_ui (ui_mainwindow.h mainwindow.ui)
 qt5_wrap_ui (ui_preferences_dialog.h preferences_dialog.ui)
 
-qt5_add_resources (qrc_html.cpp html.qrc)
-qt5_add_resources (qrc_img.cpp img.qrc)
+qt5_add_resources (qrc_yagy_ui.cpp yagy_ui.qrc --compress 9)
+qt5_add_resources (qrc_img.cpp img.qrc --compress 9)
 
-set (YAGY_QRESOURCES qrc_html.cpp qrc_img.cpp)
+set (YAGY_QRESOURCES qrc_yagy_ui.cpp qrc_img.cpp)
 
 if (NOT APPLE)
-    qt5_add_resources (qrc_css.cpp css.qrc)
-    qt5_add_resources (qrc_javascript.cpp javascript.qrc)
-    qt5_add_resources (qrc_javascript-codemirror.cpp javascript-codemirror.qrc)
-    qt5_add_resources (qrc_javascript-fonts-stix-web-otf.cpp javascript-fonts-stix-web-otf.qrc --compress 9)
-    qt5_add_resources (qrc_javascript-fonts-stix-web-woff.cpp javascript-fonts-stix-web-woff.qrc --compress 9)
-    qt5_add_resources (qrc_javascript-fonts-tex.cpp javascript-fonts-tex.qrc --compress 9)
-    qt5_add_resources (qrc_javascript-jquery.cpp javascript-jquery.qrc)
-    qt5_add_resources (qrc_javascript-mathjax.cpp javascript-mathjax.qrc --compress 9)
-    qt5_add_resources (qrc_javascript-mathjax-config.cpp javascript-mathjax-config.qrc --compress 9)
-    qt5_add_resources (qrc_javascript-mathjax-extensions.cpp javascript-mathjax-extensions.qrc --compress 9)
-    qt5_add_resources (qrc_javascript-mathjax-jax-element.cpp javascript-mathjax-jax-element.qrc --compress 9)
-    qt5_add_resources (qrc_javascript-mathjax-jax-input.cpp javascript-mathjax-jax-input.qrc --compress 9)
-    qt5_add_resources (qrc_javascript-mathjax-jax-output.cpp javascript-mathjax-jax-output.qrc --compress 9)
-    qt5_add_resources (qrc_javascript-mathjax-jax-output-fonts-stix.cpp javascript-mathjax-jax-output-fonts-stix.qrc --compress 9)
-    qt5_add_resources (qrc_javascript-mathjax-jax-output-fonts-stix-web.cpp javascript-mathjax-jax-output-fonts-stix-web.qrc --compress 9)
-    qt5_add_resources (qrc_javascript-mathjax-jax-output-fonts-tex.cpp javascript-mathjax-jax-output-fonts-tex.qrc --compress 9)
-    qt5_add_resources (qrc_javascript-mathjax-localization.cpp javascript-mathjax-localization.qrc --compress 9)
-    qt5_add_resources (qrc_javascript-three.cpp javascript-three.qrc)
-    qt5_add_resources (qrc_vis.cpp vis.qrc)
+    qt5_add_resources (qrc_codemirror.cpp codemirror.qrc)
+    qt5_add_resources (qrc_flot.cpp flot.qrc --compress 9)
+    qt5_add_resources (qrc_fonts-stix-web-otf.cpp fonts-stix-web-otf.qrc --compress 9)
+    qt5_add_resources (qrc_fonts-stix-web-woff.cpp fonts-stix-web-woff.qrc --compress 9)
+    qt5_add_resources (qrc_fonts-tex.cpp fonts-tex.qrc --compress 9)
+    qt5_add_resources (qrc_jquery.cpp jquery.qrc --compress 9)
+    qt5_add_resources (qrc_mathbar.cpp mathbar.qrc --compress 9)
+    qt5_add_resources (qrc_mathjax.cpp mathjax.qrc --compress 9)
+    qt5_add_resources (qrc_mathjax-config.cpp mathjax-config.qrc --compress 9)
+    qt5_add_resources (qrc_mathjax-extensions.cpp mathjax-extensions.qrc --compress 9)
+    qt5_add_resources (qrc_mathjax-jax-element.cpp mathjax-jax-element.qrc --compress 9)
+    qt5_add_resources (qrc_mathjax-jax-input.cpp mathjax-jax-input.qrc --compress 9)
+    qt5_add_resources (qrc_mathjax-jax-output.cpp mathjax-jax-output.qrc --compress 9)
+    qt5_add_resources (qrc_mathjax-jax-output-fonts-stix.cpp mathjax-jax-output-fonts-stix.qrc --compress 9)
+    qt5_add_resources (qrc_mathjax-jax-output-fonts-stix-web.cpp mathjax-jax-output-fonts-stix-web.qrc --compress 9)
+    qt5_add_resources (qrc_mathjax-jax-output-fonts-tex.cpp mathjax-jax-output-fonts-tex.qrc --compress 9)
+    qt5_add_resources (qrc_mathjax-localization.cpp mathjax-localization.qrc --compress 9)
+    qt5_add_resources (qrc_plot3d.cpp plot3d.qrc --compress 9)
+    qt5_add_resources (qrc_three.cpp three.qrc --compress 9)
+    qt5_add_resources (qrc_vis.cpp vis.qrc --compress 9)
 
     set (YAGY_QRESOURCES
         ${YAGY_QRESOURCES}
-        qrc_css.cpp
-        qrc_javascript.cpp
-        qrc_javascript-codemirror.cpp
-        qrc_javascript-jquery.cpp
-        qrc_javascript-fonts-stix-web-otf.cpp
-        qrc_javascript-fonts-stix-web-woff.cpp
-        qrc_javascript-fonts-tex.cpp
-        qrc_javascript-mathjax.cpp
-        qrc_javascript-mathjax-config.cpp
-        qrc_javascript-mathjax-extensions.cpp
-        qrc_javascript-mathjax-jax-element.cpp
-        qrc_javascript-mathjax-jax-input.cpp
-        qrc_javascript-mathjax-jax-output.cpp
-        qrc_javascript-mathjax-jax-output-fonts-stix.cpp
-        qrc_javascript-mathjax-jax-output-fonts-stix-web.cpp
-        qrc_javascript-mathjax-jax-output-fonts-tex.cpp
-        qrc_javascript-mathjax-localization.cpp
-        qrc_javascript-three.cpp
+        qrc_codemirror.cpp
+        qrc_jquery.cpp
+        qrc_flot.cpp
+        qrc_fonts-stix-web-otf.cpp
+        qrc_fonts-stix-web-woff.cpp
+        qrc_fonts-tex.cpp
+        qrc_mathbar.cpp
+        qrc_mathjax.cpp
+        qrc_mathjax-config.cpp
+        qrc_mathjax-extensions.cpp
+        qrc_mathjax-jax-element.cpp
+        qrc_mathjax-jax-input.cpp
+        qrc_mathjax-jax-output.cpp
+        qrc_mathjax-jax-output-fonts-stix.cpp
+        qrc_mathjax-jax-output-fonts-stix-web.cpp
+        qrc_mathjax-jax-output-fonts-tex.cpp
+        qrc_mathjax-localization.cpp
+        qrc_plot3d.cpp
+        qrc_three.cpp
         qrc_vis.cpp)
 endif ()
 
@@ -120,7 +131,7 @@ else ()
     set_target_properties (libyacas PROPERTIES IMPORTED_LOCATION "${YACAS_PREFIX}/lib/libyacas.a")
 endif ()
 
-target_link_libraries(yagy Qt5::Widgets Qt5::WebKit Qt5::WebKitWidgets Qt5::PrintSupport libyacas)
+target_link_libraries(yagy Qt5::Core Qt5::Widgets Qt5::WebKit Qt5::WebKitWidgets Qt5::PrintSupport libyacas)
 
 if (WIN32)
     target_link_libraries (yagy shlwapi)

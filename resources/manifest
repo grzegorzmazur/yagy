@@ -1,0 +1,6 @@
+CodeMirror: 5.8.0 + custom yacas mode
+flot: 0.8.3
+fonts: taken from mathjax 2.5
+mathjax: 2.5
+three: r73
+vis: 4.9.0
