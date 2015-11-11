@@ -28,7 +28,7 @@ before_install:
 before_script:
   - mkdir build
   - cd build
-  - cmake -DCMAKE_BUILD_TYPE=Release -DYACAS_PREFIX=../yacas-master/install ..
+  - cmake -DCMAKE_BUILD_TYPE=Release -DYACAS_PREFIX=../yacas-master/install -DCMAKE_PREFIX_PATH=/opt/qt54/lib/cmake ..
 
 script:
   - make VERBOSE=1
