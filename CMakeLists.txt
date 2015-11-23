@@ -173,7 +173,7 @@ if (WIN32)
     get_target_property(QtCore_location Qt5::Core LOCATION)
     get_filename_component(QT_DLL_DIR ${QtCore_location} DIRECTORY)
 	
-    set (QT_DLLS Qt5WebKit.dll Qt5WebKitWidgets.dll Qt5WebChannel.dll icuin53.dll icuuc53.dll icudt53.dll Qt5Core.dll  Qt5Gui.dll Qt5Multimedia.dll Qt5MultimediaWidgets.dll Qt5Network.dll Qt5OpenGL.dll Qt5Positioning.dll Qt5PrintSupport.dll Qt5Qml.dll Qt5Quick.dll Qt5Sensors.dll Qt5Sql.dll Qt5Svg.dll Qt5Widgets.dll)
+    set (QT_DLLS Qt5WebKit.dll Qt5WebKitWidgets.dll Qt5WebChannel.dll icuin54.dll icuuc54.dll icudt54.dll Qt5Core.dll  Qt5Gui.dll Qt5Multimedia.dll Qt5MultimediaWidgets.dll Qt5Network.dll Qt5OpenGL.dll Qt5Positioning.dll Qt5PrintSupport.dll Qt5Qml.dll Qt5Quick.dll Qt5Sensors.dll Qt5Sql.dll Qt5Svg.dll Qt5Widgets.dll)
     
     if (CMAKE_CROSSCOMPILING)
         exec_program (${CMAKE_CXX_COMPILER} ARGS -print-file-name=libgcc_s_sjlj-1.dll OUTPUT_VARIABLE SJLJ_PATH)
@@ -225,10 +225,10 @@ set (CPACK_PACKAGE_NAME "yagy")
 set (CPACK_PACKAGE_VENDOR "Yagy Team")
 set (CPACK_PACKAGE_CONTACT "Yagy Team <yagy-devel@lists.sourceforge.net>")
 set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "Yet Another GUI for Yacas")
-set (CPACK_PACKAGE_DESCRIPTION_FILE "${PROJECT_SOURCE_DIR}/README.rst")
+set (CPACK_PACKAGE_DESCRIPTION_FILE "${PROJECT_SOURCE_DIR}/README")
 
 set (CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/COPYING")
-set (CPACK_RESOURCE_FILE_README "${PROJECT_SOURCE_DIR}/README.rst")
+set (CPACK_RESOURCE_FILE_README "${PROJECT_SOURCE_DIR}/README")
 
 set (CPACK_PACKAGE_VERSION ${YAGY_VERSION})
 set (CPACK_PACKAGE_VERSION_MAJOR ${YAGY_VERSION_MAJOR})
