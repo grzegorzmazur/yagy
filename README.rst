@@ -2,11 +2,14 @@
 Yagy, Yet Another GUI for Yacas, Yet Another Computer Algebra System
 ====================================================================
 
+.. image:: https://travis-ci.org/grzegorzmazur/yagy.svg?branch=master
+    :target: https://travis-ci.org/grzegorzmazur/yagy
+
 Compilation instructions
 ========================
 
 Prerequisites
-————————————-
+—————————————
 
 1. yacas version 1.3.5
   - installations
