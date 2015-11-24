@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RCC version="1.0">
     <qresource>
+        <file>resources/mathjax/jax/element/mml/jax.js</file>
         <file>resources/mathjax/jax/element/mml/optable/Arrows.js</file>
         <file>resources/mathjax/jax/element/mml/optable/BasicLatin.js</file>
         <file>resources/mathjax/jax/element/mml/optable/CombDiacritMarks.js</file>
