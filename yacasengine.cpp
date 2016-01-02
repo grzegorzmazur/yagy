@@ -69,7 +69,7 @@ void YacasEngine::on_start_processing()
             
             _side_effects.clear();
             _side_effects.str("");
-            _yacas->Evaluate((expr + ";").toStdString().c_str());
+            _yacas->Evaluate((expr + ";").toStdString());
 
             if (!_yacas->IsError()) {
                 QString result = QString::fromStdString(_yacas->Result());
