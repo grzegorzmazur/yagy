@@ -13,15 +13,11 @@ function scrollListener(e){
 function load(){
     
     MathBar.initializeFunctions( "mathbar/functions.json" )
-    
-
-    //$("#inputExpression").focus();
 
     //To keep CodeMirror editor from bad scrolling
     document.body.addEventListener( "mousewheel", function(e){ scrollListener(e);} );
     
     $( "#inputExpression" ).autosize();
-
 
     $( window ).on( 'resize', function( event ){
         
@@ -200,33 +196,6 @@ function addSideEffects( number, side_effects, rootElementID ){
     row.append("<td><span>" + side_effects + "</span></td>");
 }
 
-function toogleMathBar( button, type, variables ){
-
-    var options = {};
-    options["VIF"] = 2;
-    options["type"] = type;
-    
-    if ( variables.length > 0 ){
-        options["type"] = options["type"] + "_" + variables.length;
-        options["defaultParameters"] = {};
-        options["defaultParameters"]["variable"] = variables;
-    }
-    
-
-    
-    if ( button.mathBar == null ){
-        var bar = new MathBar( button.name , options, button, function( result ){ parseMathBarResult( result, button.name )} );
-        button.mathBar = bar;
-    }else{
-        button.mathBar.Toggle();
-    }
-}
-
-function parseMathBarResult( result, outputID ){
-    calculateMathBar( result, outputID );
-}
-
-
 function printResults( result ){
     number = result["idx"];
     outputID = "output_" + number;
@@ -252,16 +221,29 @@ function printResults( result ){
         output.addClass( "outside");
         output.append( "$$" + result["tex_code"] + "$$" );
         
-        if ( MathBar.supportsExpressionType( result["expression_type"], result["variables"].length )){
 
-            $button = $("<button>", {name: outputID, class: "MathBarButton"});
-            $button.click( function(){ toogleMathBar( this, result["expression_type"], result["variables"] )});
-            output.append( $("<div>", {class: "inside"}).append( $button ));
-        }
  
         renderOutput( outputID );
         output[0].yacasExpression = result["expression"];
         output[0].lastWidth = $(output).width();
+        
+        if ( MathBar.supportsExpressionType( result["expression_type"], result["variables"].length )){
+            
+            var options = {};
+            options["layout"] = "multiline";
+            options["VIF"] = "max";
+            options["type"] = result["expression_type"];
+            
+            if ( result["variables"].length > 0 ){
+                options["type"] = options["type"] + "_" + result["variables"].length;
+                options["defaultParameters"] = {};
+                options["defaultParameters"]["variable"] = result["variables"];
+            }
+            
+            var bar = new MathBar( outputID , options, function( result, outputID ){ parseMathBarResult( result, outputID )} );
+            
+        }
+        
         $(output).resize(  debounce( function(event){
                          w = $(this)[0].lastWidth;
                          if ( $(this).width() != w ){
@@ -411,19 +393,15 @@ function calculateAt( value, rootElementId ) {
 }
 
 function calculate( value ){
-    
     calculateAt(value, 'expression_0');
     clearInput();
-    
-    
 }
 
-function calculateMathBar( value, outputID ){
+function parseMathBarResult( value, outputID ){
     number = outputID.split("_")[1];
     nextNumber = findNextExpression(number);
     calculateAt( value, "expression_" + nextNumber);
     goto( nextNumber );
-    
 }
 
 function processChange( value, number, object ){

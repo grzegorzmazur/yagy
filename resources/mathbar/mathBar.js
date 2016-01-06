@@ -3,21 +3,39 @@ MathBar.functions;
 MathBar.categories;
 
 //VIF - Very Importatnt Function
-function MathBar( outputID, options, button, callback ) {
+function MathBar( outputID, options, callback ) {
     var self = this;
-    var numberOfVIF = options["VIF"];
+    
+    $button = $("<button>", {name: outputID, class: "MathBarButton"});
+    $button.click( function(){ self.Toggle()});
+    $( "#" + outputID ).append( $("<div>", {class: "inside"}).append( $button ));
+    self.button = $button;
+    
+    if (options["layout"] === undefined ){
+        self.layout = "singleline";
+    }else{
+        self.layout = options["layout"];
+    }
+
+    self.categories = MathBar.categories[ options["type"] ];
+    
+    if (options["VIF"] === undefined || options["VIF"] == "max" ){
+        self.numberOfVIF = self.categories.length;
+    }else{
+        self.numberOfVIF = options["VIF"];
+    }
     
     self.outputID = outputID;
     self.defaultParameters = options["defaultParameters"];
-    self.button = button;
+    self.callback = callback;
+
+    self.drawn = false;
     self.currentOption = "";
     self.currentOptionVIF = true;
-    self.callback = callback;
     self.visible = false;
-    self.categories = MathBar.categories[ options["type"] ];
     self.outputValue = $("#" + outputID)[0].yacasExpression;
     
-    $(button).on('keydown', function( event ){
+    $button.on('keydown', function( event ){
                  if( event.which == 13  ){
                     event.preventDefault();
                     if ( event.shiftKey ){
@@ -25,99 +43,141 @@ function MathBar( outputID, options, button, callback ) {
                     }
                 }
               });
+};
+
+MathBar.prototype.drawMathBar = function(){
+    var $functionsDiv = this.createFunctionsDiv();
+    var $submitButton = this.createSubmitButton();
+    var $mathBarTable = this.createMathBarTable();
+    
+    $mathBarTable.find(".functions").append( $functionsDiv );
+    $mathBarTable.find(".submitButton").append( $submitButton );
     
     var $mathBarElement = $( "<div>" , { class: "MathBar" } ).hide();
-    var $functionsDiv = $("<div>", {class : "radio_group_horizontal styled_radio"});
+    
+    $( "#" + this.outputID ).after( $mathBarElement.append( $mathBarTable ));
+    
+    this.mathBarElement = $mathBarElement;
+    $mathBarElement[0].mathBar = this;
+    this.Show();
     
     //In case number of all functions is 1 more than VIF do not display combobox with only one function
     //but treat all of them as VIFs
-    
-    if ( numberOfVIF > self.categories.length ) numberOfVIF = self.categories.length;
-    
-    if ( self.categories.length - numberOfVIF == 1 ){
-        numberOfVIF++;
+    if ( this.layout != "multiline"){
+        if ( this.numberOfVIF == this.categories.length ){
+            $functionsDiv.parent().width( $functionsDiv.width() + 1 );
+        }else{
+            $functionsDiv.parent().width( $functionsDiv.width()  );
+        }
     }
     
-    var i;
-    for( i = 0; i < numberOfVIF; i++){
+    this.optionClicked( this.categories[0], true );
+    
+    var $functionsSelect = $functionsDiv.find("select");
+    if ( $functionsSelect ){
+        $functionsSelect.selectmenu();
+        $functionsSelect.on( "selectmenuselect", function( event, ui ) {
+                            $mathBarElement = $(this).parents(".MathBar:first");
+                            $mathBarElement[0].mathBar.optionClicked( $('option:selected', this).attr("name"), false )} );
+    }
+}
 
-        var func = MathBar.functions[self.categories[i]];
+MathBar.prototype.createSubmitButton = function(){
+    var $submitButton = $("<button>", {class: "submitButton"} );
+    $submitButton.click( function(){
+                        $mathBarElement = $(this).parents(".MathBar:first");
+                        $mathBarElement[0].mathBar.Run() });
+    return $submitButton;
+}
+
+MathBar.prototype.createFunctionsDiv = function(){
+    if ( this.numberOfVIF > this.categories.length ) this.numberOfVIF = this.categories.length;
+    
+    if ( this.categories.length - this.numberOfVIF == 1 ){
+        this.numberOfVIF++;
+    }
+    
+    var $functionsDiv = $("<div>", {class : "radio_group_horizontal styled_radio"});
+    var i;
+    for( i = 0; i < this.numberOfVIF; i++){
+        
+        var func = MathBar.functions[this.categories[i]];
         var text = func["text"];
         
-        var $input = $("<input>", { type: "radio", name: outputID, value: self.categories[i]})
+        var $input = $("<input>", { type: "radio", name: outputID, value: this.categories[i]})
         
         if ( i == 0 ) $input.prop( "checked", true );
         
-        $input.click( function(){ self.optionClicked( this.value, true )});
+        $input.click( function(){
+                     $mathBarElement = $(this).parents(".MathBar:first");
+                     $mathBarElement[0].mathBar.optionClicked( this.value, true );
+                     });
         
         $span = $("<span>").append( text );
         $label = $("<label>");
         $label.append( $input ).append( $span );
         
         $functionsDiv.append( $label );
-        $label.dblclick( function(e){ e.stopPropagation(); self.Run(); });
+        $label.dblclick( function(e){ e.stopPropagation(); this.Run(); });
     }
     
-    if ( i != self.categories.length ){
+    if ( i != this.categories.length ){
         
         var $functionsSelect = $("<select>");
         var $option = $("<option>").append( MathBar.selectMoreText );
+        console.log(MathBar.selectMoreText);
         $option.attr( "disabled", true );
         $option.attr( "selected", true);
         $functionsSelect.append($option );
         
-    
-        for( var j = numberOfVIF; j < self.categories.length; j++){
-            var func = MathBar.functions[self.categories[j]];
+        for( var j = this.numberOfVIF; j < this.categories.length; j++){
+            var func = MathBar.functions[this.categories[j]];
             var text = func["text"];
-            $functionsSelect.append( $("<option>", {name: self.categories[j]}).append( text ) );
+            $functionsSelect.append( $("<option>", {name: this.categories[j]}).append( text ) );
         }
-    
+        
         $label = $("<label>");
         $label.dblclick( function(e){
                         if ( $label.find("option:selected").val() == MathBar.selectMoreText ){
                         return true;
                         }
                         e.stopPropagation();
-                        self.Run();
+                        this.Run();
                         return false;
-                    });
+                        });
         $functionsDiv.append($label.append($functionsSelect ));
+    }
+
+    return $functionsDiv;
+}
+
+MathBar.prototype.createMathBarTable = function(){
+    
+    if (this.layout == "singleline"){
         
+        var $mathRow = $("<tr>");
+        
+        $mathRow.append( $("<td>", {class: "functions"}));
+        $mathRow.append( $("<td>", {class: "separator"}));
+        $mathRow.append( $("<td>", {class: "parameters"}).append( $("<div>", {class: "parameters"})));
+        $mathRow.append( $("<td>", {class: "submitButton"}));
+        
+        return $("<table>").append( $mathRow );
     }
     
-    var $submitButton = $("<button>", {class: "submitButton"} );
-    $submitButton.click( function(){ self.Run(); });
-    
-    var $mathRow = $("<tr>");
-    $mathRow.append( $("<td>", {class: "functions"}).append($functionsDiv) );
-    $mathRow.append( $("<td>", {class: "separator"}));
-    $mathRow.append( $("<td>", {class: "parameters"}).append( $("<div>", {class: "parameters"})));
-    $mathRow.append( $("<td>", {class: "submitButton"}).append( $submitButton ));
-    
-
-    var $mathBarTable = $("<table>").append( $mathRow );
-    
-    $( "#" + self.outputID ).after( $mathBarElement.append( $mathBarTable ));
-
-    self.mathBarElement = $mathBarElement;
-    $mathBarElement[0].mathBar = self;
-    self.Show();
-    
-    if ( numberOfVIF == self.categories.length ){
-        $functionsDiv.parent().width( $functionsDiv.width() + 1 );
-    }else{
-        $functionsDiv.parent().width( $functionsDiv.width()  );
+    if ( this.layout == "multiline"){
+        var $functionsRow = $("<tr>");
+        
+        $functionsRow.append( $("<td>", {class: "functions"}));
+        $functionsRow.append( $("<td>", {class: "submitButton"}));
+        
+        var $parametersRow = $("<tr>");
+        $parametersRow.append( $("<td>", {class: "parameters", colspan:"2"}).append( $("<div>", {class: "parameters"})));
+        
+        return $("<table>").append( $functionsRow ).append( $parametersRow );
     }
+}
 
-    self.optionClicked( self.categories[0], true );
-    
-    if ( $functionsSelect ){
-        $functionsSelect.selectmenu();
-        $functionsSelect.on( "selectmenuselect", function( event, ui ) { self.optionClicked( $('option:selected', this).attr("name"), false )} );
-    }
-
-};
 
 MathBar.keydownEventHandler = function( event ){
     $mathBarElement = $(this).parents(".MathBar:first");
@@ -200,7 +260,6 @@ MathBar.ParseParameter = function( parameter ){
             default:
                 console.error( "This paramter type is not implemented: "+ type + "!");
         }
-        
     }
     
     if ( parameter["parameterType"] == "edit" ){
@@ -217,7 +276,6 @@ MathBar.ParseParameter = function( parameter ){
             MathBar.ParseParameter( parameters[i] );
         }
     }
-
 }
 
 MathBar.prototype.optionClicked = function( functionName, VIF ){
@@ -261,7 +319,6 @@ MathBar.prototype.changeConstToVariables = function ( text ){
         return text;
     }
     
-    
     if ( variables.length == 1 ){
         text = text.replace("%VARIABLE%", variables );
     }
@@ -274,7 +331,6 @@ MathBar.prototype.changeConstToVariables = function ( text ){
     }
     
     return text;
-    
 }
 
 MathBar.prototype.getPropertyLabel = function( parameter ){
@@ -359,7 +415,7 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
         $label = $outerlabel;
     }
     
-   if ( type == "select"){
+    if ( type == "select"){
         
         var $select = $("<select>", { name: parameter["parameterName"] });
         
@@ -429,7 +485,7 @@ MathBar.prototype.Run = function(){
     var parser = func["parser"];
     var result = window[parser](this.outputValue, outValues);
     
-    this.callback( result );
+    this.callback( result, this.outputID );
     this.Hide();
 }
 
@@ -452,10 +508,14 @@ MathBar.prototype.Hide = function(){
 }
 
 MathBar.prototype.Toggle = function(){
-    if ( this.visible ) this.Hide();
-    else this.Show();
     
+    if ( this.visible ) this.Hide();
+    else{
+        if ( !this.drawn ) this.drawMathBar();
+        this.Show();
+    }
 }
+
 
 MathBar.initializeFunctions = function(jsonfile){  
     var xhttp = new XMLHttpRequest();
