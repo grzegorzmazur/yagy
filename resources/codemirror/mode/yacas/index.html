@@ -1,14 +1,16 @@
 <!doctype html>
 
-<title>CodeMirror:Yacas mode</title>
+<title>CodeMirror: yacas mode</title>
 <meta charset="utf-8"/>
 <link rel=stylesheet href="../../doc/docs.css">
 
-<link rel="stylesheet" href="../../lib/codemirror.css">
-<script src="../../lib/codemirror.js"></script>!
-
-<script src="yacas.js"></script>
-<style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+<link rel=stylesheet href=../../lib/codemirror.css>
+<script src=../../lib/codemirror.js></script>
+<script src=../../addon/edit/matchbrackets.js></script>
+<script src=yacas.js></script>
+<style type=text/css>
+  .CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}
+</style>
 <div id=nav>
   <a href="http://codemirror.net"><h1>CodeMirror</h1><img id=logo src="../../doc/logo.png"></a>
 
@@ -19,54 +21,67 @@
   </ul>
   <ul>
     <li><a href="../index.html">Language modes</a>
-    <li><a class=active href="#">Yacas</a>
+    <li><a class=active href="#">yacas</a>
   </ul>
 </div>
 
 <article>
-<h2>Yacas mode</h2>
+<h2>yacas mode</h2>
 
-    <div><textarea id="code" name="code">
-//numbers
-{1234 .1234 0.1234 23e2}
 
-//strings
-"asda\"a"
+<textarea id="yacasCode">
+// example yacas code
+Graph(edges_IsList) <-- [
+    Local(v, e, f, t);
 
-//identifiers
-a + as123
+    vertices := {};
 
-//operators
--
-+
-=
-==
->
-<
->=
-<=
-..
+    ForEach (e, edges) [
+        If (IsList(e), e := Head(e));
+        {f, t} := Tail(Listify(e));
 
-// keywords
-Local(i);
-ForEach(i, 1 .. 20) Echo("i = ", i);
+        DestructiveAppend(vertices, f);
+        DestructiveAppend(vertices, t);
+    ];
 
-// builtins
-Cos(2*Pi)
+    Graph(RemoveDuplicates(vertices), edges);
+];
 
-//one line comment
-/* multi
-line commment */
+10 # IsGraph(Graph(vertices_IsList, edges_IsList)) <-- True;
+20 # IsGraph(_x) <-- False;
 
-    </textarea></div>
-    <script>
-      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-        mode: {name: "yacas"},
-        lineNumbers: true,
-        indentUnit: 4,
-        matchBrackets: true
-      });
-    </script>
+Edges(Graph(vertices_IsList, edges_IsList)) <-- edges;
+Vertices(Graph(vertices_IsList, edges_IsList)) <-- vertices;
 
-    <p><strong>MIME types defined:</strong> <code>text/x-yacas</code>.</p>
+AdjacencyList(g_IsGraph) <-- [
+    Local(l, vertices, edges, e, op, f, t);
+
+    l := Association'Create();
+
+    vertices := Vertices(g);
+    ForEach (v, vertices)
+        Association'Set(l, v, {});
+
+    edges := Edges(g);
+
+    ForEach(e, edges) [
+        If (IsList(e), e := Head(e));
+        {op, f, t} := Listify(e);
+        DestructiveAppend(Association'Get(l, f), t);
+        If (String(op) = "<->", DestructiveAppend(Association'Get(l, t), f));
+    ];
+
+    l;
+];
+</textarea>
+
+<script>
+  var yacasEditor = CodeMirror.fromTextArea(document.getElementById('yacasCode'), {
+    mode: 'text/x-yacas',
+    lineNumbers: true,
+    matchBrackets: true
+  });
+</script>
+
+<p><strong>MIME types defined:</strong> <code>text/x-yacas</code> (yacas).</p>
 </article>

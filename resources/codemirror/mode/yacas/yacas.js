@@ -1,131 +1,138 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
-(function (mod) {
-    if (typeof exports == "object" && typeof module == "object") // CommonJS
-        mod(require("../../lib/codemirror"));
-    else if (typeof define == "function" && define.amd) // AMD
-        define(["../../lib/codemirror"], mod);
-    else // Plain browser env
-        mod(CodeMirror);
-})(function (CodeMirror) {
-    "use strict";
+// Yacas mode copyright (c) 2015 by Grzegorz Mazur
+// Loosely based on mathematica mode by Calin Barbat
 
-    CodeMirror.defineMode("yacas", function () {
+(function(mod) {
+  if (typeof exports == "object" && typeof module == "object") // CommonJS
+    mod(require("../../lib/codemirror"));
+  else if (typeof define == "function" && define.amd) // AMD
+    define(["../../lib/codemirror"], mod);
+  else // Plain browser env
+    mod(CodeMirror);
+})(function(CodeMirror) {
+"use strict";
 
-        function wordRegexp(words) {
-          return new RegExp("^((" + words.join(")|(") + "))\\b");
-        }
+CodeMirror.defineMode('yacas', function(_config, _parserConfig) {
 
-        var builtins = [
-          'Eval', 'Abs', 'ArcCos', 'Cos',
-          'Exp', 'Log', 'Sum', 'Max', 'Min', 'Sign', 'Sin',
-          'Sqrt'
-        ];
+  // patterns
+  var pFloatForm  = "(?:(?:\\.\\d+|\\d+\\.\\d*|\\d+)(?:[eE][+-]?\\d+)?)";
+  var pIdentifier = "(?:[a-zA-Z\\$'][a-zA-Z0-9\\$']*)";
 
-        var builtinsRegex = wordRegexp(builtins);
+  // regular expressions
+  var reFloatForm    = new RegExp(pFloatForm);
+  var reIdentifier   = new RegExp(pIdentifier);
+  var rePattern      = new RegExp(pIdentifier + "?_" + pIdentifier);
+  var reFunctionLike = new RegExp(pIdentifier + "\\s*\\(");
 
-        var keywords = [
-          'If', 'While', 'Until', 'For', 'ForEach', 'Local', 'LocalSymbols'
-        ];
-        
-        var keywordsRegex = wordRegexp(keywords);
+  function tokenBase(stream, state) {
+    var ch;
 
-        CodeMirror.registerHelper("hintWords", "yacas", builtins.concat(keywords));
+    // get next character
+    ch = stream.next();
 
-        // tokenizers
-        function tokenComment(stream, state) {
-            while (!stream.eol()) {
-                if (stream.next() === '*' && stream.peek() === '/') {
-                    stream.next();
-                    state.tokenize = tokenBase;
-                    return 'comment';
-                }
-            }
-            
-            return 'comment';
-        };
-        
-        
-        
-        function tokenBase(stream, state) {
-            // whitespace
-            if (stream.eatSpace())
-                return null;
+    // string
+    if (ch === '"') {
+      state.tokenize = tokenString;
+      return state.tokenize(stream, state);
+    }
 
-            // one line comment
-            if (stream.match(/^\/\//)) {
-                stream.skipToEnd();
-                return 'comment';
-            }
-            
-            // block comment
-            if (stream.match(/^\/\*/)) {
-                state.tokenize = tokenComment;
-                return tokenComment(stream, state);
-            }
+    // comment
+    if (ch === '/') {
+      if (stream.eat('*')) {
+        state.tokenize = tokenComment;
+        return state.tokenize(stream, state);
+      }
+      if (stream.eat("/")) {
+        stream.skipToEnd();
+        return "comment";
+      }
+    }
 
-            // number literal
-            if (stream.match(/^[0-9\.+-]/, false)) {
-                if (stream.match(/^[+-]?0x[0-9a-fA-F]+[ij]?/))
-                    return 'number';
-                if (stream.match(/^[+-]?\d*\.\d+([EeDd][+-]?\d+)?[ij]?/))
-                    return 'number';
-                if (stream.match(/^[+-]?\d+([EeDd][+-]?\d+)?[ij]?/))
-                    return 'number';
-            }
-            
-            // string
-            if (stream.match(/^"(?:[^"\\]|\\.)*"/)) {
-                return 'string';
-            }
+    // go back one character
+    stream.backUp(1);
 
-            // function or macro call
-            if (stream.match(/^[a-zA-Z][a-zA-Z0-9]*\s*\(/, false)) {
-                if (stream.match(keywordsRegex))
-                    return 'keyword';
-                if (stream.match(builtinsRegex))
-                    return 'builtin';
-                stream.match(/^[a-zA-Z][a-zA-Z0-9]*/);
-                return null;
-            }
+    // look for ordered rules
+    if (stream.match(/\d+ *#/, true, false)) {
+      return 'qualifier';
+    }
 
-            // operators
-            if (stream.match(/^[\\+\\-\\*/\\^=<>]|(:=)|(<=)|(>=)|(==)/))
-                return 'operator';
+    // look for numbers
+    if (stream.match(reFloatForm, true, false)) {
+      return 'number';
+    }
 
-            // variables
-            if (stream.match(/^[a-zA-Z][a-zA-Z0-9]*/)) {
-                return 'variable';
-            }
+    // look for placeholders
+    if (stream.match(rePattern, true, false)) {
+      return 'variable-3';
+    }
 
-            // anything else
-            stream.next();
-            return null;
-        };
+    // match all braces separately
+    if (stream.match(/(?:\[|\]|{|}|\(|\))/, true, false)) {
+      return 'bracket';
+    }
 
+    // literals looking like function calls
+    if (stream.match(reFunctionLike, true, false)) {
+      stream.backUp(1);
+      return 'variable';
+    }
 
-        return {
-            startState: function () {
-                return {
-                    tokenize: tokenBase,
-                    scopes: []
-                };
-            },
-            
-            token: function (stream, state) {
-                var style = state.tokenize(stream, state);
-                return style;
-            },
+    // all other identifiers
+    if (stream.match(reIdentifier, true, false)) {
+      return 'variable-2';
+    }
 
-            lineComment: '',
-            blockCommentStart: '',
-            blockCommentEnd: '',
-            fold: "indent",
-            electricChars: "]}"
-        };
-    });
+    // operators; note that operators like @@ or /; are matched separately for each symbol.
+    if (stream.match(/(?:\\|\+|\-|\*|\/|,|;|\.|:|@|~|=|>|<|&|\||_|`|'|\^|\?|!|%)/, true, false)) {
+      return 'operator';
+    }
 
-    CodeMirror.defineMIME("text/x-yacas", "yacas");
+    // everything else is an error
+    return 'error';
+  }
+
+  function tokenString(stream, state) {
+    var next, end = false, escaped = false;
+    while ((next = stream.next()) != null) {
+      if (next === '"' && !escaped) {
+        end = true;
+        break;
+      }
+      escaped = !escaped && next === '\\';
+    }
+    if (end && !escaped) {
+      state.tokenize = tokenBase;
+    }
+    return 'string';
+  };
+
+  function tokenComment(stream, state) {
+    var prev, next;
+    while((next = stream.next()) != null) {
+      if (prev === '*' && next === '/')
+        break;
+      prev = next;
+    }
+    state.tokenize = tokenBase;
+    return 'comment';
+  }
+
+  return {
+    startState: function() {return {tokenize: tokenBase, commentLevel: 0};},
+    token: function(stream, state) {
+      if (stream.eatSpace()) return null;
+      return state.tokenize(stream, state);
+    },
+    blockCommentStart: "/*",
+    blockCommentEnd: "*/",
+    lineComment: "//"
+  };
+});
+
+CodeMirror.defineMIME('text/x-yacas', {
+  name: 'yacas'
+});
 
 });

@@ -1,4 +1,4 @@
-CodeMirror: 5.8.0 + custom yacas mode
+CodeMirror: 5.10.0 + yacas mode
 flot: 0.8.3
 fonts: taken from mathjax 2.6
 mathjax: 2.6
