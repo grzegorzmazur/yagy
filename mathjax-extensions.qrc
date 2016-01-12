@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RCC version="1.0">
     <qresource>
+        <file>resources/mathjax/extensions/AssistiveMML.js</file>
         <file>resources/mathjax/extensions/asciimath2jax.js</file>
         <file>resources/mathjax/extensions/CHTML-preview.js</file>
+        <file>resources/mathjax/extensions/fast-preview.js</file>
         <file>resources/mathjax/extensions/FontWarnings.js</file>
         <file>resources/mathjax/extensions/HelpDialog.js</file>
         <file>resources/mathjax/extensions/jsMath2jax.js</file>
