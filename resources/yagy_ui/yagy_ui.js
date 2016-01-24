@@ -230,7 +230,7 @@ function printResults( result ){
         if ( MathBar.supportsExpressionType( result["expression_type"], result["variables"].length )){
             
             var options = {};
-            options["layout"] = "multiline";
+            options["layout"] = "singleline";
             options["VIF"] = "max";
             options["type"] = result["expression_type"];
             

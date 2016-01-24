@@ -310,7 +310,12 @@ MathBar.prototype.optionClicked = function( functionName, VIF ){
 };
 
 MathBar.prototype.changeConstToVariables = function ( text ){
+    
     var variables = this.defaultParameters["variable"];
+    
+    if (variables == undefined ){
+        return text;
+    }
     
     if ( $.isArray( text ) ){
         for ( var k = 0; k < text.length; k++ ){
@@ -337,12 +342,19 @@ MathBar.prototype.getPropertyLabel = function( parameter ){
     var $label = $("<label>");
     var type = parameter["parameterType"];
 
-    var value = this.defaultParameters[parameter["parameterName"]];
-    if( value == undefined ) value = parameter["defaultValue"];
-   
-    value = this.changeConstToVariables( value );
+    if ( this.defaultParameters != undefined )
+        var value = this.defaultParameters[parameter["parameterName"]];
     
-    var text =  this.changeConstToVariables( parameter["text"] );
+    if( value == undefined ) value = parameter["defaultValue"];
+    var text = parameter["text"]
+
+    if ( this.defaultParameters != undefined ){
+        value = this.changeConstToVariables( value );
+        text = this.changeConstToVariables( text );
+    }
+    
+    
+    if ( this.defaultParameters != undefined )
     
     if ( type == "select" ){
         if ( value.length == 1 ){
