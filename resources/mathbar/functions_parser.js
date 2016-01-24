@@ -1,5 +1,5 @@
 function square_root_parser( outputValue, parameters ){
-    console.log( "This is squre root parser");
+    console.log( "This is square root parser");
     return "Sqrt(" + outputValue + ")";
 }
 
@@ -8,6 +8,20 @@ function square_root_parser( outputValue, parameters ){
 function natural_logarithm_parser( outputValue, parameters ){
     console.log( "This is natural logarithm parser");
     return "Ln(" + outputValue + ")";
+}
+
+function numerical_value_parser( outputValue, parameters ){
+    console.log( "This is numerical value parser");
+    
+    
+    with_precision = parameters["with_precision"];
+    
+    if ( with_precision ){
+        precision = parameters["precision"];
+        return "N("+ outputValue + "," + precision + ")";
+    }else{
+        return "N(" + outputValue + ")";
+    }
 }
 
 function exponential_parser( outputValue, parameters ){
