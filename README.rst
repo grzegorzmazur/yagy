@@ -9,7 +9,7 @@ Compilation instructions
 ========================
 
 Prerequisites
-—————————————
+_____________
 
 1. yacas version 1.3.5
   - installations
@@ -24,7 +24,7 @@ Prerequisites
 
 
 Mac OS X
-————————
+________
 
 1. in the YAGY.pro file set the YACAS_PREFIX variable to point to a folder with the yacas framework
 2. create an XCode project:
