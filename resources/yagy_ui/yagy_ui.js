@@ -12,7 +12,7 @@ function scrollListener(e){
 
 function load(){
     
-    MathBar.initializeFunctions( "mathbar/functions.json" )
+    MathBar.initializeFunctions( "mathbar/functions.json" );
 
     //To keep CodeMirror editor from bad scrolling
     document.body.addEventListener( "mousewheel", function(e){ scrollListener(e);} );
