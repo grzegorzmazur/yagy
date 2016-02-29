@@ -1,3 +1,5 @@
+/* global CodeMirror, MathBar, MathJax, THREE, vis, yacas */
+
 //Function stops scrolling event, and just scrool the window
 //Otherwise Code-Mirror editor kept scrolling one line up even if there was no line to scroll
 function scrollListener(e){
@@ -12,7 +14,7 @@ function scrollListener(e){
 
 function load(){
     
-    MathBar.initializeFunctions( "mathbar/functions.json" )
+    MathBar.initializeFunctions( "mathbar/functions.json" );
 
     //To keep CodeMirror editor from bad scrolling
     document.body.addEventListener( "mousewheel", function(e){ scrollListener(e);} );
