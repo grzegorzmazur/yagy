@@ -431,7 +431,7 @@ void MainWindow::on_action_Restart_triggered()
 
 void MainWindow::on_actionYacas_Manual_triggered()
 {
-    QDesktopServices::openUrl(QUrl("http://yacas.sourceforge.net/refmanual.html"));
+    QDesktopServices::openUrl(QUrl("http://yacas.readthedocs.org/en/latest/reference_manual/index.html"));
 }
 
 void MainWindow::on_actionCurrent_Symbol_Help_triggered()
