@@ -54,7 +54,7 @@ MainWindow::MainWindow(Preferences& prefs, QWidget *parent) :
     
     connect(_yacas_server, SIGNAL(busy(bool)), this, SLOT(handle_engine_busy(bool)));
     
-    _yacas2tex->Evaluate(((std::string("DefaultDirectory(\"") + _scripts_path.toStdString() + "\");")).c_str());
+    _yacas2tex->Evaluate(((std::string("DefaultDirectory(\"") + _scripts_path.toStdString() + "\");")));
     _yacas2tex->Evaluate("Load(\"yacasinit.ys\");");
 
     _ui->setupUi(this);
