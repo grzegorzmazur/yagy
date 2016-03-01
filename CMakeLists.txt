@@ -2,7 +2,11 @@ cmake_minimum_required (VERSION 2.8.11)
 
 project (YAGY CXX)
 
-set(YACAS_PREFIX "" CACHE FILEPATH "Yacas installation root")
+if (WIN32)
+    set(YACAS_PREFIX "C:/Program Files/yacas" CACHE FILEPATH "Yacas installation root")
+else ()
+    set(YACAS_PREFIX "/usr" CACHE FILEPATH "Yacas installation root")
+endif ()
 
 if(NOT EXISTS ${YACAS_PREFIX}/include/yacas/yacas.h)
   message(SEND_ERROR "Can't find yacas.h in ${YACAS_PREFIX}/include/yacas")
