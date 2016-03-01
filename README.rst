@@ -11,16 +11,12 @@ Compilation instructions
 Prerequisites
 _____________
 
-1. yacas version 1.3.5
-  - installations
-    - MacOS: <TBD> (contains yacas.framework)
-    - Windows: <TBD>
-    - Linux: <TBD>
-  - sources: <TBD>
+1. yacas version 1.4.0
+  - available from https://github.com/grzegorzmazur/yacas/releases/tag/v1.4.0
     
 2. Qt 
-  - available here: http://qt-project.org/downloads
-  - tested on the 5.3.2 version
+  - available from http://qt-project.org/downloads
+  - tested on the 5.4.2 version
 
 
 Mac OS X
@@ -45,7 +41,7 @@ ________
 Windows
 _______
 
-1. To compile Yagy Yacas (yacas-1.3.5-win64.exe) has to be installed
+1. To compile Yagy Yacas (yacas-1.4.0-win64.exe) has to be installed
   - if Yacas is compiled from sources the Release x64 configuration should be used
 2. In the CMakeList.txt set the YACAS_PREFIX variable to point to the Yacas installation folder
   - it’s C:/Program Files (x86)/yacas by default
@@ -54,4 +50,14 @@ _______
 4. Build the ALL_BUILD solution to build the Yagy application
 5. Build the PACKAGE solution to create an installation package
 
+
+Linux
+_____
+
+1. To compile Yagy, Yacas (yacas_1.4.0-1_amd64.deb) has to be installed
+2. In the CMakeList.txt set the YACAS_PREFIX variable to point to the Yacas installation folder
+  - it’s /usr by default
+3. Generate Makefile using CMake
+4. Build executable using the ``make`` command
+5. Either install using ``make install`` or build package using ``make package`` and install it
 
