@@ -44,7 +44,7 @@ _______
 1. To compile Yagy Yacas (yacas-1.4.0-win64.exe) has to be installed
   - if Yacas is compiled from sources the Release x64 configuration should be used
 2. In the CMakeList.txt set the YACAS_PREFIX variable to point to the Yacas installation folder
-  - it’s C:/Program Files (x86)/yacas by default
+  - it’s C:/Program Files/yacas by default
 3. Generate Microsoft Visual Studio project using CMake
   - set configuration to Visual Studion 12 2013 Win64
 4. Build the ALL_BUILD solution to build the Yagy application
