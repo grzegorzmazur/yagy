@@ -148,6 +148,7 @@ set_property (TARGET yagy APPEND PROPERTY
 
 install (TARGETS yagy DESTINATION bin)
 install (DIRECTORY ${YACAS_PREFIX}/share/yacas/scripts DESTINATION share/yagy)
+install (DIRECTORY ${YACAS_PREFIX}/share/yacas/documentation DESTINATION share/yagy)
 
 install (FILES resources/img/yagy.png DESTINATION share/yagy)
 

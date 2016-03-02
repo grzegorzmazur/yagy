@@ -507,7 +507,15 @@ void MainWindow::help(QString s, int cp)
         return;
 
     const QString key = word_rx.cap(0);
-    const QString ref = QString("http://yacas.sourceforge.net/ref.html?") + key;
+    
+    QDir doc_dir(QApplication::applicationDirPath());
+#ifdef __APPLE__
+    doc_dir.cd("../SharedFrameworks/yacas.framework/Versions/Current/Resources/documentation/singlehtml");
+#else
+    doc_dir.cd("../share/yagy/documentation/singlehtml");
+#endif
+    
+    const QString ref = QString("file://") + doc_dir.canonicalPath() + QString("/index.html#") + key;
 
     QDesktopServices::openUrl(QUrl(ref));
 }
