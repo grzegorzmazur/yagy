@@ -1,19 +1,14 @@
 function square_root_parser( outputValue, parameters ){
-    console.log( "This is square root parser");
     return "Sqrt(" + outputValue + ")";
 }
 
 
 
 function natural_logarithm_parser( outputValue, parameters ){
-    console.log( "This is natural logarithm parser");
     return "Ln(" + outputValue + ")";
 }
 
 function numerical_value_parser( outputValue, parameters ){
-    console.log( "This is numerical value parser");
-    
-    
     with_precision = parameters["with_precision"];
     
     if ( with_precision ){
@@ -25,18 +20,15 @@ function numerical_value_parser( outputValue, parameters ){
 }
 
 function exponential_parser( outputValue, parameters ){
-    console.log( "This is exponential parser");
     return "Exp(" + outputValue + ")";
 }
 
 
 function simplify_parser( outputValue, parameters ){
-    console.log( "This is simplify parser");
     return "Simplify(" + outputValue + ")";
 }
 
 function integrate_parser( outputValue, parameters ){
-    console.log( "This is integrate parser");
     variable = parameters["variable"];
     
     definite = parameters["definite"];
@@ -51,24 +43,18 @@ function integrate_parser( outputValue, parameters ){
 }
 
 function derivative_parser( outputValue, parameters ){
-    console.log( "This is derivative parser");
     variable = parameters["variable"];
     return "D("+ variable +")" + outputValue;
 }
 
 function plot_2d_parser( outputValue, parameters ){
-    console.log( "This is Plot 2D parser");
-    
     from = parameters["from"];
     to = parameters["to"];
-    
     
     return "Plot2D(" + outputValue + "," + from + ":" + to + ")";
 }
 
 function plot_3d_parser( outputValue, parameters ){
-    console.log( "This is Plot 3D parser");
-    
     from_0 = parameters["variable_0_from"];
     to_0 = parameters["variable_0_to"];
     from_1 = parameters["variable_1_from"];
@@ -78,8 +64,6 @@ function plot_3d_parser( outputValue, parameters ){
 }
 
 function limit_parser( outputValue, parameters ){
-    console.log( "This is limit parser");
-    
     variable = parameters["variable"];
     value = parameters["value"];
     direction = parameters["direction"];

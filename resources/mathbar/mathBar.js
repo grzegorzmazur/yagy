@@ -125,7 +125,6 @@ MathBar.prototype.createFunctionsDiv = function(){
         
         var $functionsSelect = $("<select>");
         var $option = $("<option>").append( MathBar.selectMoreText );
-        console.log(MathBar.selectMoreText);
         $option.attr( "disabled", true );
         $option.attr( "selected", true);
         $functionsSelect.append($option );
@@ -225,7 +224,6 @@ MathBar.ParseFunctions = function(){
 }
 
 MathBar.ParseParameter = function( parameter ){
-    console.log( parameter );
     if ( parameter["parameterName"] == undefined ){
         console.error( "Name of parameter is undefined: " + parameter);
         parameter["parameterName"] = "undefined";
@@ -280,8 +278,6 @@ MathBar.ParseParameter = function( parameter ){
 
 MathBar.prototype.optionClicked = function( functionName, VIF ){
 
-    console.log( "Option clicked: " + functionName ) ;
-    
     if ( this.currentOptionVIF && functionName == MathBar.selectMoreText ) return;
     this.currentOptionVIF = VIF;
     this.currentOption = functionName;
