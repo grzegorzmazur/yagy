@@ -15,7 +15,7 @@ ICON = icon.icns
 
 macx{
 
-    YACAS_PREFIX = ../yacas/Release
+    YACAS_PREFIX = ../yacas/build/Release
 
     CONFIG(debug, debug|release) {
         DEFINES += YAGY_ENABLE_INSPECTOR
@@ -45,7 +45,8 @@ macx{
     THREE.files = resources/three
     VIS.files = resources/vis
     YAGY_UI.files = resources/yagy_ui
-QMAKE_BUNDLE_DATA += CSS JAVASCRIPT FRAMEWORK CODEMIRROR CSS FLOT FONTS IMAGES IMG JQUERY MATHBAR MATHJAX PLOT3D THREE VIS YAGY_UI
+    YAGY_UI_HTML.files = resources/yagy_ui.html
+QMAKE_BUNDLE_DATA += CSS JAVASCRIPT FRAMEWORK CODEMIRROR CSS FLOT FONTS IMAGES IMG JQUERY MATHBAR MATHJAX PLOT3D THREE VIS YAGY_UI YAGY_UI_HTML
 
 
     CONFIG += lib_bundle
