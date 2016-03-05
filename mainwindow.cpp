@@ -54,7 +54,7 @@ MainWindow::MainWindow(Preferences& prefs, QWidget *parent) :
     
     connect(_yacas_server, SIGNAL(busy(bool)), this, SLOT(handle_engine_busy(bool)));
     
-    _yacas2tex->Evaluate(((std::string("DefaultDirectory(\"") + _scripts_path.toStdString() + "\");")).c_str());
+    _yacas2tex->Evaluate(((std::string("DefaultDirectory(\"") + _scripts_path.toStdString() + "\");")));
     _yacas2tex->Evaluate("Load(\"yacasinit.ys\");");
 
     _ui->setupUi(this);
@@ -431,7 +431,7 @@ void MainWindow::on_action_Restart_triggered()
 
 void MainWindow::on_actionYacas_Manual_triggered()
 {
-    QDesktopServices::openUrl(QUrl("http://yacas.sourceforge.net/refmanual.html"));
+    QDesktopServices::openUrl(QUrl("http://yacas.readthedocs.org/en/latest/reference_manual/index.html"));
 }
 
 void MainWindow::on_actionCurrent_Symbol_Help_triggered()
@@ -507,7 +507,15 @@ void MainWindow::help(QString s, int cp)
         return;
 
     const QString key = word_rx.cap(0);
-    const QString ref = QString("http://yacas.sourceforge.net/ref.html?") + key;
+    
+    QDir doc_dir(QApplication::applicationDirPath());
+#ifdef __APPLE__
+    doc_dir.cd("../SharedFrameworks/yacas.framework/Versions/Current/Resources/documentation/singlehtml");
+#else
+    doc_dir.cd("../share/yagy/documentation/singlehtml");
+#endif
+    
+    const QString ref = QString("file://") + doc_dir.canonicalPath() + QString("/index.html#") + key;
 
     QDesktopServices::openUrl(QUrl(ref));
 }
