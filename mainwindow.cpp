@@ -106,36 +106,13 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 void MainWindow::loadYacasPage()
 {
-#ifdef __APPLE__
-    CFBundleRef mainBundle = CFBundleGetMainBundle();
-    CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
-
-    char path[PATH_MAX];
-    if (!CFURLGetFileSystemRepresentation(resourcesURL, TRUE, (UInt8 *)path, PATH_MAX))
-    {
-        qDebug() << "Error finding Resources URL";
-    }
-    const QUrl resource_url = QUrl(QString("file:///") + QString(path) + QString("/"));
-    QFile mFile(QString( QString(path) + "/yagy_ui.html" ));
-
-#else
-    const QUrl resource_url = QUrl("qrc:///resources/");
-    QFile mFile(":/resources/yagy_ui.html");
-#endif
-
-    if(!mFile.open(QFile::ReadOnly | QFile::Text)){
-        qDebug() << "could not open file for read (yagy_ui.html)";
-        return;
-    }
-
-    QTextStream in(&mFile);
-    QString mText = in.readAll();
-    mFile.close();
-
+    QDir resources_dir(_prefs.get_resources_path());
+    const QUrl url = QUrl::fromLocalFile(resources_dir.absoluteFilePath("yagy_ui.html"));
+    
     connect(_ui->webView->page()->currentFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(initObjectMapping()));
     connect(_ui->webView->page()->currentFrame(), SIGNAL(loadFinished(bool)), this, SLOT(handle_prefs_changed()));
     connect(_ui->webView->page(), SIGNAL(contentsChanged()), this, SLOT(on_contentsChanged()));
-    _ui->webView->setHtml( mText, resource_url) ;
+    _ui->webView->load(url) ;
     _ui->webView->page()->currentFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOn);
 
 #ifdef YAGY_ENABLE_INSPECTOR

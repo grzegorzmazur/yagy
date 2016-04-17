@@ -11,6 +11,14 @@ Preferences::Preferences(const QApplication& app)
     dir.cd("../share/yagy/scripts");
 #endif
     _default_scripts_path = dir.canonicalPath() + "/";
+
+    dir = app.applicationDirPath();
+#ifdef __APPLE__
+    dir.cd("../Resources");
+#else
+    dir.cd("../share/yagy/resources");
+#endif
+    _default_resources_path = dir.canonicalPath();
 }
 
 bool Preferences::get_enable_toolbar() const
@@ -90,6 +98,12 @@ QString Preferences::get_scripts_path() const
     
     return get_custom_scripts_path();
 }
+
+QString Preferences::get_resources_path() const
+{
+    return _default_resources_path;
+}
+
 
 QString Preferences::get_cwd() const
 {

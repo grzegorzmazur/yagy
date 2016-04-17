@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RCC version="1.0">
-    <qresource>
-        <file>resources/vis/vis.min.css</file>
-        <file>resources/vis/vis.min.js</file>
-    </qresource>
-</RCC>

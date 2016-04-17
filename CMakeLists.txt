@@ -58,56 +58,9 @@ include_directories (
 qt5_wrap_ui (ui_mainwindow.h mainwindow.ui)
 qt5_wrap_ui (ui_preferences_dialog.h preferences_dialog.ui)
 
-qt5_add_resources (qrc_yagy_ui.cpp yagy_ui.qrc --compress 9)
 qt5_add_resources (qrc_img.cpp img.qrc --compress 9)
 
-set (YAGY_QRESOURCES qrc_yagy_ui.cpp qrc_img.cpp)
-
-if (NOT APPLE)
-    qt5_add_resources (qrc_codemirror.cpp codemirror.qrc)
-    qt5_add_resources (qrc_flot.cpp flot.qrc --compress 9)
-    qt5_add_resources (qrc_fonts-stix-web-otf.cpp fonts-stix-web-otf.qrc --compress 9)
-    qt5_add_resources (qrc_fonts-stix-web-woff.cpp fonts-stix-web-woff.qrc --compress 9)
-    qt5_add_resources (qrc_fonts-tex.cpp fonts-tex.qrc --compress 9)
-    qt5_add_resources (qrc_jquery.cpp jquery.qrc --compress 9)
-    qt5_add_resources (qrc_mathbar.cpp mathbar.qrc --compress 9)
-    qt5_add_resources (qrc_mathjax.cpp mathjax.qrc --compress 9)
-    qt5_add_resources (qrc_mathjax-config.cpp mathjax-config.qrc --compress 9)
-    qt5_add_resources (qrc_mathjax-extensions.cpp mathjax-extensions.qrc --compress 9)
-    qt5_add_resources (qrc_mathjax-jax-element.cpp mathjax-jax-element.qrc --compress 9)
-    qt5_add_resources (qrc_mathjax-jax-input.cpp mathjax-jax-input.qrc --compress 9)
-    qt5_add_resources (qrc_mathjax-jax-output.cpp mathjax-jax-output.qrc --compress 9)
-    qt5_add_resources (qrc_mathjax-jax-output-fonts-stix.cpp mathjax-jax-output-fonts-stix.qrc --compress 9)
-    qt5_add_resources (qrc_mathjax-jax-output-fonts-stix-web.cpp mathjax-jax-output-fonts-stix-web.qrc --compress 9)
-    qt5_add_resources (qrc_mathjax-jax-output-fonts-tex.cpp mathjax-jax-output-fonts-tex.qrc --compress 9)
-    qt5_add_resources (qrc_mathjax-localization.cpp mathjax-localization.qrc --compress 9)
-    qt5_add_resources (qrc_plot3d.cpp plot3d.qrc --compress 9)
-    qt5_add_resources (qrc_three.cpp three.qrc --compress 9)
-    qt5_add_resources (qrc_vis.cpp vis.qrc --compress 9)
-
-    set (YAGY_QRESOURCES
-        ${YAGY_QRESOURCES}
-        qrc_codemirror.cpp
-        qrc_jquery.cpp
-        qrc_flot.cpp
-        qrc_fonts-stix-web-otf.cpp
-        qrc_fonts-stix-web-woff.cpp
-        qrc_fonts-tex.cpp
-        qrc_mathbar.cpp
-        qrc_mathjax.cpp
-        qrc_mathjax-config.cpp
-        qrc_mathjax-extensions.cpp
-        qrc_mathjax-jax-element.cpp
-        qrc_mathjax-jax-input.cpp
-        qrc_mathjax-jax-output.cpp
-        qrc_mathjax-jax-output-fonts-stix.cpp
-        qrc_mathjax-jax-output-fonts-stix-web.cpp
-        qrc_mathjax-jax-output-fonts-tex.cpp
-        qrc_mathjax-localization.cpp
-        qrc_plot3d.cpp
-        qrc_three.cpp
-        qrc_vis.cpp)
-endif ()
+set (YAGY_QRESOURCES qrc_img.cpp)
 
 set (YAGY_SOURCES
     main.cpp mainwindow.cpp cellproxy.cpp yacasrequest.cpp yacasengine.cpp
@@ -145,6 +98,8 @@ endif()
 set_property (TARGET yagy APPEND PROPERTY
     COMPILE_DEFINITIONS $<$<CONFIG:Debug>:YAGY_ENABLE_INSPECTOR>
 )
+
+add_subdirectory(resources)
 
 install (TARGETS yagy DESTINATION bin)
 install (DIRECTORY ${YACAS_PREFIX}/share/yacas/scripts DESTINATION share/yagy)

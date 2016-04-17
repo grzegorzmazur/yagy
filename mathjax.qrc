@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RCC version="1.0">
-    <qresource>
-        <file>resources/images/MenuArrow-15.png</file>
-        <file>resources/mathjax/MathJax.js</file>
-    </qresource>
-</RCC>

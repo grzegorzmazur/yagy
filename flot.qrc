@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RCC version="1.0">
-    <qresource>
-        <file>resources/flot/jquery.flot.min.js</file>
-        <file>resources/flot/jquery.flot.resize.min.js</file>
-    </qresource>
-</RCC>

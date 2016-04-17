@@ -31,9 +31,10 @@ public:
     QString get_custom_scripts_path() const;
     void set_custom_scripts_path(const QString&);
 
-    
     QString get_scripts_path() const;
 
+    QString get_resources_path() const;
+    
     QString get_cwd() const;
     void set_cwd(const QString&);
     
@@ -43,6 +44,7 @@ signals:
 private:
     QSettings _settings;
     QString _default_scripts_path;
+    QString _default_resources_path;
 };
 
 #endif	/* PREFERENCES_H */

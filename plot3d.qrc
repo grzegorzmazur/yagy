@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RCC version="1.0">
-    <qresource>
-        <file>resources/plot3d/plot3d.js</file>
-        <file>resources/plot3d/delaunay.js</file>
-    </qresource>
-</RCC>
