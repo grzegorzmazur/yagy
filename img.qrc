@@ -2,7 +2,6 @@
     <qresource prefix="/">
         <file>resources/img/icon.png</file>
         <file>resources/img/splash.png</file>
-        <file>resources/img/progressbar.indicator.gif</file>
         <file>resources/img/evaluate.svg</file>
         <file>resources/img/interupt.svg</file>
         <file>resources/img/save_document.svg</file>

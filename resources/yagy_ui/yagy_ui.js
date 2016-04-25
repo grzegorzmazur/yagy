@@ -189,7 +189,7 @@ function addOutput( lineid, number, rootElementID ){
     $row.append( "<td><div id='" + outputID+ "' ></div></td>" );
     
     $( rootElementID ).append( $row );
-    $( "#" + outputID ).append( "<img src='img/progressbar.indicator.gif' width='20' ></img>");
+    $( "#" + outputID ).append( "<img src='yagy_ui/progressbar.indicator.gif' width='20' ></img>");
 }
 
 function addSideEffects( number, side_effects, rootElementID ){
