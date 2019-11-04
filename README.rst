@@ -1,3 +1,7 @@
+**Note: the program has been superseded by yacas-gui, which is an integral part of** `yacas <https://github.com/grzegorzmazur/yacas>`_
+
+This repository if frozen. No changes to it will be made nor any pull requests or bug reports accepted.
+
 ====================================================================
 Yagy, Yet Another GUI for Yacas, Yet Another Computer Algebra System
 ====================================================================
